@@ -30,14 +30,17 @@ export function Header() {
       <div className="container mx-auto max-w-6xl">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center space-x-8">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <div className="h-8 w-8 bg-gradient-primary rounded-lg"></div>
               <span className="text-xl font-bold">PinCraft</span>
-            </div>
+            </Link>
             
             <nav className="hidden md:flex items-center space-x-6">
               {user ? (
                 <>
+                  <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
+                    Generar Pin
+                  </Link>
                   <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.dashboard')}
                   </Link>
