@@ -17,6 +17,7 @@ interface UserProfile {
   stripe_subscription_id: string | null;
   current_period_start: string | null;
   current_period_end: string | null;
+  is_super_admin: boolean;
 }
 
 interface AuthContextType {
@@ -30,6 +31,7 @@ interface AuthContextType {
   refreshProfile: () => Promise<void>;
   canGeneratePins: () => boolean;
   getRemainingPins: () => number;
+  isSuperAdmin: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -167,12 +169,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const canGeneratePins = () => {
     if (!profile) return true; // Allow guests to generate pins (they'll hit other limits)
+    if (profile.is_super_admin) return true; // Super admins have unlimited access
     return profile.pins_generated_this_month < profile.monthly_limit;
   };
 
   const getRemainingPins = () => {
     if (!profile) return 5; // Default for guests
+    if (profile.is_super_admin) return 999999; // Super admins show unlimited
     return Math.max(0, profile.monthly_limit - profile.pins_generated_this_month);
+  };
+
+  const isSuperAdmin = () => {
+    return profile?.is_super_admin ?? false;
   };
 
   const value = {
@@ -186,6 +194,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshProfile,
     canGeneratePins,
     getRemainingPins,
+    isSuperAdmin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

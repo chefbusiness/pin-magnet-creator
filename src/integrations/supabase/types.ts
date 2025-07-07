@@ -65,6 +65,7 @@ export type Database = {
           email: string | null
           full_name: string | null
           id: string
+          is_super_admin: boolean
           monthly_limit: number
           pins_generated_this_month: number
           plan_type: string
@@ -82,6 +83,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          is_super_admin?: boolean
           monthly_limit?: number
           pins_generated_this_month?: number
           plan_type?: string
@@ -99,6 +101,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          is_super_admin?: boolean
           monthly_limit?: number
           pins_generated_this_month?: number
           plan_type?: string
@@ -157,6 +160,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      is_super_admin: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
+      promote_to_super_admin: {
+        Args: { target_email: string }
+        Returns: undefined
+      }
       reset_monthly_pins: {
         Args: Record<PropertyKey, never>
         Returns: undefined

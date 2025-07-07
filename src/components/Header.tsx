@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Globe, User, LogOut } from "lucide-react";
@@ -13,7 +14,7 @@ import {
 
 export function Header() {
   const { language, setLanguage, t } = useLanguage();
-  const { user, profile, signOut, getRemainingPins } = useAuth();
+  const { user, profile, signOut, getRemainingPins, isSuperAdmin } = useAuth();
 
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -58,9 +59,19 @@ export function Header() {
             
             {user ? (
               <>
-                {profile && (
+                {isSuperAdmin() && (
+                  <Badge variant="destructive" className="bg-gradient-to-r from-amber-500 to-red-500 text-white font-bold">
+                    SUPER ADMIN
+                  </Badge>
+                )}
+                {profile && !isSuperAdmin() && (
                   <div className="text-sm text-muted-foreground">
                     {getRemainingPins()}/{profile.monthly_limit} pines
+                  </div>
+                )}
+                {profile && isSuperAdmin() && (
+                  <div className="text-sm text-muted-foreground">
+                    ∞ pines ilimitados
                   </div>
                 )}
                 <DropdownMenu>
