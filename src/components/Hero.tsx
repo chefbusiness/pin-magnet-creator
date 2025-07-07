@@ -5,6 +5,10 @@ import pinInterior from "@/assets/pin-interior.jpg";
 import pinTravel from "@/assets/pin-travel.jpg";
 import pinBusiness from "@/assets/pin-business.jpg";
 import pinRecipes from "@/assets/pin-recipes.jpg";
+import pinFashion from "@/assets/pin-fashion.jpg";
+import pinWorkspace from "@/assets/pin-workspace.jpg";
+import pinTech from "@/assets/pin-tech.jpg";
+import pinArt from "@/assets/pin-art.jpg";
 
 export function Hero() {
   const { t } = useLanguage();
@@ -131,27 +135,27 @@ export function Hero() {
                 </div>
               </div>
 
-              {/* Pin 6 - Interior (English) */}
+              {/* Pin 6 - Workspace (English) */}
               <div className="col-span-1 transform -rotate-3 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_0.8s] group">
                 <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
                   <img 
-                    src={pinInterior} 
-                    alt="Minimalist Decor" 
+                    src={pinWorkspace} 
+                    alt="Workspace Setup" 
                     className="w-full h-48 lg:h-56 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                   <div className="absolute bottom-3 left-3 right-3">
-                    <h4 className="text-sm font-bold text-white leading-tight">Modern Home Ideas</h4>
+                    <h4 className="text-sm font-bold text-white leading-tight">Work From Home</h4>
                   </div>
                 </div>
               </div>
 
-              {/* Pin 7 - Travel (English) */}
+              {/* Pin 7 - Fashion (English) */}
               <div className="col-span-1 transform rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.2s] group">
                 <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
                   <img 
-                    src={pinTravel} 
-                    alt="Beach Vacation" 
+                    src={pinFashion} 
+                    alt="Fashion Style" 
                     className="w-full h-52 lg:h-60 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -161,32 +165,32 @@ export function Hero() {
                 </div>
               </div>
 
-              {/* Pin 8 - Fitness (Spanish) */}
+              {/* Pin 8 - Tech (Spanish) */}
               <div className="col-span-1 transform -rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.8s] group">
                 <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
                   <img 
-                    src={pinFitness} 
-                    alt="Fitness Motivation" 
+                    src={pinTech} 
+                    alt="Tech Gadgets" 
                     className="w-full h-48 lg:h-56 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                   <div className="absolute bottom-3 left-3 right-3">
-                    <h4 className="text-sm font-bold text-white leading-tight">Ejercicios en Casa</h4>
+                    <h4 className="text-sm font-bold text-white leading-tight">Gadgets Tecnológicos</h4>
                   </div>
                 </div>
               </div>
 
-              {/* Pin 9 - Recipes (Spanish) */}
+              {/* Pin 9 - Art (Spanish) */}
               <div className="col-span-1 transform rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_2.3s] group">
                 <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
                   <img 
-                    src={pinRecipes} 
-                    alt="Food Recipe" 
+                    src={pinArt} 
+                    alt="Art Supplies" 
                     className="w-full h-50 lg:h-58 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                   <div className="absolute bottom-3 left-3 right-3">
-                    <h4 className="text-sm font-bold text-white leading-tight">Recetas Saludables</h4>
+                    <h4 className="text-sm font-bold text-white leading-tight">Arte y Creatividad</h4>
                   </div>
                 </div>
               </div>
