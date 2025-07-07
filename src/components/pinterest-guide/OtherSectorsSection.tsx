@@ -24,17 +24,12 @@ export function OtherSectorsSection() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-1">
-                {sector.subcategories.slice(0, 5).map((sub, idx) => (
+                {sector.subcategories.map((sub, idx) => (
                   <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
                     {sub}
                   </li>
                 ))}
-                {sector.subcategories.length > 5 && (
-                  <li className="text-sm text-muted-foreground italic">
-                    +{sector.subcategories.length - 5} más...
-                  </li>
-                )}
               </ul>
             </CardContent>
           </Card>
