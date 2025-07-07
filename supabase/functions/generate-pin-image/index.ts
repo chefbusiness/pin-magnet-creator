@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 import Replicate from "https://esm.sh/replicate@0.25.2";
 
 const corsHeaders = {
@@ -96,12 +97,54 @@ The final result should be so attractive that Pinterest users can't scroll past 
       throw new Error('No image generated from Ideogram');
     }
 
-    const imageUrl = Array.isArray(output) ? output[0] : output;
+    const temporaryImageUrl = Array.isArray(output) ? output[0] : output;
+
+    // Initialize Supabase client
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    // Download the image from Replicate
+    console.log('Downloading image from Replicate...');
+    const imageResponse = await fetch(temporaryImageUrl);
+    if (!imageResponse.ok) {
+      throw new Error('Failed to download image from Replicate');
+    }
+    
+    const imageBlob = await imageResponse.blob();
+    const imageBuffer = await imageBlob.arrayBuffer();
+    
+    // Generate unique filename
+    const timestamp = new Date().getTime();
+    const randomId = crypto.randomUUID();
+    const filename = `pin_${timestamp}_${randomId}.jpg`;
+    
+    // Upload to Supabase Storage
+    console.log('Uploading image to Supabase Storage...');
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('pin-images')
+      .upload(filename, imageBuffer, {
+        contentType: 'image/jpeg',
+        upsert: false
+      });
+
+    if (uploadError) {
+      console.error('Error uploading to Supabase Storage:', uploadError);
+      throw new Error(`Failed to upload image: ${uploadError.message}`);
+    }
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('pin-images')
+      .getPublicUrl(filename);
+
+    console.log('Image uploaded successfully:', publicUrl);
 
     return new Response(
       JSON.stringify({ 
         data: { 
-          imageUrl,
+          imageUrl: publicUrl,
           prompt: prompt.substring(0, 200) + '...'
         } 
       }),
