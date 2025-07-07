@@ -7,10 +7,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { usePinGeneration, type GenerationResult } from "@/hooks/usePinGeneration";
 import { Download, ExternalLink, Lock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function PinGenerator() {
   const { t } = useLanguage();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [results, setResults] = useState<GenerationResult | null>(null);
   const { generatePins, isGenerating, progress } = usePinGeneration();
@@ -192,7 +194,7 @@ export function PinGenerator() {
                   <div className="text-center">
                     <Button 
                       variant="outline" 
-                      onClick={() => window.location.href = '/dashboard'}
+                      onClick={() => navigate('/dashboard')}
                       className="px-6"
                     >
                       Ver todos mis pines en Dashboard

@@ -55,7 +55,7 @@ export const usePinGeneration = () => {
       setProgress('Analizando contenido de la URL...');
       
       const { data, error } = await supabase.functions.invoke('process-pin-generation', {
-        body: { url }
+        body: { url, userId: user.id }
       });
 
       if (error) {
