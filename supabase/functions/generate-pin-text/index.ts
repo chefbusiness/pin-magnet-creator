@@ -34,18 +34,50 @@ serve(async (req) => {
     const sourceTitle = og_title || title || 'Contenido interesante';
     const sourceDescription = og_description || description || content_summary?.substring(0, 200) || '';
 
-    const prompt = `Como experto en Pinterest marketing, crea 3 variaciones de texto optimizado para pines de Pinterest basado en este contenido:
+    // Optimización inteligente de títulos para Ideogram
+    const optimizeTitle = (title: string): string => {
+      // Límite estricto para mejor calidad en Ideogram
+      const MAX_LENGTH = 45;
+      
+      if (title.length <= MAX_LENGTH) return title;
+      
+      // Truncate inteligente en palabras completas
+      const words = title.split(' ');
+      let optimized = '';
+      
+      for (const word of words) {
+        if ((optimized + word).length <= MAX_LENGTH) {
+          optimized += (optimized ? ' ' : '') + word;
+        } else {
+          break;
+        }
+      }
+      
+      return optimized || title.substring(0, MAX_LENGTH).trim();
+    };
+
+    const optimizedTitle = optimizeTitle(sourceTitle);
+
+    const prompt = `Como experto en Pinterest marketing especializado en español, crea 3 variaciones de texto optimizado para pines de Pinterest basado en este contenido:
 
 Título original: "${sourceTitle}"
 Descripción: "${sourceDescription}"
 
+IMPORTANTE - Requisitos específicos para generación de imágenes:
+- Títulos MÁXIMO 45 caracteres (crítico para calidad visual)
+- Usar palabras simples y directas en español
+- Evitar palabras muy largas o complejas
+- Priorizar claridad sobre originalidad
+- NO usar símbolos especiales o caracteres complicados
+
 Requisitos para cada variación:
-- Título llamativo de máximo 100 caracteres
+- Título llamativo y CONCISO (máximo 45 caracteres)
 - Descripción persuasiva de máximo 400 caracteres
 - Usar palabras clave relevantes para SEO
 - Incluir call-to-action atractivo
-- Tone emocional que genere engagement
-- Adaptar para audiencia hispana
+- Tono emocional que genere engagement
+- Optimizado para audiencia hispana
+- Palabras fáciles de renderizar visualmente
 
 Responde SOLO con un JSON válido en este formato:
 {
@@ -103,25 +135,33 @@ Responde SOLO con un JSON válido en este formato:
     } catch (parseError) {
       console.error('Failed to parse OpenAI response as JSON:', parseError);
       // Fallback variations
+      // Fallback optimizado con títulos cortos
+      const optimizedFallbackTitle = optimizeTitle(sourceTitle);
       textVariations = {
         variations: [
           {
-            title: sourceTitle.substring(0, 100),
+            title: optimizedFallbackTitle,
             description: `Descubre ${sourceDescription.substring(0, 300)}... ¡No te lo pierdas!`
           },
           {
-            title: `✨ ${sourceTitle.substring(0, 95)}`,
+            title: optimizeTitle(`✨ ${sourceTitle}`),
             description: `${sourceDescription.substring(0, 350)} 💫 ¡Click para saber más!`
           },
           {
-            title: `🔥 ${sourceTitle.substring(0, 95)}`,
+            title: optimizeTitle(`🔥 ${sourceTitle}`),
             description: `Todo lo que necesitas saber: ${sourceDescription.substring(0, 320)} ⬇️`
           }
         ]
       };
     }
 
-    console.log('Generated text variations:', textVariations);
+    // Validación final de calidad
+    textVariations.variations = textVariations.variations.map(variation => ({
+      ...variation,
+      title: optimizeTitle(variation.title)
+    }));
+
+    console.log('Generated and optimized text variations:', textVariations);
 
     return new Response(
       JSON.stringify({ data: textVariations }),
