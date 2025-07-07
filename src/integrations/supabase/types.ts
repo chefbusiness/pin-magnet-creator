@@ -14,7 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      pins: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_prompt: string | null
+          image_url: string | null
+          status: string
+          template_style: string | null
+          title: string
+          updated_at: string
+          url: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_prompt?: string | null
+          image_url?: string | null
+          status?: string
+          template_style?: string | null
+          title: string
+          updated_at?: string
+          url: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_prompt?: string | null
+          image_url?: string | null
+          status?: string
+          template_style?: string | null
+          title?: string
+          updated_at?: string
+          url?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      url_analysis: {
+        Row: {
+          analyzed_at: string
+          content_summary: string | null
+          description: string | null
+          expires_at: string
+          id: string
+          meta_keywords: string[] | null
+          og_description: string | null
+          og_image: string | null
+          og_title: string | null
+          title: string | null
+          url: string
+        }
+        Insert: {
+          analyzed_at?: string
+          content_summary?: string | null
+          description?: string | null
+          expires_at?: string
+          id?: string
+          meta_keywords?: string[] | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
+          title?: string | null
+          url: string
+        }
+        Update: {
+          analyzed_at?: string
+          content_summary?: string | null
+          description?: string | null
+          expires_at?: string
+          id?: string
+          meta_keywords?: string[] | null
+          og_description?: string | null
+          og_image?: string | null
+          og_title?: string | null
+          title?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
