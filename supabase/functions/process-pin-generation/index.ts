@@ -56,11 +56,18 @@ serve(async (req) => {
     console.log('Text variations generated:', textVariations.length);
     console.log('Text variation titles:', textVariations.map(v => v.title));
     
-    // Validar que las variaciones son diferentes
+    // Validar que las variaciones son realmente diferentes
     const titles = textVariations.map(v => v.title);
     const uniqueTitles = new Set(titles);
     if (uniqueTitles.size < titles.length) {
-      console.warn('WARNING: Some text variations are identical!');
+      console.error('ERROR: Identical text variations detected!', titles);
+      throw new Error('Generated identical pin variations. Please try again.');
+    }
+    
+    // Validar longitud de títulos
+    const longTitles = titles.filter(title => title.length > 45);
+    if (longTitles.length > 0) {
+      console.warn('WARNING: Some titles are too long:', longTitles);
     }
 
     // Extract domain from URL for branding

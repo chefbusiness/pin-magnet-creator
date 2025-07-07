@@ -34,10 +34,10 @@ serve(async (req) => {
     const sourceTitle = og_title || title || 'Contenido interesante';
     const sourceDescription = og_description || description || content_summary?.substring(0, 200) || '';
 
-    // Optimización inteligente de títulos para Ideogram - MÁS AGRESIVA
+    // Optimización de títulos para mejor legibilidad
     const optimizeTitle = (title: string): string => {
-      // Límite MÁS estricto para evitar errores tipográficos
-      const MAX_LENGTH = 35;
+      // Límite razonable para Pinterest
+      const MAX_LENGTH = 45;
       
       // Limpiar caracteres problemáticos
       let cleanTitle = title
@@ -65,30 +65,23 @@ serve(async (req) => {
 
     const optimizedTitle = optimizeTitle(sourceTitle);
 
-    const prompt = `Crea 3 variaciones COMPLETAMENTE DIFERENTES de texto para pines de Pinterest. Cada una debe ser ÚNICA y diferente de las otras.
+    const prompt = `Crea 3 variaciones diferentes de texto para pines de Pinterest basadas en este contenido:
 
-Contenido base:
 Título: "${sourceTitle}"
 Descripción: "${sourceDescription}"
 
-REGLAS CRÍTICAS:
-- Cada variación debe tener un ENFOQUE DIFERENTE
-- Títulos máximo 35 caracteres (súper importante)
-- Solo palabras simples en español, sin tildes complicadas
-- Evita símbolos especiales (comillas raras, guiones largos)
-- Cada descripción debe ser 420-450 caracteres EXACTOS
+Requisitos:
+- Títulos: máximo 45 caracteres
+- Descripciones: 350-400 caracteres
+- Cada variación con enfoque diferente
+- Texto claro y directo en español
 
-VARIACIÓN 1: Enfoque directo y práctico
-VARIACIÓN 2: Enfoque emocional y aspiracional  
-VARIACIÓN 3: Enfoque urgente y exclusivo
+Genera 3 enfoques:
+1. Informativo y directo
+2. Inspiracional 
+3. Práctico con beneficios
 
-Cada variación debe:
-- Título corto y directo (máximo 35 caracteres)
-- Descripción completa (420-450 caracteres)
-- Incluir call-to-action
-- Ser COMPLETAMENTE diferente a las otras
-
-JSON válido solamente:
+Responde solo con JSON válido:
 {
   "variations": [
     {
@@ -123,7 +116,7 @@ JSON válido solamente:
           },
           { role: 'user', content: prompt }
         ],
-        temperature: 0.95,
+        temperature: 0.7,
         max_tokens: 1200,
       }),
     });
@@ -144,23 +137,23 @@ JSON válido solamente:
     } catch (parseError) {
       console.error('Failed to parse OpenAI response as JSON:', parseError);
       // Fallback variations
-      // Fallbacks DIVERSOS con títulos súper cortos
+      // Fallbacks diversos y únicos
       const baseTitle = optimizeTitle(sourceTitle);
-      const desc = sourceDescription.substring(0, 250);
+      const shortDesc = sourceDescription.substring(0, 150);
       
       textVariations = {
         variations: [
           {
             title: baseTitle,
-            description: `Descubre ${desc}. Información completa y actualizada que necesitas conocer. Click para ver todos los detalles y aprovechar esta oportunidad única. No te lo pierdas, contenido valioso te espera. Guía práctica con consejos efectivos. ¡Empieza ahora!`
+            description: `Toda la información sobre ${shortDesc}. Descubre detalles importantes y consejos útiles. Contenido actualizado y verificado. Explora más sobre este tema interesante y aprovecha al máximo la información disponible. ¡Haz clic para saber más!`
           },
           {
-            title: optimizeTitle("Guía Completa"),
-            description: `Todo sobre ${desc}. Consejos profesionales que funcionan de verdad. Transforma tu perspectiva con esta información exclusiva. Estrategias probadas para conseguir resultados. Contenido premium al alcance de un click. ¡Aprovecha ya!`
+            title: optimizeTitle("Aprende Más"),
+            description: `Transforma tu conocimiento con ${shortDesc}. Guía práctica con estrategias efectivas. Información valiosa que marcará la diferencia. Obtén resultados reales siguiendo estos consejos. ¡Empieza tu transformación hoy mismo!`
           },
           {
-            title: optimizeTitle("Secretos Revelados"),
-            description: `Secretos de ${desc}. Técnicas avanzadas que pocos conocen. Información privilegiada para destacar del resto. Métodos eficaces para obtener mejores resultados. Click para acceder al contenido completo. ¡Oportunidad limitada!`
+            title: optimizeTitle("Tips Exclusivos"),
+            description: `Técnicas probadas para ${shortDesc}. Métodos que realmente funcionan y dan resultados. Información privilegiada al alcance de todos. Mejora tus habilidades con estos consejos especializados. ¡Accede al contenido completo!`
           }
         ]
       };

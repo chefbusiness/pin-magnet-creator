@@ -50,31 +50,12 @@ serve(async (req) => {
 
     const validatedTitle = validateTitle(title);
 
-    // Prompts simplificados para mejor renderizado
-    const stylePrompts = {
-      modern: 'clean typography, simple design, professional',
-      creative: 'colorful design, artistic elements, vibrant',
-      elegant: 'elegant fonts, sophisticated, luxury style'
-    };
+    const prompt = `Pinterest pin design. Clean text layout.
 
-    const selectedStyle = stylePrompts[style as keyof typeof stylePrompts] || stylePrompts.modern;
-    
-    const prompt = `Pinterest pin 736x1104. Clean Spanish text. Simple design.
+Title: "${validatedTitle}"
+Domain: ${domain}
 
-TÍTULO: "${validatedTitle}"
-DOMINIO: "${domain}"
-
-Requirements:
-- Title at top, large and bold
-- Domain at bottom right corner
-- High contrast text
-- Clean background
-- ${selectedStyle}
-- Professional typography
-- White text on dark or black text on light
-- Domain clearly visible with background
-
-Make text super readable. Simple clean design. Domain must be visible.`;
+Simple design, readable text, professional look.`;
 
     console.log('Generating Pinterest pin image with Ideogram...');
     console.log('Prompt:', prompt);
@@ -85,8 +66,7 @@ Make text super readable. Simple clean design. Domain must be visible.`;
         input: {
           prompt: prompt,
           aspect_ratio: "10:16", // Pinterest pin ratio
-          model: "V_2",
-          magic_prompt_option: "Auto"
+          model: "V_2"
         }
       }
     );
