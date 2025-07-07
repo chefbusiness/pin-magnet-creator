@@ -63,7 +63,8 @@ serve(async (req) => {
           body: {
             title: variation.title,
             description: variation.description,
-            style: ['modern', 'creative', 'elegant'][index] || 'modern'
+            style: ['modern', 'creative', 'elegant'][index] || 'modern',
+            url: url
           }
         });
 

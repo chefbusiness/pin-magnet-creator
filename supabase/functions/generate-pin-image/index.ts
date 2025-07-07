@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, style = 'modern' } = await req.json();
+    const { title, description, style = 'modern', url } = await req.json();
     
     if (!title) {
       return new Response(
@@ -44,6 +44,17 @@ serve(async (req) => {
 
     const selectedStyle = stylePrompts[style as keyof typeof stylePrompts] || stylePrompts.modern;
     
+    // Extract domain from URL for branding
+    let domain = '';
+    if (url) {
+      try {
+        const urlObj = new URL(url);
+        domain = urlObj.hostname.replace('www.', '');
+      } catch (error) {
+        console.log('Could not extract domain from URL:', url);
+      }
+    }
+    
     const prompt = `Create a stunning Pinterest pin (736x1104 vertical format) that will go viral. Design requirements:
 
 MAIN TEXT: "${title}" (make this text HUGE, bold, and impossible to ignore)
@@ -60,6 +71,7 @@ CRITICAL DESIGN REQUIREMENTS:
 - Professional quality: This should look like it was designed by a top Pinterest marketing agency
 - Visual hierarchy: Main title should be the dominant element, supporting text smaller but still readable
 - Pinterest optimization: Bright, scroll-stopping visual that makes people want to click and save
+${domain ? `- Website branding: Include "${domain}" at the bottom of the pin in small, elegant text for credibility` : ''}
 
 The final result should be so attractive that Pinterest users can't scroll past it without clicking!`;
 
