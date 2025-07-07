@@ -16,6 +16,15 @@ export function Header() {
   const { language, setLanguage, t } = useLanguage();
   const { user, profile, signOut, getRemainingPins, isSuperAdmin } = useAuth();
 
+  const getPlanName = (planType: string) => {
+    switch (planType) {
+      case 'starter': return 'Starter';
+      case 'pro': return 'Pro';
+      case 'business': return 'Agency';
+      default: return planType;
+    }
+  };
+
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto max-w-6xl">
@@ -27,15 +36,28 @@ export function Header() {
             </div>
             
             <nav className="hidden md:flex items-center space-x-6">
-              <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
-                {t('nav.home')}
-              </a>
-              <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
-                {t('nav.features')}
-              </a>
-              <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
-                {t('nav.pricing')}
-              </a>
+              {user ? (
+                <>
+                  <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
+                    {t('nav.dashboard')}
+                  </Link>
+                  <Link to="/profile" className="text-sm font-medium hover:text-primary transition-colors">
+                    {t('nav.profile')}
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
+                    {t('nav.home')}
+                  </a>
+                  <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
+                    {t('nav.features')}
+                  </a>
+                  <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
+                    {t('nav.pricing')}
+                  </a>
+                </>
+              )}
             </nav>
           </div>
 
@@ -82,8 +104,19 @@ export function Header() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard" className="cursor-pointer">
+                        Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="cursor-pointer">
+                        Perfil
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem disabled>
-                      Plan: {profile?.plan_type || 'free'}
+                      Plan: {getPlanName(profile?.plan_type || 'starter')}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={signOut}>

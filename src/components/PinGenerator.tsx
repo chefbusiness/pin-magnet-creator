@@ -188,10 +188,22 @@ export function PinGenerator() {
                   ))}
                 </div>
 
-                <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                  <p className="text-sm text-muted-foreground text-center">
-                    💡 <strong>Tip:</strong> Descarga las imágenes y súbelas a Pinterest con sus respectivos títulos y descripciones para mejores resultados.
-                  </p>
+                <div className="mt-6 space-y-4">
+                  <div className="text-center">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => window.location.href = '/dashboard'}
+                      className="px-6"
+                    >
+                      Ver todos mis pines en Dashboard
+                    </Button>
+                  </div>
+                  
+                  <div className="p-4 bg-muted/50 rounded-lg">
+                    <p className="text-sm text-muted-foreground text-center">
+                      💡 <strong>Tip:</strong> Descarga las imágenes y súbelas a Pinterest con sus respectivos títulos y descripciones para mejores resultados.
+                    </p>
+                  </div>
                 </div>
               </div>
             )}

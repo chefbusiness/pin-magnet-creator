@@ -16,6 +16,8 @@ const translations = {
     'nav.home': 'Inicio',
     'nav.features': 'Características',
     'nav.pricing': 'Precios',
+    'nav.dashboard': 'Dashboard',
+    'nav.profile': 'Perfil',
     'nav.login': 'Iniciar Sesión',
     'nav.signup': 'Registrarse',
     
@@ -55,6 +57,8 @@ const translations = {
     'nav.home': 'Home',
     'nav.features': 'Features',
     'nav.pricing': 'Pricing',
+    'nav.dashboard': 'Dashboard',
+    'nav.profile': 'Profile',
     'nav.login': 'Login',
     'nav.signup': 'Sign Up',
     
