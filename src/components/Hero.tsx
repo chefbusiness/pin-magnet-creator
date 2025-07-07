@@ -53,59 +53,61 @@ export function Hero() {
           </div>
 
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-hero rounded-3xl opacity-20 blur-3xl transform rotate-6"></div>
-            
-            {/* Collage de pines en formato nube */}
-            <div className="relative w-full max-w-lg mx-auto h-96 lg:h-[500px]">
-              {/* Pin 1 - Fitness (centro-izquierda, más grande) */}
-              <div className="absolute top-8 left-4 w-20 lg:w-24 transform -rotate-12 hover:scale-110 transition-all duration-300 shadow-2xl z-20">
-                <img 
-                  src={pinFitness} 
-                  alt="Fitness Pin" 
-                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
-                />
-              </div>
+            {/* Collage organizado con imagen central */}
+            <div className="relative w-full max-w-md mx-auto h-80 lg:h-96">
               
-              {/* Pin 2 - Interior (centro, principal) */}
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 rotate-6 w-28 lg:w-32 hover:scale-110 transition-all duration-300 shadow-2xl z-30">
+              {/* Pin Central (Interior Design) - Imagen principal */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 lg:w-28 z-30 hover:scale-110 transition-all duration-300">
                 <img 
                   src={pinInterior} 
                   alt="Interior Design Pin" 
-                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                  className="rounded-xl aspect-[9/16] object-cover shadow-2xl shadow-primary/20"
                 />
               </div>
               
-              {/* Pin 3 - Travel (centro-derecha) */}
-              <div className="absolute top-12 right-4 w-20 lg:w-24 transform rotate-12 hover:scale-110 transition-all duration-300 shadow-2xl z-20">
+              {/* Pin Fitness - Esquina superior izquierda */}
+              <div className="absolute top-4 left-4 w-20 lg:w-22 transform -rotate-12 z-20 hover:scale-110 transition-all duration-300">
+                <img 
+                  src={pinFitness} 
+                  alt="Fitness Pin" 
+                  className="rounded-xl aspect-[9/16] object-cover shadow-xl shadow-primary/15"
+                />
+              </div>
+              
+              {/* Pin Travel - Esquina superior derecha */}
+              <div className="absolute top-6 right-4 w-20 lg:w-22 transform rotate-15 z-20 hover:scale-110 transition-all duration-300">
                 <img 
                   src={pinTravel} 
                   alt="Travel Pin" 
-                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                  className="rounded-xl aspect-[9/16] object-cover shadow-xl shadow-primary/15"
                 />
               </div>
               
-              {/* Pin 4 - Business (abajo-izquierda) */}
-              <div className="absolute bottom-8 left-8 w-22 lg:w-26 transform rotate-3 hover:scale-110 transition-all duration-300 shadow-2xl z-25">
+              {/* Pin Business - Esquina inferior izquierda */}
+              <div className="absolute bottom-4 left-6 w-18 lg:w-20 transform rotate-8 z-25 hover:scale-110 transition-all duration-300">
                 <img 
                   src={pinBusiness} 
                   alt="Business Pin" 
-                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                  className="rounded-xl aspect-[9/16] object-cover shadow-xl shadow-primary/15"
                 />
               </div>
               
-              {/* Pin 5 - Recipes (abajo-derecha) */}
-              <div className="absolute bottom-4 right-8 w-20 lg:w-24 transform -rotate-8 hover:scale-110 transition-all duration-300 shadow-2xl z-25">
+              {/* Pin Recipes - Esquina inferior derecha */}
+              <div className="absolute bottom-6 right-6 w-18 lg:w-20 transform -rotate-10 z-25 hover:scale-110 transition-all duration-300">
                 <img 
                   src={pinRecipes} 
                   alt="Recipes Pin" 
-                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                  className="rounded-xl aspect-[9/16] object-cover shadow-xl shadow-primary/15"
                 />
               </div>
               
-              {/* Elementos decorativos flotantes */}
-              <div className="absolute top-20 right-16 w-3 h-3 bg-primary/60 rounded-full animate-pulse"></div>
-              <div className="absolute bottom-20 left-16 w-2 h-2 bg-primary/40 rounded-full animate-pulse delay-700"></div>
-              <div className="absolute top-1/3 right-6 w-1 h-1 bg-primary/30 rounded-full animate-pulse delay-1000"></div>
+              {/* Elementos decorativos sutiles */}
+              <div className="absolute top-16 right-12 w-2 h-2 bg-primary/40 rounded-full animate-pulse"></div>
+              <div className="absolute bottom-16 left-12 w-1.5 h-1.5 bg-primary/30 rounded-full animate-pulse delay-700"></div>
+              <div className="absolute top-1/2 right-2 w-1 h-1 bg-primary/20 rounded-full animate-pulse delay-1000"></div>
+              
+              {/* Fondo sutil con gradiente */}
+              <div className="absolute inset-0 bg-gradient-hero rounded-3xl opacity-5 blur-2xl -z-10"></div>
             </div>
           </div>
         </div>
