@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { usePinGeneration, type GenerationResult } from "@/hooks/usePinGeneration";
-import { Download, ExternalLink } from "lucide-react";
+import { Download, ExternalLink, Lock } from "lucide-react";
 
 export function PinGenerator() {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const [url, setUrl] = useState("");
   const [results, setResults] = useState<GenerationResult | null>(null);
   const { generatePins, isGenerating, progress } = usePinGeneration();
@@ -16,7 +18,7 @@ export function PinGenerator() {
   const handleGenerate = async () => {
     if (!url) return;
     
-    const result = await generatePins(url);
+    const result = await generatePins(url, user);
     if (result) {
       setResults(result);
     }
@@ -77,20 +79,33 @@ export function PinGenerator() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { icon: "🎨", title: "Creador de plantillas", desc: "Diseños únicos" },
-                { icon: "✏️", title: "Editor múltiple", desc: "Edita varios pines" },
-                { icon: "$", title: "Generaciones gratuitas", desc: "Prueba sin límites" },
-                { icon: "🔗", title: "Perfiles ilimitados", desc: "Conecta todas tus cuentas" }
-              ].map((feature, index) => (
-                <div key={index} className="text-center p-4 rounded-lg bg-background/50">
-                  <div className="text-3xl mb-2">{feature.icon}</div>
-                  <div className="font-semibold text-sm">{feature.title}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{feature.desc}</div>
-                </div>
-              ))}
-            </div>
+            {!user ? (
+              <div className="bg-gradient-primary/10 rounded-lg p-6 border border-primary/20 text-center">
+                <Lock className="w-12 h-12 mx-auto mb-4 text-primary" />
+                <h3 className="text-xl font-semibold mb-2">Autenticación Requerida</h3>
+                <p className="text-muted-foreground mb-4">
+                  Inicia sesión para generar pines únicos con IA. Sin pruebas gratuitas - solo resultados premium.
+                </p>
+                <Button variant="gradient" size="lg" onClick={() => window.location.href = '/auth'}>
+                  Iniciar Sesión
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { icon: "🤖", title: "IA Generativa", desc: "Imágenes únicas" },
+                  { icon: "✨", title: "GPT Optimizado", desc: "Textos perfectos" },
+                  { icon: "🎯", title: "Pinterest Ready", desc: "Listos para subir" },
+                  { icon: "📈", title: "Alta Conversión", desc: "Más engagement" }
+                ].map((feature, index) => (
+                  <div key={index} className="text-center p-4 rounded-lg bg-background/50">
+                    <div className="text-3xl mb-2">{feature.icon}</div>
+                    <div className="font-semibold text-sm">{feature.title}</div>
+                    <div className="text-xs text-muted-foreground mt-1">{feature.desc}</div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {isGenerating && (
               <div className="bg-gradient-primary/10 rounded-lg p-6 border border-primary/20">

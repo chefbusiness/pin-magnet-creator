@@ -9,45 +9,46 @@ export function Pricing() {
   const plans = [
     {
       name: "Starter",
-      price: "$9",
+      price: "$19",
       period: "/mes",
-      description: "Perfect para bloggers individuales",
+      description: "Ideal para bloggers y emprendedores",
       features: [
-        "50 pines por mes",
-        "3 plantillas premium",
-        "Análisis básico",
+        "25 pines únicos por mes",
+        "Imágenes generadas con IA",
+        "Textos optimizados con GPT",
+        "Descarga en alta resolución",
         "Soporte por email"
       ],
       popular: false
     },
     {
       name: "Pro",
-      price: "$29",
+      price: "$49",
       period: "/mes",
-      description: "Para creators serios",
+      description: "Para marketers y agencias pequeñas",
       features: [
-        "500 pines por mes",
-        "Plantillas ilimitadas",
-        "Programación automática",
-        "Analytics avanzado",
-        "Múltiples cuentas Pinterest",
+        "150 pines únicos por mes",
+        "Imágenes generadas con IA",
+        "Textos optimizados con GPT",
+        "Múltiples estilos visuales",
+        "Análisis de rendimiento",
         "Soporte prioritario"
       ],
       popular: true
     },
     {
       name: "Agency",
-      price: "$99",
+      price: "$149",
       period: "/mes",
-      description: "Para agencias y equipos",
+      description: "Para agencias y equipos grandes",
       features: [
-        "Pines ilimitados",
-        "White-label completo",
-        "API access",
-        "Gestión de clientes",
-        "Dashboard colaborativo",
-        "Soporte dedicado",
-        "Integraciones custom"
+        "500 pines únicos por mes",
+        "Imágenes generadas con IA",
+        "Textos optimizados con GPT",
+        "API access completo",
+        "Gestión multi-cliente",
+        "Branding personalizado",
+        "Soporte dedicado 24/7"
       ],
       popular: false
     }
@@ -140,11 +141,21 @@ export function Pricing() {
 
         <div className="mt-16 text-center">
           <p className="text-muted-foreground mb-6">
-            ¿Necesitas más de 10,000 pines por mes? 
+            ¿Necesitas más de 500 pines por mes? 
           </p>
           <Button variant="outline" size="lg">
             Contactar Ventas para Plan Enterprise
           </Button>
+        </div>
+
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center gap-2 bg-gradient-primary/10 rounded-full px-4 py-2 border border-primary/20">
+            <span className="text-sm font-medium">🤖 Generado con IA</span>
+            <span className="text-xs text-muted-foreground">•</span>
+            <span className="text-sm font-medium">✨ Textos con GPT</span>
+            <span className="text-xs text-muted-foreground">•</span>
+            <span className="text-sm font-medium">🎨 Imágenes únicas</span>
+          </div>
         </div>
       </div>
     </section>

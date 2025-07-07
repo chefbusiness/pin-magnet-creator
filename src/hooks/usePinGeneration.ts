@@ -21,11 +21,21 @@ export const usePinGeneration = () => {
   const [progress, setProgress] = useState('');
   const { toast } = useToast();
 
-  const generatePins = async (url: string): Promise<GenerationResult | null> => {
+  const generatePins = async (url: string, user?: any): Promise<GenerationResult | null> => {
     if (!url) {
       toast({
         title: "Error",
         description: "Por favor ingresa una URL válida",
+        variant: "destructive",
+      });
+      return null;
+    }
+
+    // Require authentication for all pin generation
+    if (!user) {
+      toast({
+        title: "Autenticación requerida",
+        description: "Debes iniciar sesión para generar pines de Pinterest",
         variant: "destructive",
       });
       return null;
