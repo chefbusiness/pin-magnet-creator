@@ -51,6 +51,8 @@ const translations = {
     'nav.logout': 'Cerrar Sesión',
     'nav.plan': 'Plan',
     'nav.unlimitedPins': '∞ pines ilimitados',
+    'nav.language': 'Idioma',
+    'nav.pins': 'pines',
     
     // Footer
     'footer.description': 'La plataforma más avanzada para generar contenido de Pinterest que convierte.',
@@ -110,6 +112,23 @@ const translations = {
     'sector.photographyNiche': 'Fotografía',
     'sector.planning': 'Planificación y Organización',
     'sector.psychology': 'Psicología y Desarrollo Personal',
+    
+    // Dashboard
+    'dashboard.title': 'Mi Dashboard',
+    'dashboard.subtitle': 'Gestiona y descarga todos tus pines generados',
+    'dashboard.totalPins': 'Total Pines',
+    'dashboard.thisMonth': 'Este Mes',
+    'dashboard.remaining': 'Restantes',
+    'dashboard.noPinsTitle': 'No tienes pines aún',
+    'dashboard.noPinsDesc': 'Comienza generando tu primer pin desde la página principal',
+    'dashboard.generateFirst': 'Generar Mi Primer Pin',
+    'dashboard.ready': 'Listo',
+    'dashboard.processing': 'Procesando',
+    'dashboard.download': 'Descargar',
+    'dashboard.deleteTitle': '¿Eliminar pin?',
+    'dashboard.deleteDesc': 'Esta acción no se puede deshacer. El pin será eliminado permanentemente.',
+    'dashboard.cancel': 'Cancelar',
+    'dashboard.delete': 'Eliminar',
   },
   en: {
     // Header
@@ -151,6 +170,8 @@ const translations = {
     'nav.logout': 'Sign Out',
     'nav.plan': 'Plan',
     'nav.unlimitedPins': '∞ unlimited pins',
+    'nav.language': 'Language',
+    'nav.pins': 'pins',
     
     // Footer
     'footer.description': 'The most advanced platform for generating Pinterest content that converts.',
@@ -210,6 +231,23 @@ const translations = {
     'sector.photographyNiche': 'Photography',
     'sector.planning': 'Planning and Organization',
     'sector.psychology': 'Psychology and Personal Development',
+    
+    // Dashboard
+    'dashboard.title': 'My Dashboard',
+    'dashboard.subtitle': 'Manage and download all your generated pins',
+    'dashboard.totalPins': 'Total Pins',
+    'dashboard.thisMonth': 'This Month',
+    'dashboard.remaining': 'Remaining',
+    'dashboard.noPinsTitle': 'You don\'t have pins yet',
+    'dashboard.noPinsDesc': 'Start by generating your first pin from the main page',
+    'dashboard.generateFirst': 'Generate My First Pin',
+    'dashboard.ready': 'Ready',
+    'dashboard.processing': 'Processing',
+    'dashboard.download': 'Download',
+    'dashboard.deleteTitle': 'Delete pin?',
+    'dashboard.deleteDesc': 'This action cannot be undone. The pin will be permanently deleted.',
+    'dashboard.cancel': 'Cancel',
+    'dashboard.delete': 'Delete',
   }
 };
 
