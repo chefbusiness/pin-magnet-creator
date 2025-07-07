@@ -53,83 +53,114 @@ export function Hero() {
           </div>
 
           <div className="relative">
-            {/* Collage orgánico estilo Pinterest */}
-            <div className="relative w-full max-w-lg mx-auto h-80 lg:h-96">
+            {/* Pinterest Wall Collage */}
+            <div className="grid grid-cols-3 gap-3 lg:gap-4 max-w-sm mx-auto">
               
-              {/* Pin 1 - Interior (principal, centro-derecha) */}
-              <div className="absolute top-12 right-16 w-20 lg:w-24 transform rotate-12 z-30 hover:scale-105 transition-all duration-300">
-                <img 
-                  src={pinInterior} 
-                  alt="Interior Design Pin" 
-                  className="rounded-lg aspect-[9/16] object-cover shadow-xl"
-                />
+              {/* Pin 1 - Interior Design */}
+              <div className="col-span-1 transform rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite] group">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                  <img 
+                    src={pinInterior} 
+                    alt="Interior Design" 
+                    className="w-full h-32 lg:h-36 object-cover"
+                  />
+                  <div className="p-2">
+                    <h4 className="text-xs font-semibold text-gray-800 line-clamp-2">Modern Living Room Design</h4>
+                    <p className="text-xs text-gray-600 mt-1">Interior • 2.4k saves</p>
+                  </div>
+                </div>
               </div>
-              
-              {/* Pin 2 - Travel (superpuesto sobre interior, arriba) */}
-              <div className="absolute top-4 right-20 w-18 lg:w-20 transform -rotate-6 z-35 hover:scale-105 transition-all duration-300">
-                <img 
-                  src={pinTravel} 
-                  alt="Travel Pin" 
-                  className="rounded-lg aspect-[9/16] object-cover shadow-lg"
-                />
+
+              {/* Pin 2 - Fitness */}
+              <div className="col-span-1 transform -rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_0.5s] group">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                  <img 
+                    src={pinFitness} 
+                    alt="Fitness Workout" 
+                    className="w-full h-40 lg:h-44 object-cover"
+                  />
+                  <div className="p-2">
+                    <h4 className="text-xs font-semibold text-gray-800 line-clamp-2">30-Min Home Workout</h4>
+                    <p className="text-xs text-gray-600 mt-1">Fitness • 5.1k saves</p>
+                  </div>
+                </div>
               </div>
-              
-              {/* Pin 3 - Fitness (izquierda, parcialmente detrás) */}
-              <div className="absolute top-8 left-12 w-22 lg:w-26 transform -rotate-15 z-25 hover:scale-105 transition-all duration-300">
-                <img 
-                  src={pinFitness} 
-                  alt="Fitness Pin" 
-                  className="rounded-lg aspect-[9/16] object-cover shadow-lg"
-                />
+
+              {/* Pin 3 - Travel */}
+              <div className="col-span-1 transform rotate-3 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1s] group">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                  <img 
+                    src={pinTravel} 
+                    alt="Travel Destination" 
+                    className="w-full h-28 lg:h-32 object-cover"
+                  />
+                  <div className="p-2">
+                    <h4 className="text-xs font-semibold text-gray-800 line-clamp-2">Hidden Gems Europe</h4>
+                    <p className="text-xs text-gray-600 mt-1">Travel • 8.2k saves</p>
+                  </div>
+                </div>
               </div>
-              
-              {/* Pin 4 - Business (centro-izquierda, superpuesto) */}
-              <div className="absolute top-20 left-20 w-19 lg:w-22 transform rotate-8 z-32 hover:scale-105 transition-all duration-300">
-                <img 
-                  src={pinBusiness} 
-                  alt="Business Pin" 
-                  className="rounded-lg aspect-[9/16] object-cover shadow-lg"
-                />
+
+              {/* Pin 4 - Recipes */}
+              <div className="col-span-1 transform -rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.5s] group">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                  <img 
+                    src={pinRecipes} 
+                    alt="Healthy Recipe" 
+                    className="w-full h-36 lg:h-40 object-cover"
+                  />
+                  <div className="p-2">
+                    <h4 className="text-xs font-semibold text-gray-800 line-clamp-2">Quick Pasta Recipe</h4>
+                    <p className="text-xs text-gray-600 mt-1">Food • 3.7k saves</p>
+                  </div>
+                </div>
               </div>
-              
-              {/* Pin 5 - Recipes (abajo centro) */}
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 rotate-3 w-21 lg:w-24 z-28 hover:scale-105 transition-all duration-300">
-                <img 
-                  src={pinRecipes} 
-                  alt="Recipes Pin" 
-                  className="rounded-lg aspect-[9/16] object-cover shadow-lg"
-                />
+
+              {/* Pin 5 - Business */}
+              <div className="col-span-2 transform rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_2s] group">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                  <img 
+                    src={pinBusiness} 
+                    alt="Business Tips" 
+                    className="w-full h-24 lg:h-28 object-cover"
+                  />
+                  <div className="p-2">
+                    <h4 className="text-xs font-semibold text-gray-800 line-clamp-2">Productivity Tips for Entrepreneurs</h4>
+                    <p className="text-xs text-gray-600 mt-1">Business • 6.9k saves</p>
+                  </div>
+                </div>
               </div>
-              
-              {/* Pin duplicado 6 - Fitness pequeño (esquina superior izquierda) */}
-              <div className="absolute top-2 left-4 w-16 lg:w-18 transform -rotate-20 z-20 hover:scale-105 transition-all duration-300">
-                <img 
-                  src={pinFitness} 
-                  alt="Fitness Pin Small" 
-                  className="rounded-lg aspect-[9/16] object-cover shadow-md opacity-90"
-                />
+
+              {/* Pin 6 - Interior (small) */}
+              <div className="col-span-1 transform -rotate-3 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_0.8s] group">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                  <img 
+                    src={pinInterior} 
+                    alt="Minimalist Decor" 
+                    className="w-full h-32 lg:h-36 object-cover"
+                  />
+                  <div className="p-2">
+                    <h4 className="text-xs font-semibold text-gray-800 line-clamp-2">Minimalist Bedroom</h4>
+                    <p className="text-xs text-gray-600 mt-1">Decor • 4.3k saves</p>
+                  </div>
+                </div>
               </div>
-              
-              {/* Pin duplicado 7 - Interior pequeño (abajo derecha) */}
-              <div className="absolute bottom-4 right-8 w-17 lg:w-19 transform rotate-18 z-26 hover:scale-105 transition-all duration-300">
-                <img 
-                  src={pinInterior} 
-                  alt="Interior Pin Small" 
-                  className="rounded-lg aspect-[9/16] object-cover shadow-md opacity-85"
-                />
+
+              {/* Pin 7 - Travel (wide) */}
+              <div className="col-span-2 transform rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.2s] group">
+                <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                  <img 
+                    src={pinTravel} 
+                    alt="Beach Vacation" 
+                    className="w-full h-28 lg:h-32 object-cover"
+                  />
+                  <div className="p-2">
+                    <h4 className="text-xs font-semibold text-gray-800 line-clamp-2">Best Beach Destinations 2024</h4>
+                    <p className="text-xs text-gray-600 mt-1">Travel • 12.5k saves</p>
+                  </div>
+                </div>
               </div>
-              
-              {/* Pin duplicado 8 - Travel muy pequeño (centro-superior) */}
-              <div className="absolute top-6 left-1/2 transform -translate-x-1/2 -rotate-12 w-14 lg:w-16 z-22 hover:scale-105 transition-all duration-300">
-                <img 
-                  src={pinTravel} 
-                  alt="Travel Pin Tiny" 
-                  className="rounded-lg aspect-[9/16] object-cover shadow-sm opacity-80"
-                />
-              </div>
-              
-              {/* Fondo sutil */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl -z-10"></div>
+
             </div>
           </div>
         </div>
