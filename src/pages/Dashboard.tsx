@@ -131,10 +131,10 @@ const Dashboard = () => {
                     <img
                       src={pin.image_url}
                       alt={pin.title}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-80 object-contain bg-muted"
                     />
                   ) : (
-                    <div className="w-full h-48 bg-muted flex items-center justify-center">
+                    <div className="w-full h-80 bg-muted flex items-center justify-center">
                       <Image className="h-8 w-8 text-muted-foreground" />
                     </div>
                   )}
@@ -147,9 +147,9 @@ const Dashboard = () => {
                 </div>
                 
                 <CardContent className="p-4">
-                  <h3 className="font-semibold mb-2 line-clamp-2">{pin.title}</h3>
+                  <h3 className="font-semibold mb-2">{pin.title}</h3>
                   {pin.description && (
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                    <p className="text-sm text-muted-foreground mb-3">
                       {pin.description}
                     </p>
                   )}
