@@ -47,6 +47,9 @@ export function Header() {
                   <Link to="/profile" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.profile')}
                   </Link>
+                  <Link to="/pinterest-guide" className="text-sm font-medium hover:text-primary transition-colors">
+                    Guía Pinterest
+                  </Link>
                 </>
               ) : (
                 <>
@@ -59,6 +62,9 @@ export function Header() {
                   <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.pricing')}
                   </a>
+                  <Link to="/pinterest-guide" className="text-sm font-medium hover:text-primary transition-colors">
+                    Guía Pinterest
+                  </Link>
                 </>
               )}
             </nav>
