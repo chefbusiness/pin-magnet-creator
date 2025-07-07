@@ -22,487 +22,489 @@ import {
   Calendar
 } from "lucide-react";
 
-export const topSectors = [
+type TranslationFunction = (key: string) => string;
+
+export const getTopSectors = (t: TranslationFunction) => [
   {
     icon: Home,
-    title: "Decoración del Hogar y DIY",
+    titleKey: "sector.homeDecor",
     emoji: "🏠",
-    subcategories: [
-      "Decoración de salas de estar",
-      "Diseño de dormitorios", 
-      "Decoración de cocinas",
-      "Baños y espacios pequeños",
-      "Decoración estacional (Navidad, Halloween, primavera)",
-      "Proyectos DIY para el hogar",
-      "Muebles reciclados y upcycling",
-      "Organización del hogar",
-      "Decoración con presupuesto limitado",
-      "Estilos: minimalista, bohemio, rústico, moderno, farmhouse"
+    subcategoriesKeys: [
+      "Living room decoration",
+      "Bedroom design", 
+      "Kitchen decoration",
+      "Bathrooms and small spaces",
+      "Seasonal decoration (Christmas, Halloween, spring)",
+      "DIY home projects",
+      "Recycled furniture and upcycling",
+      "Home organization",
+      "Budget decoration",
+      "Styles: minimalist, bohemian, rustic, modern, farmhouse"
     ]
   },
   {
     icon: ChefHat,
-    title: "Recetas y Comida",
+    titleKey: "sector.recipes",
     emoji: "🍲",
-    subcategories: [
-      "Recetas saludables",
-      "Comida rápida y fácil",
-      "Postres y repostería",
-      "Meal prep y planificación de comidas",
-      "Recetas veganas y vegetarianas",
-      "Recetas sin gluten",
-      "Cocina internacional",
-      "Bebidas y cócteles",
-      "Recetas para ocasiones especiales",
-      "Técnicas de cocina y tips culinarios"
+    subcategoriesKeys: [
+      "Healthy recipes",
+      "Quick and easy food",
+      "Desserts and baking",
+      "Meal prep and meal planning",
+      "Vegan and vegetarian recipes",
+      "Gluten-free recipes",
+      "International cuisine",
+      "Drinks and cocktails",
+      "Special occasion recipes",
+      "Cooking techniques and culinary tips"
     ]
   },
   {
     icon: Shirt,
-    title: "Moda Femenina",
+    titleKey: "sector.fashion",
     emoji: "👗",
-    subcategories: [
-      "Outfits casuales",
-      "Ropa formal y de oficina",
-      "Moda de temporada",
-      "Guardarropa cápsula",
-      "Moda sostenible",
-      "Accesorios y joyería",
-      "Zapatos y bolsos",
-      "Moda para diferentes tipos de cuerpo",
-      "Tendencias de moda",
-      "Looks para ocasiones especiales"
+    subcategoriesKeys: [
+      "Casual outfits",
+      "Formal and office wear",
+      "Seasonal fashion",
+      "Capsule wardrobe",
+      "Sustainable fashion",
+      "Accessories and jewelry",
+      "Shoes and bags",
+      "Fashion for different body types",
+      "Fashion trends",
+      "Special occasion looks"
     ]
   },
   {
     icon: Sparkles,
-    title: "Belleza y Cuidado Personal",
+    titleKey: "sector.beauty",
     emoji: "💄",
-    subcategories: [
-      "Tutoriales de maquillaje",
-      "Cuidado de la piel",
-      "Peinados y cuidado del cabello",
-      "Manicura y nail art",
-      "Productos de belleza naturales",
-      "Rutinas de belleza",
-      "Maquillaje para ocasiones especiales",
-      "Cuidado anti-edad",
-      "Belleza para diferentes tonos de piel",
-      "DIY productos de belleza"
+    subcategoriesKeys: [
+      "Makeup tutorials",
+      "Skincare",
+      "Hairstyles and hair care",
+      "Manicure and nail art",
+      "Natural beauty products",
+      "Beauty routines",
+      "Special occasion makeup",
+      "Anti-aging care",
+      "Beauty for different skin tones",
+      "DIY beauty products"
     ]
   },
   {
     icon: Users,
-    title: "Bodas y Eventos",
+    titleKey: "sector.weddings",
     emoji: "👰",
-    subcategories: [
-      "Vestidos de novia",
-      "Decoración de bodas",
-      "Centros de mesa",
-      "Invitaciones de boda",
-      "Peinados para novias",
-      "Flores para bodas",
-      "Pasteles de boda",
-      "Fiestas de cumpleaños",
+    subcategoriesKeys: [
+      "Wedding dresses",
+      "Wedding decoration",
+      "Centerpieces",
+      "Wedding invitations",
+      "Bridal hairstyles",
+      "Wedding flowers",
+      "Wedding cakes",
+      "Birthday parties",
       "Baby showers",
-      "Graduaciones y celebraciones"
+      "Graduations and celebrations"
     ]
   },
   {
     icon: Baby,
-    title: "Maternidad y Bebés",
+    titleKey: "sector.maternity",
     emoji: "👶",
-    subcategories: [
-      "Decoración de nursery",
-      "Ropa para bebés",
-      "Actividades para niños",
-      "Manualidades familiares",
-      "Comida para bebés",
-      "Juguetes DIY",
-      "Organización para familias",
-      "Fotografía de bebés",
-      "Ideas para fiestas infantiles",
-      "Productos para la maternidad"
+    subcategoriesKeys: [
+      "Nursery decoration",
+      "Baby clothes",
+      "Kids activities",
+      "Family crafts",
+      "Baby food",
+      "DIY toys",
+      "Family organization",
+      "Baby photography",
+      "Children's party ideas",
+      "Maternity products"
     ]
   },
   {
     icon: Car,
-    title: "Viajes y Aventuras",
+    titleKey: "sector.travel",
     emoji: "✈️",
-    subcategories: [
-      "Destinos de viaje",
-      "Guías de ciudades",
-      "Consejos de viaje",
-      "Outfits para viajar",
-      "Fotografía de viajes",
-      "Viajes económicos",
-      "Aventuras al aire libre",
-      "Mapas y rutas",
-      "Hoteles y alojamientos",
-      "Gastronomía local"
+    subcategoriesKeys: [
+      "Travel destinations",
+      "City guides",
+      "Travel tips",
+      "Travel outfits",
+      "Travel photography",
+      "Budget travel",
+      "Outdoor adventures",
+      "Maps and routes",
+      "Hotels and accommodations",
+      "Local cuisine"
     ]
   },
   {
     icon: Dumbbell,
-    title: "Fitness y Ejercicio",
+    titleKey: "sector.fitness",
     emoji: "💪",
-    subcategories: [
-      "Rutinas de ejercicio",
-      "Yoga y meditación",
-      "Ejercicios en casa",
-      "Motivación fitness",
-      "Ropa deportiva",
-      "Nutrición deportiva",
-      "Entrenamiento con pesas",
-      "Cardio y running",
-      "Ejercicios específicos",
-      "Transformaciones físicas"
+    subcategoriesKeys: [
+      "Exercise routines",
+      "Yoga and meditation",
+      "Home workouts",
+      "Fitness motivation",
+      "Sportswear",
+      "Sports nutrition",
+      "Weight training",
+      "Cardio and running",
+      "Specific exercises",
+      "Physical transformations"
     ]
   },
   {
     icon: Heart,
-    title: "Salud y Bienestar",
+    titleKey: "sector.health",
     emoji: "🧘",
-    subcategories: [
-      "Alimentación saludable",
-      "Recetas detox",
-      "Cuidado mental",
-      "Hábitos saludables",
-      "Remedios naturales",
-      "Autocuidado",
+    subcategoriesKeys: [
+      "Healthy eating",
+      "Detox recipes",
+      "Mental health",
+      "Healthy habits",
+      "Natural remedies",
+      "Self-care",
       "Mindfulness",
-      "Vida equilibrada",
-      "Suplementos naturales",
-      "Terapias alternativas"
+      "Balanced living",
+      "Natural supplements",
+      "Alternative therapies"
     ]
   },
   {
     icon: Camera,
-    title: "Fotografía e Inspiración",
+    titleKey: "sector.photography",
     emoji: "📸",
-    subcategories: [
-      "Técnicas de fotografía",
-      "Poses para fotos",
-      "Fotografía de paisajes",
-      "Retratos y selfies",
-      "Fotografía de productos",
-      "Edición de fotos",
-      "Equipo fotográfico",
-      "Fotografía móvil",
-      "Composición fotográfica",
-      "Inspiración visual"
+    subcategoriesKeys: [
+      "Photography techniques",
+      "Photo poses",
+      "Landscape photography",
+      "Portraits and selfies",
+      "Product photography",
+      "Photo editing",
+      "Photography equipment",
+      "Mobile photography",
+      "Photographic composition",
+      "Visual inspiration"
     ]
   }
 ];
 
-export const otherSectors = [
+export const getOtherSectors = (t: TranslationFunction) => [
   {
     icon: Briefcase,
-    title: "Negocios y Emprendimiento",
+    titleKey: "sector.business",
     emoji: "💼",
-    subcategories: [
-      "Marketing digital",
-      "Branding personal",
-      "Productividad",
+    subcategoriesKeys: [
+      "Digital marketing",
+      "Personal branding",
+      "Productivity",
       "Networking",
-      "Finanzas personales",
-      "Liderazgo",
+      "Personal finance",
+      "Leadership",
       "Startup life",
       "Freelancing",
-      "Inversiones",
-      "Desarrollo profesional"
+      "Investments",
+      "Professional development"
     ]
   },
   {
     icon: GraduationCap,
-    title: "Educación y Aprendizaje",
+    titleKey: "sector.education",
     emoji: "📚",
-    subcategories: [
-      "Técnicas de estudio",
-      "Idiomas",
-      "Cursos online",
-      "Habilidades nuevas",
-      "Certificaciones",
-      "Desarrollo personal",
-      "Lectura",
-      "Escritura",
-      "Matemáticas",
-      "Ciencias"
+    subcategoriesKeys: [
+      "Study techniques",
+      "Languages",
+      "Online courses",
+      "New skills",
+      "Certifications",
+      "Personal development",
+      "Reading",
+      "Writing",
+      "Mathematics",
+      "Sciences"
     ]
   },
   {
     icon: Palette,
-    title: "Arte y Creatividad",
+    titleKey: "sector.art",
     emoji: "🎨",
-    subcategories: [
-      "Pintura y dibujo",
-      "Artesanías",
+    subcategoriesKeys: [
+      "Painting and drawing",
+      "Crafts",
       "Scrapbooking",
-      "Caligrafía",
-      "Cerámica",
-      "Tejido y bordado",
-      "Joyería artesanal",
-      "Diseño gráfico",
-      "Ilustración digital",
-      "Arte abstracto"
+      "Calligraphy",
+      "Ceramics",
+      "Knitting and embroidery",
+      "Handmade jewelry",
+      "Graphic design",
+      "Digital illustration",
+      "Abstract art"
     ]
   },
   {
     icon: Monitor,
-    title: "Tecnología y Gadgets",
+    titleKey: "sector.technology",
     emoji: "💻",
-    subcategories: [
-      "Gadgets y dispositivos",
-      "Apps útiles",
-      "Setup de escritorio",
+    subcategoriesKeys: [
+      "Gadgets and devices",
+      "Useful apps",
+      "Desktop setup",
       "Gaming setup",
       "Tech reviews",
-      "Programación",
-      "Inteligencia artificial",
-      "Innovación tecnológica",
+      "Programming",
+      "Artificial intelligence",
+      "Technological innovation",
       "Smartphones",
-      "Accesorios tech"
+      "Tech accessories"
     ]
   },
   {
     icon: Leaf,
-    title: "Jardín y Plantas",
+    titleKey: "sector.garden",
     emoji: "🌱",
-    subcategories: [
-      "Plantas de interior",
-      "Jardinería",
-      "Cuidado de plantas",
-      "Huertos urbanos",
-      "Plantas suculentas",
-      "Diseño de jardines",
-      "Plantas medicinales",
-      "Macetas y decoración",
-      "Propagación de plantas",
-      "Jardines verticales"
+    subcategoriesKeys: [
+      "Indoor plants",
+      "Gardening",
+      "Plant care",
+      "Urban gardens",
+      "Succulent plants",
+      "Garden design",
+      "Medicinal plants",
+      "Pots and decoration",
+      "Plant propagation",
+      "Vertical gardens"
     ]
   },
   {
     icon: Gift,
-    title: "Regalos y Ocasiones",
+    titleKey: "sector.gifts",
     emoji: "🎁",
-    subcategories: [
-      "Ideas de regalos",
-      "Regalos DIY",
-      "Cumpleaños",
-      "Navidad",
-      "San Valentín",
-      "Día de la madre/padre",
-      "Aniversarios",
-      "Graduaciones",
-      "Regalos personalizados",
-      "Envoltorio creativo"
+    subcategoriesKeys: [
+      "Gift ideas",
+      "DIY gifts",
+      "Birthdays",
+      "Christmas",
+      "Valentine's Day",
+      "Mother's/Father's Day",
+      "Anniversaries",
+      "Graduations",
+      "Personalized gifts",
+      "Creative wrapping"
     ]
   }
 ];
 
-export const nicheSectors = [
+export const getNicheSectors = (t: TranslationFunction) => [
   {
     icon: Heart,
-    title: "Mascotas y Animales",
+    titleKey: "sector.pets",
     emoji: "🐕",
-    subcategories: [
-      "Cuidado de perros",
-      "Cuidado de gatos",
-      "Accesorios para mascotas",
-      "Entrenamiento de mascotas",
-      "DIY para mascotas",
-      "Alimentación animal",
-      "Salud veterinaria",
-      "Fotografía de mascotas",
-      "Viajes con mascotas",
-      "Mascotas exóticas"
+    subcategoriesKeys: [
+      "Dog care",
+      "Cat care",
+      "Pet accessories",
+      "Pet training",
+      "DIY for pets",
+      "Animal nutrition",
+      "Veterinary health",
+      "Pet photography",
+      "Travel with pets",
+      "Exotic pets"
     ]
   },
   {
     icon: Car,
-    title: "Automóviles y Transporte",
+    titleKey: "sector.automotive",
     emoji: "🚗",
-    subcategories: [
-      "Coches clásicos",
-      "Modificaciones de vehículos",
-      "Mantenimiento automotriz",
-      "Motocicletas",
-      "Accesorios para coches",
-      "Coches eléctricos",
-      "Tuning y personalización",
-      "Viajes en carretera",
-      "Seguridad vial",
-      "Coches de lujo"
+    subcategoriesKeys: [
+      "Classic cars",
+      "Vehicle modifications",
+      "Automotive maintenance",
+      "Motorcycles",
+      "Car accessories",
+      "Electric cars",
+      "Tuning and customization",
+      "Road trips",
+      "Road safety",
+      "Luxury cars"
     ]
   },
   {
     icon: Dumbbell,
-    title: "Deportes Específicos",
+    titleKey: "sector.sports",
     emoji: "⚽",
-    subcategories: [
-      "Rutinas de entrenamiento",
-      "Equipamiento deportivo",
-      "Nutrición deportiva",
-      "Deportes específicos (fútbol, tenis, natación)",
-      "Fitness femenino",
-      "Entrenamiento funcional",
-      "Deportes extremos",
-      "Rehabilitación deportiva",
-      "Motivación fitness",
-      "Ropa deportiva"
+    subcategoriesKeys: [
+      "Training routines",
+      "Sports equipment",
+      "Sports nutrition",
+      "Specific sports (soccer, tennis, swimming)",
+      "Women's fitness",
+      "Functional training",
+      "Extreme sports",
+      "Sports rehabilitation",
+      "Fitness motivation",
+      "Sportswear"
     ]
   },
   {
     icon: Music,
-    title: "Música e Instrumentos",
+    titleKey: "sector.music",
     emoji: "🎵",
-    subcategories: [
-      "Instrumentos musicales",
-      "Producción musical",
-      "Festivales y conciertos",
-      "Vinyl y coleccionismo",
-      "Equipos de audio",
-      "Aprendizaje musical",
-      "Géneros musicales",
-      "Artistas y bandas",
+    subcategoriesKeys: [
+      "Musical instruments",
+      "Music production",
+      "Festivals and concerts",
+      "Vinyl and collecting",
+      "Audio equipment",
+      "Music learning",
+      "Music genres",
+      "Artists and bands",
       "Home studio",
-      "Karaoke y entretenimiento"
+      "Karaoke and entertainment"
     ]
   },
   {
     icon: BookOpen,
-    title: "Literatura y Escritura",
+    titleKey: "sector.literature",
     emoji: "📖",
-    subcategories: [
-      "Reseñas de libros",
-      "Organización de bibliotecas",
-      "Book clubs y comunidades lectoras",
-      "Escritura creativa",
-      "Géneros literarios",
-      "Libros para niños",
-      "Bookstagram y fotografía de libros",
-      "Citas y frases inspiradoras",
-      "Autores y biografías",
-      "E-books y lectura digital"
+    subcategoriesKeys: [
+      "Book reviews",
+      "Library organization",
+      "Book clubs and reading communities",
+      "Creative writing",
+      "Literary genres",
+      "Children's books",
+      "Bookstagram and book photography",
+      "Inspirational quotes",
+      "Authors and biographies",
+      "E-books and digital reading"
     ]
   },
   {
     icon: Gamepad2,
-    title: "Gaming y Esports",
+    titleKey: "sector.gaming",
     emoji: "🎮",
-    subcategories: [
-      "Videojuegos",
-      "Juegos de mesa",
-      "Puzzles y rompecabezas",
-      "Juegos de cartas",
+    subcategoriesKeys: [
+      "Video games",
+      "Board games",
+      "Puzzles",
+      "Card games",
       "Gaming setup",
-      "Cosplay y disfraces",
-      "Streaming y contenido",
-      "Torneos y competencias",
-      "Coleccionables gaming",
-      "Juegos retro"
+      "Cosplay and costumes",
+      "Streaming and content",
+      "Tournaments and competitions",
+      "Gaming collectibles",
+      "Retro games"
     ]
   },
   {
     icon: Monitor,
-    title: "Tecnología y Gadgets",
+    titleKey: "sector.techGadgets",
     emoji: "📱",
-    subcategories: [
-      "Gadgets para el hogar",
-      "Tecnología wearable",
-      "Accesorios para móviles",
-      "Setup de oficina en casa",
-      "Gaming y entretenimiento",
-      "Fotografía y cámaras",
-      "Tecnología educativa",
-      "Apps y software",
-      "Innovaciones tecnológicas",
-      "Electrónicos vintage"
+    subcategoriesKeys: [
+      "Home gadgets",
+      "Wearable technology",
+      "Mobile accessories",
+      "Home office setup",
+      "Gaming and entertainment",
+      "Photography and cameras",
+      "Educational technology",
+      "Apps and software",
+      "Technological innovations",
+      "Vintage electronics"
     ]
   },
   {
     icon: Globe,
-    title: "Historia y Cultura",
+    titleKey: "sector.history",
     emoji: "🏛️",
-    subcategories: [
-      "Historia antigua",
-      "Culturas del mundo",
-      "Monumentos históricos",
-      "Arte histórico",
-      "Tradiciones culturales",
-      "Mitología y leyendas",
-      "Arqueología",
-      "Museos y patrimonio",
-      "Biografías históricas",
-      "Eventos históricos"
+    subcategoriesKeys: [
+      "Ancient history",
+      "World cultures",
+      "Historical monuments",
+      "Historical art",
+      "Cultural traditions",
+      "Mythology and legends",
+      "Archaeology",
+      "Museums and heritage",
+      "Historical biographies",
+      "Historical events"
     ]
   },
   {
     icon: Leaf,
-    title: "Sostenibilidad y Vida Eco-Friendly",
+    titleKey: "sector.sustainability",
     emoji: "🌍",
-    subcategories: [
-      "Vida zero waste",
-      "Productos ecológicos",
-      "Energías renovables",
-      "Reciclaje y reutilización",
-      "Moda sostenible",
-      "Alimentación orgánica",
-      "Transporte sostenible",
-      "Hogar ecológico",
-      "Cosmética natural",
-      "Activismo ambiental"
+    subcategoriesKeys: [
+      "Zero waste living",
+      "Eco-friendly products",
+      "Renewable energy",
+      "Recycling and reuse",
+      "Sustainable fashion",
+      "Organic food",
+      "Sustainable transportation",
+      "Eco-friendly home",
+      "Natural cosmetics",
+      "Environmental activism"
     ]
   },
   {
     icon: Camera,
-    title: "Fotografía",
+    titleKey: "sector.photographyNiche",
     emoji: "📸",
-    subcategories: [
-      "Técnicas fotográficas",
-      "Equipos y accesorios",
-      "Edición de fotos",
-      "Fotografía de paisajes",
-      "Retratos y fotografía de personas",
-      "Fotografía de productos",
-      "Fotografía callejera",
-      "Fotografía de bodas",
-      "Fotografía macro",
-      "Fotografía nocturna"
+    subcategoriesKeys: [
+      "Photography techniques",
+      "Equipment and accessories",
+      "Photo editing",
+      "Landscape photography",
+      "Portraits and people photography",
+      "Product photography",
+      "Street photography",
+      "Wedding photography",
+      "Macro photography",
+      "Night photography"
     ]
   },
   {
     icon: Calendar,
-    title: "Planificación y Organización",
+    titleKey: "sector.planning",
     emoji: "📅",
-    subcategories: [
+    subcategoriesKeys: [
       "Bullet journaling",
-      "Planificadores y agendas",
-      "Organización del hogar",
-      "Productividad personal",
-      "Gestión del tiempo",
-      "Organización de eventos",
-      "Sistemas de archivo",
-      "Minimalismo y decluttering",
-      "Rutinas diarias",
-      "Metas y objetivos"
+      "Planners and agendas",
+      "Home organization",
+      "Personal productivity",
+      "Time management",
+      "Event organization",
+      "Filing systems",
+      "Minimalism and decluttering",
+      "Daily routines",
+      "Goals and objectives"
     ]
   },
   {
     icon: Heart,
-    title: "Psicología y Desarrollo Personal",
+    titleKey: "sector.psychology",
     emoji: "🧠",
-    subcategories: [
-      "Autoestima y confianza",
-      "Inteligencia emocional",
-      "Mindfulness y meditación",
-      "Hábitos saludables",
-      "Motivación personal",
-      "Relaciones interpersonales",
-      "Gestión del estrés",
-      "Crecimiento personal",
-      "Terapia y bienestar mental",
-      "Coaching de vida"
+    subcategoriesKeys: [
+      "Self-esteem and confidence",
+      "Emotional intelligence",
+      "Mindfulness and meditation",
+      "Healthy habits",
+      "Personal motivation",
+      "Interpersonal relationships",
+      "Stress management",
+      "Personal growth",
+      "Therapy and mental wellness",
+      "Life coaching"
     ]
   }
 ];
