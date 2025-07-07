@@ -34,66 +34,74 @@ serve(async (req) => {
     const sourceTitle = og_title || title || 'Contenido interesante';
     const sourceDescription = og_description || description || content_summary?.substring(0, 200) || '';
 
-    // Optimización inteligente de títulos para Ideogram
+    // Optimización inteligente de títulos para Ideogram - MÁS AGRESIVA
     const optimizeTitle = (title: string): string => {
-      // Límite estricto para mejor calidad en Ideogram
-      const MAX_LENGTH = 45;
+      // Límite MÁS estricto para evitar errores tipográficos
+      const MAX_LENGTH = 35;
       
-      if (title.length <= MAX_LENGTH) return title;
+      // Limpiar caracteres problemáticos
+      let cleanTitle = title
+        .replace(/[""''«»]/g, '"')  // Normalizar comillas
+        .replace(/[…]/g, '...')     // Normalizar puntos suspensivos
+        .replace(/[–—]/g, '-')      // Normalizar guiones
+        .trim();
+      
+      if (cleanTitle.length <= MAX_LENGTH) return cleanTitle;
       
       // Truncate inteligente en palabras completas
-      const words = title.split(' ');
+      const words = cleanTitle.split(' ');
       let optimized = '';
       
       for (const word of words) {
-        if ((optimized + word).length <= MAX_LENGTH) {
+        if ((optimized + ' ' + word).trim().length <= MAX_LENGTH) {
           optimized += (optimized ? ' ' : '') + word;
         } else {
           break;
         }
       }
       
-      return optimized || title.substring(0, MAX_LENGTH).trim();
+      return optimized || cleanTitle.substring(0, MAX_LENGTH).trim();
     };
 
     const optimizedTitle = optimizeTitle(sourceTitle);
 
-    const prompt = `Como experto en Pinterest marketing especializado en español, crea 3 variaciones de texto optimizado para pines de Pinterest basado en este contenido:
+    const prompt = `Crea 3 variaciones COMPLETAMENTE DIFERENTES de texto para pines de Pinterest. Cada una debe ser ÚNICA y diferente de las otras.
 
-Título original: "${sourceTitle}"
+Contenido base:
+Título: "${sourceTitle}"
 Descripción: "${sourceDescription}"
 
-IMPORTANTE - Requisitos específicos para generación de imágenes:
-- Títulos MÁXIMO 45 caracteres (crítico para calidad visual)
-- Usar palabras simples y directas en español
-- Evitar palabras muy largas o complejas
-- Priorizar claridad sobre originalidad
-- NO usar símbolos especiales o caracteres complicados
+REGLAS CRÍTICAS:
+- Cada variación debe tener un ENFOQUE DIFERENTE
+- Títulos máximo 35 caracteres (súper importante)
+- Solo palabras simples en español, sin tildes complicadas
+- Evita símbolos especiales (comillas raras, guiones largos)
+- Cada descripción debe ser 420-450 caracteres EXACTOS
 
-Requisitos para cada variación:
-- Título llamativo y CONCISO (máximo 45 caracteres)
-- Descripción persuasiva de 420-450 caracteres (usar todo el espacio)
-- Usar palabras clave relevantes para SEO
-- Incluir call-to-action atractivo
-- Tono emocional que genere engagement
-- Optimizado para audiencia hispana
-- Palabras fáciles de renderizar visualmente
-- Descripciones completas y detalladas (mínimo 400 caracteres)
+VARIACIÓN 1: Enfoque directo y práctico
+VARIACIÓN 2: Enfoque emocional y aspiracional  
+VARIACIÓN 3: Enfoque urgente y exclusivo
 
-Responde SOLO con un JSON válido en este formato:
+Cada variación debe:
+- Título corto y directo (máximo 35 caracteres)
+- Descripción completa (420-450 caracteres)
+- Incluir call-to-action
+- Ser COMPLETAMENTE diferente a las otras
+
+JSON válido solamente:
 {
   "variations": [
     {
-      "title": "Título optimizado 1",
-      "description": "Descripción persuasiva con CTA 1"
+      "title": "Título directo 1",
+      "description": "Descripción práctica completa de 420-450 caracteres..."
     },
     {
-      "title": "Título optimizado 2", 
-      "description": "Descripción persuasiva con CTA 2"
+      "title": "Título emocional 2", 
+      "description": "Descripción emocional completa de 420-450 caracteres..."
     },
     {
-      "title": "Título optimizado 3",
-      "description": "Descripción persuasiva con CTA 3"
+      "title": "Título urgente 3",
+      "description": "Descripción urgente completa de 420-450 caracteres..."
     }
   ]
 }`;
@@ -111,12 +119,12 @@ Responde SOLO con un JSON válido en este formato:
         messages: [
           { 
             role: 'system', 
-            content: 'Eres un experto en marketing de Pinterest. Siempre respondes con JSON válido sin texto adicional.' 
+            content: 'Eres un experto en Pinterest marketing. Crea contenido DIVERSO y ÚNICO. Responde SOLO con JSON válido.' 
           },
           { role: 'user', content: prompt }
         ],
-        temperature: 0.8,
-        max_tokens: 1000,
+        temperature: 0.95,
+        max_tokens: 1200,
       }),
     });
 
@@ -136,21 +144,23 @@ Responde SOLO con un JSON válido en este formato:
     } catch (parseError) {
       console.error('Failed to parse OpenAI response as JSON:', parseError);
       // Fallback variations
-      // Fallback optimizado con títulos cortos
-      const optimizedFallbackTitle = optimizeTitle(sourceTitle);
+      // Fallbacks DIVERSOS con títulos súper cortos
+      const baseTitle = optimizeTitle(sourceTitle);
+      const desc = sourceDescription.substring(0, 250);
+      
       textVariations = {
         variations: [
           {
-            title: optimizedFallbackTitle,
-            description: `Descubre ${sourceDescription.substring(0, 380)}... ¡Esta información te va a cambiar la perspectiva! Click para conocer todos los detalles y aprovechar al máximo este contenido. No te pierdas esta oportunidad única.`
+            title: baseTitle,
+            description: `Descubre ${desc}. Información completa y actualizada que necesitas conocer. Click para ver todos los detalles y aprovechar esta oportunidad única. No te lo pierdas, contenido valioso te espera. Guía práctica con consejos efectivos. ¡Empieza ahora!`
           },
           {
-            title: optimizeTitle(`✨ ${sourceTitle}`),
-            description: `${sourceDescription.substring(0, 300)} 💫 Información completa y actualizada que necesitas conocer ahora mismo. ¡Click para descubrir todo el contenido detallado y aprovecha al máximo esta oportunidad!`
+            title: optimizeTitle("Guía Completa"),
+            description: `Todo sobre ${desc}. Consejos profesionales que funcionan de verdad. Transforma tu perspectiva con esta información exclusiva. Estrategias probadas para conseguir resultados. Contenido premium al alcance de un click. ¡Aprovecha ya!`
           },
           {
-            title: optimizeTitle(`🔥 ${sourceTitle}`),
-            description: `Todo lo que necesitas saber: ${sourceDescription.substring(0, 250)} ⬇️ Contenido premium con información valiosa que te ayudará a conseguir tus objetivos. ¡Descubre todos los secretos y consejos ahora!`
+            title: optimizeTitle("Secretos Revelados"),
+            description: `Secretos de ${desc}. Técnicas avanzadas que pocos conocen. Información privilegiada para destacar del resto. Métodos eficaces para obtener mejores resultados. Click para acceder al contenido completo. ¡Oportunidad limitada!`
           }
         ]
       };

@@ -54,6 +54,14 @@ serve(async (req) => {
 
     const textVariations = textResponse.data.data.variations;
     console.log('Text variations generated:', textVariations.length);
+    console.log('Text variation titles:', textVariations.map(v => v.title));
+    
+    // Validar que las variaciones son diferentes
+    const titles = textVariations.map(v => v.title);
+    const uniqueTitles = new Set(titles);
+    if (uniqueTitles.size < titles.length) {
+      console.warn('WARNING: Some text variations are identical!');
+    }
 
     // Extract domain from URL for branding
     const domain = new URL(url).hostname.replace('www.', '');
