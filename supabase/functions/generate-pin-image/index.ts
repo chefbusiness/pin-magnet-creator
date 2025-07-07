@@ -33,51 +33,33 @@ serve(async (req) => {
       auth: replicateApiKey,
     });
 
-    // Validación de título para mejor calidad en español
-    const validateTitle = (title: string): string => {
-      if (title.length > 45) {
-        console.warn(`Title too long (${title.length} chars): ${title}`);
-        return title.substring(0, 42) + '...';
-      }
-      return title;
-    };
-
-    const validatedTitle = validateTitle(title);
-
-    // Create Pinterest-optimized prompt for Ideogram with Spanish optimization
+    // Create Pinterest-optimized prompt for Ideogram
     const stylePrompts = {
-      modern: 'clean modern typography, minimalist design, professional layout, Spanish-friendly fonts',
-      creative: 'artistic typography, creative visual elements, vibrant colors, readable Spanish text',
-      elegant: 'elegant serif fonts, sophisticated layout, luxury aesthetic, Spanish character support',
-      bold: 'bold typography, high contrast, eye-catching design, clear Spanish readability',
-      lifestyle: 'lifestyle photography style, warm colors, instagram aesthetic, Spanish text optimized'
+      modern: 'clean modern typography, minimalist design, professional layout',
+      creative: 'artistic typography, creative visual elements, vibrant colors',
+      elegant: 'elegant serif fonts, sophisticated layout, luxury aesthetic',
+      bold: 'bold typography, high contrast, eye-catching design',
+      lifestyle: 'lifestyle photography style, warm colors, instagram aesthetic'
     };
 
     const selectedStyle = stylePrompts[style as keyof typeof stylePrompts] || stylePrompts.modern;
     
-    const prompt = `Create a professional Pinterest pin image (736x1104 aspect ratio) with clear, readable Spanish text:
+    const prompt = `Create a Pinterest pin image (736x1104 aspect ratio) with the following text prominently displayed:
 
-TÍTULO PRINCIPAL: "${validatedTitle}"
-${description ? `DESCRIPCIÓN: "${description.substring(0, 80)}"` : ''}
+TITLE: "${title}"
+${description ? `SUBTITLE: "${description.substring(0, 100)}"` : ''}
 
-REQUISITOS CRÍTICOS PARA TEXTO EN ESPAÑOL:
-- Usar fuentes que soporten caracteres españoles (ñ, á, é, í, ó, ú)
-- Texto debe ser perfectamente legible en móvil
-- Alto contraste entre texto y fondo
-- Evitar fondos complejos que interfieran con la lectura
-- Espaciado adecuado para palabras en español
-- Tamaño de fuente apropiado para títulos cortos
-
-Estilo visual:
+Style requirements:
 - ${selectedStyle}
-- Formato Pinterest vertical (736x1104)
-- Tipografía profesional y limpia
-- Paleta de colores moderna con excelente contraste
-- Fondo atractivo pero simple
-- Jerarquía visual clara
-- Optimizado para audiencia hispana
+- Pinterest pin format (vertical 736x1104)
+- High contrast text for readability
+- Professional typography
+- Attractive background that doesn't compete with text
+- Leave space for text overlay
+- Colors: modern palette with good contrast
+- Must include the exact title text clearly readable
 
-El título debe aparecer exactamente como se proporciona, sin modificaciones.`;
+Typography style: Sans-serif, bold, hierarchical text layout`;
 
     console.log('Generating Pinterest pin image with Ideogram...');
     console.log('Prompt:', prompt);
