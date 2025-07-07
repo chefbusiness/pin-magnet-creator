@@ -1,15 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Globe } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Globe, User, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 export function Header() {
   const { language, setLanguage, t } = useLanguage();
+  const { user, profile, signOut, getRemainingPins } = useAuth();
 
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -52,12 +56,42 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <Button variant="ghost" size="sm">
-              {t('nav.login')}
-            </Button>
-            <Button variant="default" size="sm">
-              {t('nav.signup')}
-            </Button>
+            {user ? (
+              <>
+                {profile && (
+                  <div className="text-sm text-muted-foreground">
+                    {getRemainingPins()}/{profile.monthly_limit} pines
+                  </div>
+                )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="gap-2">
+                      <User className="h-4 w-4" />
+                      {profile?.full_name || user.email}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem disabled>
+                      Plan: {profile?.plan_type || 'free'}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={signOut}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Cerrar Sesión
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/auth">{t('nav.login')}</Link>
+                </Button>
+                <Button variant="default" size="sm" asChild>
+                  <Link to="/auth">{t('nav.signup')}</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
