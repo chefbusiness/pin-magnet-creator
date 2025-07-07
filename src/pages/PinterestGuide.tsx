@@ -313,18 +313,210 @@ const PinterestGuide = () => {
   ];
 
   const nicheSectors = [
-    "Mascotas y Animales 🐕",
-    "Automovilismo y Vehículos 🚗", 
-    "Deportes Específicos ⚽",
-    "Coleccionismo 🏺",
-    "Música e Instrumentos 🎵",
-    "Literatura y Escritura 📖",
-    "Gaming y Esports 🎮",
-    "Astronomía y Ciencia 🔭",
-    "Historia y Cultura 🏛️",
-    "Minimalismo 🤍",
-    "Sostenibilidad ♻️",
-    "Festivales y Eventos 🎪"
+    {
+      icon: Heart,
+      title: "Mascotas y Animales",
+      emoji: "🐕",
+      subcategories: [
+        "Cuidado de perros",
+        "Cuidado de gatos",
+        "Accesorios para mascotas",
+        "Entrenamiento de mascotas",
+        "DIY para mascotas",
+        "Alimentación animal",
+        "Salud veterinaria",
+        "Fotografía de mascotas",
+        "Viajes con mascotas",
+        "Mascotas exóticas"
+      ]
+    },
+    {
+      icon: Car,
+      title: "Automóviles y Transporte",
+      emoji: "🚗",
+      subcategories: [
+        "Coches clásicos",
+        "Modificaciones de vehículos",
+        "Mantenimiento automotriz",
+        "Motocicletas",
+        "Accesorios para coches",
+        "Coches eléctricos",
+        "Tuning y personalización",
+        "Viajes en carretera",
+        "Seguridad vial",
+        "Coches de lujo"
+      ]
+    },
+    {
+      icon: Dumbbell,
+      title: "Deportes Específicos",
+      emoji: "⚽",
+      subcategories: [
+        "Rutinas de entrenamiento",
+        "Equipamiento deportivo",
+        "Nutrición deportiva",
+        "Deportes específicos (fútbol, tenis, natación)",
+        "Fitness femenino",
+        "Entrenamiento funcional",
+        "Deportes extremos",
+        "Rehabilitación deportiva",
+        "Motivación fitness",
+        "Ropa deportiva"
+      ]
+    },
+    {
+      icon: Music,
+      title: "Música e Instrumentos",
+      emoji: "🎵",
+      subcategories: [
+        "Instrumentos musicales",
+        "Producción musical",
+        "Festivales y conciertos",
+        "Vinyl y coleccionismo",
+        "Equipos de audio",
+        "Aprendizaje musical",
+        "Géneros musicales",
+        "Artistas y bandas",
+        "Home studio",
+        "Karaoke y entretenimiento"
+      ]
+    },
+    {
+      icon: BookOpen,
+      title: "Literatura y Escritura",
+      emoji: "📖",
+      subcategories: [
+        "Reseñas de libros",
+        "Organización de bibliotecas",
+        "Book clubs y comunidades lectoras",
+        "Escritura creativa",
+        "Géneros literarios",
+        "Libros para niños",
+        "Bookstagram y fotografía de libros",
+        "Citas y frases inspiradoras",
+        "Autores y biografías",
+        "E-books y lectura digital"
+      ]
+    },
+    {
+      icon: Gamepad2,
+      title: "Gaming y Esports",
+      emoji: "🎮",
+      subcategories: [
+        "Videojuegos",
+        "Juegos de mesa",
+        "Puzzles y rompecabezas",
+        "Juegos de cartas",
+        "Gaming setup",
+        "Cosplay y disfraces",
+        "Streaming y contenido",
+        "Torneos y competencias",
+        "Coleccionables gaming",
+        "Juegos retro"
+      ]
+    },
+    {
+      icon: Monitor,
+      title: "Tecnología y Gadgets",
+      emoji: "📱",
+      subcategories: [
+        "Gadgets para el hogar",
+        "Tecnología wearable",
+        "Accesorios para móviles",
+        "Setup de oficina en casa",
+        "Gaming y entretenimiento",
+        "Fotografía y cámaras",
+        "Tecnología educativa",
+        "Apps y software",
+        "Innovaciones tecnológicas",
+        "Electrónicos vintage"
+      ]
+    },
+    {
+      icon: Globe,
+      title: "Historia y Cultura",
+      emoji: "🏛️",
+      subcategories: [
+        "Historia antigua",
+        "Culturas del mundo",
+        "Monumentos históricos",
+        "Arte histórico",
+        "Tradiciones culturales",
+        "Mitología y leyendas",
+        "Arqueología",
+        "Museos y patrimonio",
+        "Biografías históricas",
+        "Eventos históricos"
+      ]
+    },
+    {
+      icon: Leaf,
+      title: "Sostenibilidad y Vida Eco-Friendly",
+      emoji: "🌍",
+      subcategories: [
+        "Vida zero waste",
+        "Productos ecológicos",
+        "Energías renovables",
+        "Reciclaje y reutilización",
+        "Moda sostenible",
+        "Alimentación orgánica",
+        "Transporte sostenible",
+        "Hogar ecológico",
+        "Cosmética natural",
+        "Activismo ambiental"
+      ]
+    },
+    {
+      icon: Camera,
+      title: "Fotografía",
+      emoji: "📸",
+      subcategories: [
+        "Técnicas fotográficas",
+        "Equipos y accesorios",
+        "Edición de fotos",
+        "Fotografía de paisajes",
+        "Retratos y fotografía de personas",
+        "Fotografía de productos",
+        "Fotografía callejera",
+        "Fotografía de bodas",
+        "Fotografía macro",
+        "Fotografía nocturna"
+      ]
+    },
+    {
+      icon: Calendar,
+      title: "Planificación y Organización",
+      emoji: "📅",
+      subcategories: [
+        "Bullet journaling",
+        "Planificadores y agendas",
+        "Organización del hogar",
+        "Productividad personal",
+        "Gestión del tiempo",
+        "Organización de eventos",
+        "Sistemas de archivo",
+        "Minimalismo y decluttering",
+        "Rutinas diarias",
+        "Metas y objetivos"
+      ]
+    },
+    {
+      icon: Heart,
+      title: "Psicología y Desarrollo Personal",
+      emoji: "🧠",
+      subcategories: [
+        "Autoestima y confianza",
+        "Inteligencia emocional",
+        "Mindfulness y meditación",
+        "Hábitos saludables",
+        "Motivación personal",
+        "Relaciones interpersonales",
+        "Gestión del estrés",
+        "Crecimiento personal",
+        "Terapia y bienestar mental",
+        "Coaching de vida"
+      ]
+    }
   ];
 
   return (
@@ -435,10 +627,33 @@ const PinterestGuide = () => {
             <h2 className="text-3xl font-bold">🎯 Nichos Especializados</h2>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {nicheSectors.map((niche, index) => (
-              <Card key={index} className="hover:shadow-md transition-shadow duration-300 text-center p-4">
-                <p className="text-sm font-medium">{niche}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {nicheSectors.map((sector, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <div className="h-8 w-8 bg-accent rounded-lg flex items-center justify-center">
+                      <sector.icon className="h-4 w-4 text-accent-foreground" />
+                    </div>
+                    <span className="text-lg">{sector.title}</span>
+                    <span className="text-xl">{sector.emoji}</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-1">
+                    {sector.subcategories.slice(0, 5).map((sub, idx) => (
+                      <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <span className="text-primary mt-1">•</span>
+                        {sub}
+                      </li>
+                    ))}
+                    {sector.subcategories.length > 5 && (
+                      <li className="text-sm text-muted-foreground italic">
+                        +{sector.subcategories.length - 5} más...
+                      </li>
+                    )}
+                  </ul>
+                </CardContent>
               </Card>
             ))}
           </div>
