@@ -57,146 +57,169 @@ export function Hero() {
           </div>
 
           <div className="relative order-1 lg:order-2">
-            {/* Pinterest Wall Collage - Responsive */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3 lg:gap-4 max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-              
-              {/* Pins visibles en móvil (6) y completos en tablet/desktop (9) */}
-              
-              {/* Pin 1 - Interior Design (Spanish) */}
-              <div className="col-span-1 transform rotate-2 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite] group">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
+            {/* Mobile/Tablet: Solo 1 pin destacado */}
+            <div className="block lg:hidden">
+              <div className="max-w-xs mx-auto">
+                <div className="relative bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
                   <img 
                     src={pinInterior} 
-                    alt="Interior Design" 
-                    className="w-full h-32 sm:h-40 md:h-48 lg:h-56 object-cover"
+                    alt="Pinterest Pin Example" 
+                    className="w-full h-80 sm:h-96 object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">Ideas de Decoración Moderna</h4>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h4 className="text-lg font-bold text-white leading-tight mb-2">Ideas de Decoración Moderna</h4>
+                    <p className="text-sm text-white/80">Ejemplo de pin generado</p>
+                  </div>
+                  <div className="absolute top-4 right-4">
+                    <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
+                      <span className="text-white text-xs font-medium">Pinterest</span>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Pin 2 - Fitness (English) */}
-              <div className="col-span-1 transform -rotate-1 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_0.5s] group">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <img 
-                    src={pinFitness} 
-                    alt="Fitness Workout" 
-                    className="w-full h-36 sm:h-44 md:h-52 lg:h-60 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">30-Min Home Workout</h4>
+            {/* Desktop: Collage completo */}
+            <div className="hidden lg:block">
+              <div className="grid grid-cols-3 gap-4 max-w-sm mx-auto">
+                
+                {/* Pin 1 - Interior Design (Spanish) */}
+                <div className="col-span-1 transform rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinInterior} 
+                      alt="Interior Design" 
+                      className="w-full h-56 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">Ideas de Decoración Moderna</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Pin 3 - Travel (Spanish) - Oculto en móvil, visible desde md */}
-              <div className="col-span-1 transform rotate-3 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1s] group hidden md:block">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <img 
-                    src={pinTravel} 
-                    alt="Travel Destination" 
-                    className="w-full h-32 sm:h-36 md:h-44 lg:h-50 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">Destinos Increíbles</h4>
+                {/* Pin 2 - Fitness (English) */}
+                <div className="col-span-1 transform -rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_0.5s] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinFitness} 
+                      alt="Fitness Workout" 
+                      className="w-full h-60 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">30-Min Home Workout</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Pin 4 - Recipes (English) */}
-              <div className="col-span-1 transform -rotate-2 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.5s] group">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <img 
-                    src={pinRecipes} 
-                    alt="Healthy Recipe" 
-                    className="w-full h-34 sm:h-42 md:h-50 lg:h-58 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">Quick Healthy Recipes</h4>
+                {/* Pin 3 - Travel (Spanish) */}
+                <div className="col-span-1 transform rotate-3 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1s] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinTravel} 
+                      alt="Travel Destination" 
+                      className="w-full h-50 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">Destinos Increíbles</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Pin 5 - Business (Spanish) */}
-              <div className="col-span-1 transform rotate-1 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_2s] group">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <img 
-                    src={pinBusiness} 
-                    alt="Business Tips" 
-                    className="w-full h-32 sm:h-38 md:h-46 lg:h-54 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">Tips de Productividad</h4>
+                {/* Pin 4 - Recipes (English) */}
+                <div className="col-span-1 transform -rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.5s] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinRecipes} 
+                      alt="Healthy Recipe" 
+                      className="w-full h-58 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">Quick Healthy Recipes</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Pin 6 - Workspace (English) */}
-              <div className="col-span-1 transform -rotate-3 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_0.8s] group">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <img 
-                    src={pinWorkspace} 
-                    alt="Workspace Setup" 
-                    className="w-full h-32 sm:h-40 md:h-48 lg:h-56 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">Work From Home</h4>
+                {/* Pin 5 - Business (Spanish) */}
+                <div className="col-span-1 transform rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_2s] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinBusiness} 
+                      alt="Business Tips" 
+                      className="w-full h-54 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">Tips de Productividad</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Pin 7 - Fashion (English) - Oculto en móvil, visible desde md */}
-              <div className="col-span-1 transform rotate-2 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.2s] group hidden md:block">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <img 
-                    src={pinFashion} 
-                    alt="Fashion Style" 
-                    className="w-full h-36 sm:h-44 md:h-52 lg:h-60 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">Style Inspiration</h4>
+                {/* Pin 6 - Workspace (English) */}
+                <div className="col-span-1 transform -rotate-3 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_0.8s] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinWorkspace} 
+                      alt="Workspace Setup" 
+                      className="w-full h-56 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">Work From Home</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Pin 8 - Tech (Spanish) - Oculto en móvil, visible desde md */}
-              <div className="col-span-1 transform -rotate-1 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.8s] group hidden md:block">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <img 
-                    src={pinTech} 
-                    alt="Tech Gadgets" 
-                    className="w-full h-32 sm:h-40 md:h-48 lg:h-56 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">Gadgets Tecnológicos</h4>
+                {/* Pin 7 - Fashion (English) */}
+                <div className="col-span-1 transform rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.2s] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinFashion} 
+                      alt="Fashion Style" 
+                      className="w-full h-60 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">Style Inspiration</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Pin 9 - Art (Spanish) - Oculto en móvil, visible desde md */}
-              <div className="col-span-1 transform rotate-1 hover:rotate-0 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_2.3s] group hidden md:block">
-                <div className="relative bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <img 
-                    src={pinArt} 
-                    alt="Art Supplies" 
-                    className="w-full h-34 sm:h-42 md:h-50 lg:h-58 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
-                    <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">Arte y Creatividad</h4>
+                {/* Pin 8 - Tech (Spanish) */}
+                <div className="col-span-1 transform -rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_1.8s] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinTech} 
+                      alt="Tech Gadgets" 
+                      className="w-full h-56 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">Gadgets Tecnológicos</h4>
+                    </div>
                   </div>
                 </div>
-              </div>
 
+                {/* Pin 9 - Art (Spanish) */}
+                <div className="col-span-1 transform rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 animate-[float_3s_ease-in-out_infinite_2.3s] group">
+                  <div className="relative bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                      src={pinArt} 
+                      alt="Art Supplies" 
+                      className="w-full h-58 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <h4 className="text-sm font-bold text-white leading-tight">Arte y Creatividad</h4>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
