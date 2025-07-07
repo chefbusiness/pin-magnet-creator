@@ -55,6 +55,10 @@ serve(async (req) => {
     const textVariations = textResponse.data.data.variations;
     console.log('Text variations generated:', textVariations.length);
 
+    // Extract domain from URL for branding
+    const domain = new URL(url).hostname.replace('www.', '');
+    console.log('Extracted domain for branding:', domain);
+
     // Step 3: Generate images for each text variation
     console.log('Step 3: Generating pin images...');
     const imagePromises = textVariations.map(async (variation: any, index: number) => {
@@ -63,6 +67,7 @@ serve(async (req) => {
           body: {
             title: variation.title,
             description: variation.description,
+            domain: domain,
             style: ['modern', 'creative', 'elegant'][index] || 'modern'
           }
         });

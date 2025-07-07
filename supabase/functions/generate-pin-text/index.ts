@@ -72,12 +72,13 @@ IMPORTANTE - Requisitos específicos para generación de imágenes:
 
 Requisitos para cada variación:
 - Título llamativo y CONCISO (máximo 45 caracteres)
-- Descripción persuasiva de máximo 400 caracteres
+- Descripción persuasiva de 420-450 caracteres (usar todo el espacio)
 - Usar palabras clave relevantes para SEO
 - Incluir call-to-action atractivo
 - Tono emocional que genere engagement
 - Optimizado para audiencia hispana
 - Palabras fáciles de renderizar visualmente
+- Descripciones completas y detalladas (mínimo 400 caracteres)
 
 Responde SOLO con un JSON válido en este formato:
 {
@@ -141,15 +142,15 @@ Responde SOLO con un JSON válido en este formato:
         variations: [
           {
             title: optimizedFallbackTitle,
-            description: `Descubre ${sourceDescription.substring(0, 300)}... ¡No te lo pierdas!`
+            description: `Descubre ${sourceDescription.substring(0, 380)}... ¡Esta información te va a cambiar la perspectiva! Click para conocer todos los detalles y aprovechar al máximo este contenido. No te pierdas esta oportunidad única.`
           },
           {
             title: optimizeTitle(`✨ ${sourceTitle}`),
-            description: `${sourceDescription.substring(0, 350)} 💫 ¡Click para saber más!`
+            description: `${sourceDescription.substring(0, 300)} 💫 Información completa y actualizada que necesitas conocer ahora mismo. ¡Click para descubrir todo el contenido detallado y aprovecha al máximo esta oportunidad!`
           },
           {
             title: optimizeTitle(`🔥 ${sourceTitle}`),
-            description: `Todo lo que necesitas saber: ${sourceDescription.substring(0, 320)} ⬇️`
+            description: `Todo lo que necesitas saber: ${sourceDescription.substring(0, 250)} ⬇️ Contenido premium con información valiosa que te ayudará a conseguir tus objetivos. ¡Descubre todos los secretos y consejos ahora!`
           }
         ]
       };

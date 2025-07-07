@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, style = 'modern' } = await req.json();
+    const { title, description, domain, style = 'modern' } = await req.json();
     
     if (!title) {
       return new Response(
@@ -58,7 +58,8 @@ serve(async (req) => {
     const prompt = `Create a professional Pinterest pin image (736x1104 aspect ratio) with clear, readable Spanish text:
 
 TÍTULO PRINCIPAL: "${validatedTitle}"
-${description ? `DESCRIPCIÓN: "${description.substring(0, 80)}"` : ''}
+${description ? `DESCRIPCIÓN: "${description.substring(0, 120)}"` : ''}
+DOMINIO: "${domain}" (DEBE aparecer en el pie de la imagen)
 
 REQUISITOS CRÍTICOS PARA TEXTO EN ESPAÑOL:
 - Usar fuentes que soporten caracteres españoles (ñ, á, é, í, ó, ú)
@@ -68,13 +69,24 @@ REQUISITOS CRÍTICOS PARA TEXTO EN ESPAÑOL:
 - Espaciado adecuado para palabras en español
 - Tamaño de fuente apropiado para títulos cortos
 
+DOMINIO EN EL PIE (CRÍTICO):
+- El dominio "${domain}" DEBE aparecer en la esquina inferior derecha
+- Texto súper legible con fondo semitransparente si es necesario
+- Color contrastante (blanco sobre oscuro o negro sobre claro)
+- Tamaño legible pero no dominante
+- Estilo profesional y limpio
+
+JERARQUÍA VISUAL:
+1. Título principal (más prominente)
+2. Descripción (tamaño medio)
+3. Dominio en pie (pequeño pero súper legible)
+
 Estilo visual:
 - ${selectedStyle}
 - Formato Pinterest vertical (736x1104)
 - Tipografía profesional y limpia
 - Paleta de colores moderna con excelente contraste
 - Fondo atractivo pero simple
-- Jerarquía visual clara
 - Optimizado para audiencia hispana
 
 El título debe aparecer exactamente como se proporciona, sin modificaciones.`;
