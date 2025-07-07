@@ -93,8 +93,8 @@
 ### 5.2 Backend (Futuro)
 - **API**: REST API para procesamiento
 - **IA**: OpenAI GPT para generación de texto
-- **Imágenes**: Servicio de generación de imágenes (Midjourney/DALL-E)
-- **Storage**: CloudFlare R2 o AWS S3
+- **Imágenes**: Servicio de generación de imágenes (Replicate, ideogram-ai/ideogram-v3-turbo)
+- **Storage**: Supabase y Netlify
 
 ### 5.3 Integraciones
 - **Pinterest API**: Para publicación automática
