@@ -45,12 +45,29 @@ const translations = {
     'pricing.title': 'Planes diseñados para crecer contigo',
     'pricing.subtitle': 'Desde emprendedores hasta agencias, tenemos el plan perfecto',
     
+    // Header - User Menu
+    'nav.generatePin': 'Generar Pin',
+    'nav.pinterestGuide': 'Guía Pinterest',
+    'nav.logout': 'Cerrar Sesión',
+    'nav.plan': 'Plan',
+    'nav.unlimitedPins': '∞ pines ilimitados',
+    
     // Footer
     'footer.description': 'La plataforma más avanzada para generar contenido de Pinterest que convierte.',
     'footer.product': 'Producto',
     'footer.company': 'Empresa',
     'footer.support': 'Soporte',
     'footer.rights': 'Todos los derechos reservados.',
+    'footer.api': 'API',
+    'footer.integrations': 'Integraciones',
+    'footer.aboutUs': 'Sobre nosotros',
+    'footer.blog': 'Blog',
+    'footer.careers': 'Carreras',
+    'footer.contact': 'Contacto',
+    'footer.helpCenter': 'Centro de ayuda',
+    'footer.tutorials': 'Tutoriales',
+    'footer.serviceStatus': 'Estado del servicio',
+    'footer.terms': 'Términos de uso',
     
     // Pinterest Guide
     'guide.badge': 'Guía Completa de Pinterest',
@@ -128,12 +145,29 @@ const translations = {
     'pricing.title': 'Plans designed to grow with you',
     'pricing.subtitle': 'From entrepreneurs to agencies, we have the perfect plan',
     
+    // Header - User Menu
+    'nav.generatePin': 'Generate Pin',
+    'nav.pinterestGuide': 'Pinterest Guide',
+    'nav.logout': 'Sign Out',
+    'nav.plan': 'Plan',
+    'nav.unlimitedPins': '∞ unlimited pins',
+    
     // Footer
     'footer.description': 'The most advanced platform for generating Pinterest content that converts.',
     'footer.product': 'Product',
     'footer.company': 'Company',
     'footer.support': 'Support',
     'footer.rights': 'All rights reserved.',
+    'footer.api': 'API',
+    'footer.integrations': 'Integrations',
+    'footer.aboutUs': 'About us',
+    'footer.blog': 'Blog',
+    'footer.careers': 'Careers',
+    'footer.contact': 'Contact',
+    'footer.helpCenter': 'Help center',
+    'footer.tutorials': 'Tutorials',
+    'footer.serviceStatus': 'Service status',
+    'footer.terms': 'Terms of service',
     
     // Pinterest Guide
     'guide.badge': 'Complete Pinterest Guide',

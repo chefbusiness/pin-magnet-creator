@@ -39,7 +39,7 @@ export function Header() {
               {user ? (
                 <>
                   <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
-                    Generar Pin
+                    {t('nav.generatePin')}
                   </Link>
                   <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.dashboard')}
@@ -48,7 +48,7 @@ export function Header() {
                     {t('nav.profile')}
                   </Link>
                   <Link to="/pinterest-guide" className="text-sm font-medium hover:text-primary transition-colors">
-                    Guía Pinterest
+                    {t('nav.pinterestGuide')}
                   </Link>
                 </>
               ) : (
@@ -63,7 +63,7 @@ export function Header() {
                     {t('nav.pricing')}
                   </a>
                   <Link to="/pinterest-guide" className="text-sm font-medium hover:text-primary transition-colors">
-                    Guía Pinterest
+                    {t('nav.pinterestGuide')}
                   </Link>
                 </>
               )}
@@ -102,7 +102,7 @@ export function Header() {
                 )}
                 {profile && isSuperAdmin() && (
                   <div className="text-sm text-muted-foreground">
-                    ∞ pines ilimitados
+                    {t('nav.unlimitedPins')}
                   </div>
                 )}
                 <DropdownMenu>
@@ -115,22 +115,22 @@ export function Header() {
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard" className="cursor-pointer">
-                        Dashboard
+                        {t('nav.dashboard')}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link to="/profile" className="cursor-pointer">
-                        Perfil
+                        {t('nav.profile')}
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem disabled>
-                      Plan: {getPlanName(profile?.plan_type || 'starter')}
+                      {t('nav.plan')}: {getPlanName(profile?.plan_type || 'starter')}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={signOut}>
                       <LogOut className="mr-2 h-4 w-4" />
-                      Cerrar Sesión
+                      {t('nav.logout')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
