@@ -38,6 +38,12 @@ export const esTranslations = {
   // Pricing
   'pricing.title': 'Planes diseñados para crecer contigo',
   'pricing.subtitle': 'Desde emprendedores hasta agencias, tenemos el plan perfecto',
+  'pricing.launchOffer': 'Oferta de Lanzamiento',
+  'pricing.save': 'Ahorra',
+  'pricing.originalPrice': 'Precio oficial',
+  'pricing.limitedTime': 'Precio especial por tiempo limitado',
+  'pricing.getStarted': 'Aprovechar Oferta',
+  'pricing.tryFree': 'Comenzar Gratis',
   
   // Footer
   'footer.description': 'La plataforma más avanzada para generar contenido de Pinterest que convierte.',

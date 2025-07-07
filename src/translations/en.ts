@@ -38,6 +38,12 @@ export const enTranslations = {
   // Pricing
   'pricing.title': 'Plans designed to grow with you',
   'pricing.subtitle': 'From entrepreneurs to agencies, we have the perfect plan',
+  'pricing.launchOffer': 'Launch Offer',
+  'pricing.save': 'Save',
+  'pricing.originalPrice': 'Regular price',
+  'pricing.limitedTime': 'Limited time special price',
+  'pricing.getStarted': 'Get This Offer',
+  'pricing.tryFree': 'Start Free',
   
   // Footer
   'footer.description': 'The most advanced platform for generating Pinterest content that converts.',

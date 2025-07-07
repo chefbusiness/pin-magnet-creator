@@ -9,7 +9,9 @@ export function Pricing() {
   const plans = [
     {
       name: "Starter",
-      price: "$19",
+      originalPrice: "$19",
+      launchPrice: "$13",
+      savings: "$6",
       period: "/mes",
       description: "Ideal para bloggers y emprendedores",
       features: [
@@ -19,11 +21,14 @@ export function Pricing() {
         "Descarga en alta resolución",
         "Soporte por email"
       ],
-      popular: false
+      popular: false,
+      isLaunchOffer: true
     },
     {
       name: "Pro",
-      price: "$49",
+      originalPrice: "$49",
+      launchPrice: "$34",
+      savings: "$15",
       period: "/mes",
       description: "Para marketers y agencias pequeñas",
       features: [
@@ -34,11 +39,14 @@ export function Pricing() {
         "Análisis de rendimiento",
         "Soporte prioritario"
       ],
-      popular: true
+      popular: true,
+      isLaunchOffer: true
     },
     {
       name: "Agency",
-      price: "$149",
+      originalPrice: "$149",
+      launchPrice: "$112",
+      savings: "$37",
       period: "/mes",
       description: "Para agencias y equipos grandes",
       features: [
@@ -50,7 +58,8 @@ export function Pricing() {
         "Branding personalizado",
         "Soporte dedicado 24/7"
       ],
-      popular: false
+      popular: false,
+      isLaunchOffer: true
     }
   ];
 
@@ -76,21 +85,44 @@ export function Pricing() {
                   : 'bg-card/80 backdrop-blur-sm hover:shadow-primary/10 transition-all duration-300'
               }`}
             >
+              {plan.isLaunchOffer && (
+                <div className="absolute -top-4 left-4">
+                  <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold px-3 py-1 animate-pulse">
+                    🚀 {t('pricing.launchOffer')}
+                  </Badge>
+                </div>
+              )}
+              
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <div className="absolute -top-4 right-4">
                   <Badge className="bg-white text-primary font-semibold px-4 py-1">
                     Más Popular
                   </Badge>
                 </div>
               )}
               
-              <CardHeader className="text-center pb-2">
+              {plan.isLaunchOffer && (
+                <div className="absolute top-4 right-4">
+                  <Badge className="bg-green-500 text-white font-semibold px-2 py-1 text-xs">
+                    {t('pricing.save')} {plan.savings}/mes
+                  </Badge>
+                </div>
+              )}
+              
+              <CardHeader className="text-center pb-2 pt-8">
                 <CardTitle className={`text-2xl ${plan.popular ? 'text-white' : ''}`}>
                   {plan.name}
                 </CardTitle>
                 <div className="py-4">
+                  {plan.isLaunchOffer && (
+                    <div className="mb-2">
+                      <span className={`text-lg line-through ${plan.popular ? 'text-white/60' : 'text-muted-foreground'}`}>
+                        {plan.originalPrice}{plan.period}
+                      </span>
+                    </div>
+                  )}
                   <span className={`text-5xl font-bold ${plan.popular ? 'text-white' : 'text-primary'}`}>
-                    {plan.price}
+                    {plan.isLaunchOffer ? plan.launchPrice : plan.originalPrice}
                   </span>
                   <span className={`text-lg ${plan.popular ? 'text-white/80' : 'text-muted-foreground'}`}>
                     {plan.period}
@@ -99,6 +131,11 @@ export function Pricing() {
                 <CardDescription className={plan.popular ? 'text-white/90' : ''}>
                   {plan.description}
                 </CardDescription>
+                {plan.isLaunchOffer && (
+                  <p className={`text-xs mt-2 ${plan.popular ? 'text-white/70' : 'text-muted-foreground'}`}>
+                    {t('pricing.limitedTime')}
+                  </p>
+                )}
               </CardHeader>
               
               <CardContent className="space-y-6">
@@ -126,7 +163,12 @@ export function Pricing() {
                   variant={plan.popular ? "secondary" : "gradient"}
                   size="lg"
                 >
-                  {plan.popular ? "Comenzar Ahora" : "Probar Gratis"}
+                  {plan.isLaunchOffer 
+                    ? t('pricing.getStarted')
+                    : plan.popular 
+                      ? "Comenzar Ahora" 
+                      : t('pricing.tryFree')
+                  }
                 </Button>
                 
                 <p className={`text-xs text-center ${
