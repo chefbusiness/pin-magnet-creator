@@ -30,16 +30,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.homeDecor",
     emoji: "🏠",
     subcategoriesKeys: [
-      "Living room decoration",
-      "Bedroom design", 
-      "Kitchen decoration",
-      "Bathrooms and small spaces",
-      "Seasonal decoration (Christmas, Halloween, spring)",
-      "DIY home projects",
-      "Recycled furniture and upcycling",
-      "Home organization",
-      "Budget decoration",
-      "Styles: minimalist, bohemian, rustic, modern, farmhouse"
+      "subcategory.livingRoomDecoration",
+      "subcategory.bedroomDesign", 
+      "subcategory.kitchenDecoration",
+      "subcategory.bathroomsAndSmallSpaces",
+      "subcategory.seasonalDecoration",
+      "subcategory.diyHomeProjects",
+      "subcategory.recycledFurniture",
+      "subcategory.homeOrganization",
+      "subcategory.budgetDecoration",
+      "subcategory.homeStyles"
     ]
   },
   {
@@ -47,16 +47,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.recipes",
     emoji: "🍲",
     subcategoriesKeys: [
-      "Healthy recipes",
-      "Quick and easy food",
-      "Desserts and baking",
-      "Meal prep and meal planning",
-      "Vegan and vegetarian recipes",
-      "Gluten-free recipes",
-      "International cuisine",
-      "Drinks and cocktails",
-      "Special occasion recipes",
-      "Cooking techniques and culinary tips"
+      "subcategory.healthyRecipes",
+      "subcategory.quickAndEasyFood",
+      "subcategory.dessertsAndBaking",
+      "subcategory.mealPrepAndPlanning",
+      "subcategory.veganAndVegetarian",
+      "subcategory.glutenFreeRecipes",
+      "subcategory.internationalCuisine",
+      "subcategory.drinksAndCocktails",
+      "subcategory.specialOccasionRecipes",
+      "subcategory.cookingTechniques"
     ]
   },
   {
@@ -64,16 +64,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.fashion",
     emoji: "👗",
     subcategoriesKeys: [
-      "Casual outfits",
-      "Formal and office wear",
-      "Seasonal fashion",
-      "Capsule wardrobe",
-      "Sustainable fashion",
-      "Accessories and jewelry",
-      "Shoes and bags",
-      "Fashion for different body types",
-      "Fashion trends",
-      "Special occasion looks"
+      "subcategory.casualOutfits",
+      "subcategory.formalAndOfficeWear",
+      "subcategory.seasonalFashion",
+      "subcategory.capsuleWardrobe",
+      "subcategory.sustainableFashion",
+      "subcategory.accessoriesAndJewelry",
+      "subcategory.shoesAndBags",
+      "subcategory.fashionForBodyTypes",
+      "subcategory.fashionTrends",
+      "subcategory.specialOccasionLooks"
     ]
   },
   {
@@ -81,16 +81,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.beauty",
     emoji: "💄",
     subcategoriesKeys: [
-      "Makeup tutorials",
-      "Skincare",
-      "Hairstyles and hair care",
-      "Manicure and nail art",
-      "Natural beauty products",
-      "Beauty routines",
-      "Special occasion makeup",
-      "Anti-aging care",
-      "Beauty for different skin tones",
-      "DIY beauty products"
+      "subcategory.makeupTutorials",
+      "subcategory.skincare",
+      "subcategory.hairstylesAndCare",
+      "subcategory.manicureAndNailArt",
+      "subcategory.naturalBeautyProducts",
+      "subcategory.beautyRoutines",
+      "subcategory.specialOccasionMakeup",
+      "subcategory.antiAgingCare",
+      "subcategory.beautyForSkinTones",
+      "subcategory.diyBeautyProducts"
     ]
   },
   {
@@ -98,16 +98,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.weddings",
     emoji: "👰",
     subcategoriesKeys: [
-      "Wedding dresses",
-      "Wedding decoration",
-      "Centerpieces",
-      "Wedding invitations",
-      "Bridal hairstyles",
-      "Wedding flowers",
-      "Wedding cakes",
-      "Birthday parties",
-      "Baby showers",
-      "Graduations and celebrations"
+      "subcategory.weddingDresses",
+      "subcategory.weddingDecoration",
+      "subcategory.centerpieces",
+      "subcategory.weddingInvitations",
+      "subcategory.bridalHairstyles",
+      "subcategory.weddingFlowers",
+      "subcategory.weddingCakes",
+      "subcategory.birthdayParties",
+      "subcategory.babyShowers",
+      "subcategory.graduationsAndCelebrations"
     ]
   },
   {
@@ -115,16 +115,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.maternity",
     emoji: "👶",
     subcategoriesKeys: [
-      "Nursery decoration",
-      "Baby clothes",
-      "Kids activities",
-      "Family crafts",
-      "Baby food",
-      "DIY toys",
-      "Family organization",
-      "Baby photography",
-      "Children's party ideas",
-      "Maternity products"
+      "subcategory.nurseryDecoration",
+      "subcategory.babyClothes",
+      "subcategory.kidsActivities",
+      "subcategory.familyCrafts",
+      "subcategory.babyFood",
+      "subcategory.diyToys",
+      "subcategory.familyOrganization",
+      "subcategory.babyPhotography",
+      "subcategory.childrenPartyIdeas",
+      "subcategory.maternityProducts"
     ]
   },
   {
@@ -132,16 +132,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.travel",
     emoji: "✈️",
     subcategoriesKeys: [
-      "Travel destinations",
-      "City guides",
-      "Travel tips",
-      "Travel outfits",
-      "Travel photography",
-      "Budget travel",
-      "Outdoor adventures",
-      "Maps and routes",
-      "Hotels and accommodations",
-      "Local cuisine"
+      "subcategory.travelDestinations",
+      "subcategory.cityGuides",
+      "subcategory.travelTips",
+      "subcategory.travelOutfits",
+      "subcategory.travelPhotography",
+      "subcategory.budgetTravel",
+      "subcategory.outdoorAdventures",
+      "subcategory.mapsAndRoutes",
+      "subcategory.hotelsAndAccommodations",
+      "subcategory.localCuisine"
     ]
   },
   {
@@ -149,16 +149,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.fitness",
     emoji: "💪",
     subcategoriesKeys: [
-      "Exercise routines",
-      "Yoga and meditation",
-      "Home workouts",
-      "Fitness motivation",
-      "Sportswear",
-      "Sports nutrition",
-      "Weight training",
-      "Cardio and running",
-      "Specific exercises",
-      "Physical transformations"
+      "subcategory.exerciseRoutines",
+      "subcategory.yogaAndMeditation",
+      "subcategory.homeWorkouts",
+      "subcategory.fitnessMotivation",
+      "subcategory.sportswear",
+      "subcategory.sportsNutrition",
+      "subcategory.weightTraining",
+      "subcategory.cardioAndRunning",
+      "subcategory.specificExercises",
+      "subcategory.physicalTransformations"
     ]
   },
   {
@@ -166,16 +166,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.health",
     emoji: "🧘",
     subcategoriesKeys: [
-      "Healthy eating",
-      "Detox recipes",
-      "Mental health",
-      "Healthy habits",
-      "Natural remedies",
-      "Self-care",
-      "Mindfulness",
-      "Balanced living",
-      "Natural supplements",
-      "Alternative therapies"
+      "subcategory.healthyEating",
+      "subcategory.detoxRecipes",
+      "subcategory.mentalHealth",
+      "subcategory.healthyHabits",
+      "subcategory.naturalRemedies",
+      "subcategory.selfCare",
+      "subcategory.mindfulness",
+      "subcategory.balancedLiving",
+      "subcategory.naturalSupplements",
+      "subcategory.alternativeTherapies"
     ]
   },
   {
@@ -183,16 +183,16 @@ export const getTopSectors = (t: TranslationFunction) => [
     titleKey: "sector.photography",
     emoji: "📸",
     subcategoriesKeys: [
-      "Photography techniques",
-      "Photo poses",
-      "Landscape photography",
-      "Portraits and selfies",
-      "Product photography",
-      "Photo editing",
-      "Photography equipment",
-      "Mobile photography",
-      "Photographic composition",
-      "Visual inspiration"
+      "subcategory.photographyTechniques",
+      "subcategory.photoPoses",
+      "subcategory.landscapePhotography",
+      "subcategory.portraitsAndSelfies",
+      "subcategory.productPhotography",
+      "subcategory.photoEditing",
+      "subcategory.photographyEquipment",
+      "subcategory.mobilePhotography",
+      "subcategory.photographicComposition",
+      "subcategory.visualInspiration"
     ]
   }
 ];
@@ -203,16 +203,16 @@ export const getOtherSectors = (t: TranslationFunction) => [
     titleKey: "sector.business",
     emoji: "💼",
     subcategoriesKeys: [
-      "Digital marketing",
-      "Personal branding",
-      "Productivity",
-      "Networking",
-      "Personal finance",
-      "Leadership",
-      "Startup life",
-      "Freelancing",
-      "Investments",
-      "Professional development"
+      "subcategory.digitalMarketing",
+      "subcategory.personalBranding",
+      "subcategory.productivity",
+      "subcategory.networking",
+      "subcategory.personalFinance",
+      "subcategory.leadership",
+      "subcategory.startupLife",
+      "subcategory.freelancing",
+      "subcategory.investments",
+      "subcategory.professionalDevelopment"
     ]
   },
   {
@@ -220,16 +220,16 @@ export const getOtherSectors = (t: TranslationFunction) => [
     titleKey: "sector.education",
     emoji: "📚",
     subcategoriesKeys: [
-      "Study techniques",
-      "Languages",
-      "Online courses",
-      "New skills",
-      "Certifications",
-      "Personal development",
-      "Reading",
-      "Writing",
-      "Mathematics",
-      "Sciences"
+      "subcategory.studyTechniques",
+      "subcategory.languages",
+      "subcategory.onlineCourses",
+      "subcategory.newSkills",
+      "subcategory.certifications",
+      "subcategory.personalDevelopment",
+      "subcategory.reading",
+      "subcategory.writing",
+      "subcategory.mathematics",
+      "subcategory.sciences"
     ]
   },
   {
@@ -237,16 +237,16 @@ export const getOtherSectors = (t: TranslationFunction) => [
     titleKey: "sector.art",
     emoji: "🎨",
     subcategoriesKeys: [
-      "Painting and drawing",
-      "Crafts",
-      "Scrapbooking",
-      "Calligraphy",
-      "Ceramics",
-      "Knitting and embroidery",
-      "Handmade jewelry",
-      "Graphic design",
-      "Digital illustration",
-      "Abstract art"
+      "subcategory.paintingAndDrawing",
+      "subcategory.crafts",
+      "subcategory.scrapbooking",
+      "subcategory.calligraphy",
+      "subcategory.ceramics",
+      "subcategory.knittingAndEmbroidery",
+      "subcategory.handmadeJewelry",
+      "subcategory.graphicDesign",
+      "subcategory.digitalIllustration",
+      "subcategory.abstractArt"
     ]
   },
   {
@@ -254,16 +254,16 @@ export const getOtherSectors = (t: TranslationFunction) => [
     titleKey: "sector.technology",
     emoji: "💻",
     subcategoriesKeys: [
-      "Gadgets and devices",
-      "Useful apps",
-      "Desktop setup",
-      "Gaming setup",
-      "Tech reviews",
-      "Programming",
-      "Artificial intelligence",
-      "Technological innovation",
-      "Smartphones",
-      "Tech accessories"
+      "subcategory.gadgetsAndDevices",
+      "subcategory.usefulApps",
+      "subcategory.desktopSetup",
+      "subcategory.gamingSetup",
+      "subcategory.techReviews",
+      "subcategory.programming",
+      "subcategory.artificialIntelligence",
+      "subcategory.technologicalInnovation",
+      "subcategory.smartphones",
+      "subcategory.techAccessories"
     ]
   },
   {
@@ -271,16 +271,16 @@ export const getOtherSectors = (t: TranslationFunction) => [
     titleKey: "sector.garden",
     emoji: "🌱",
     subcategoriesKeys: [
-      "Indoor plants",
-      "Gardening",
-      "Plant care",
-      "Urban gardens",
-      "Succulent plants",
-      "Garden design",
-      "Medicinal plants",
-      "Pots and decoration",
-      "Plant propagation",
-      "Vertical gardens"
+      "subcategory.indoorPlants",
+      "subcategory.gardening",
+      "subcategory.plantCare",
+      "subcategory.urbanGardens",
+      "subcategory.succulentPlants",
+      "subcategory.gardenDesign",
+      "subcategory.medicinalPlants",
+      "subcategory.potsAndDecoration",
+      "subcategory.plantPropagation",
+      "subcategory.verticalGardens"
     ]
   },
   {
@@ -288,16 +288,16 @@ export const getOtherSectors = (t: TranslationFunction) => [
     titleKey: "sector.gifts",
     emoji: "🎁",
     subcategoriesKeys: [
-      "Gift ideas",
-      "DIY gifts",
-      "Birthdays",
-      "Christmas",
-      "Valentine's Day",
-      "Mother's/Father's Day",
-      "Anniversaries",
-      "Graduations",
-      "Personalized gifts",
-      "Creative wrapping"
+      "subcategory.giftIdeas",
+      "subcategory.diyGifts",
+      "subcategory.birthdays",
+      "subcategory.christmas",
+      "subcategory.valentinesDay",
+      "subcategory.mothersAndFathersDay",
+      "subcategory.anniversaries",
+      "subcategory.graduations",
+      "subcategory.personalizedGifts",
+      "subcategory.creativeWrapping"
     ]
   }
 ];
@@ -308,16 +308,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.pets",
     emoji: "🐕",
     subcategoriesKeys: [
-      "Dog care",
-      "Cat care",
-      "Pet accessories",
-      "Pet training",
-      "DIY for pets",
-      "Animal nutrition",
-      "Veterinary health",
-      "Pet photography",
-      "Travel with pets",
-      "Exotic pets"
+      "subcategory.dogCare",
+      "subcategory.catCare",
+      "subcategory.petAccessories",
+      "subcategory.petTraining",
+      "subcategory.diyForPets",
+      "subcategory.animalNutrition",
+      "subcategory.veterinaryHealth",
+      "subcategory.petPhotography",
+      "subcategory.travelWithPets",
+      "subcategory.exoticPets"
     ]
   },
   {
@@ -325,16 +325,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.automotive",
     emoji: "🚗",
     subcategoriesKeys: [
-      "Classic cars",
-      "Vehicle modifications",
-      "Automotive maintenance",
-      "Motorcycles",
-      "Car accessories",
-      "Electric cars",
-      "Tuning and customization",
-      "Road trips",
-      "Road safety",
-      "Luxury cars"
+      "subcategory.classicCars",
+      "subcategory.vehicleModifications",
+      "subcategory.automotiveMaintenance",
+      "subcategory.motorcycles",
+      "subcategory.carAccessories",
+      "subcategory.electricCars",
+      "subcategory.tuningAndCustomization",
+      "subcategory.roadTrips",
+      "subcategory.roadSafety",
+      "subcategory.luxuryCars"
     ]
   },
   {
@@ -342,16 +342,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.sports",
     emoji: "⚽",
     subcategoriesKeys: [
-      "Training routines",
-      "Sports equipment",
-      "Sports nutrition",
-      "Specific sports (soccer, tennis, swimming)",
-      "Women's fitness",
-      "Functional training",
-      "Extreme sports",
-      "Sports rehabilitation",
-      "Fitness motivation",
-      "Sportswear"
+      "subcategory.trainingRoutines",
+      "subcategory.sportsEquipment",
+      "subcategory.sportsNutrition",
+      "subcategory.specificSports",
+      "subcategory.womensFitness",
+      "subcategory.functionalTraining",
+      "subcategory.extremeSports",
+      "subcategory.sportsRehabilitation",
+      "subcategory.fitnessMotivation",
+      "subcategory.sportswear"
     ]
   },
   {
@@ -359,16 +359,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.music",
     emoji: "🎵",
     subcategoriesKeys: [
-      "Musical instruments",
-      "Music production",
-      "Festivals and concerts",
-      "Vinyl and collecting",
-      "Audio equipment",
-      "Music learning",
-      "Music genres",
-      "Artists and bands",
-      "Home studio",
-      "Karaoke and entertainment"
+      "subcategory.musicalInstruments",
+      "subcategory.musicProduction",
+      "subcategory.festivalsAndConcerts",
+      "subcategory.vinylAndCollecting",
+      "subcategory.audioEquipment",
+      "subcategory.musicLearning",
+      "subcategory.musicGenres",
+      "subcategory.artistsAndBands",
+      "subcategory.homeStudio",
+      "subcategory.karaokeAndEntertainment"
     ]
   },
   {
@@ -376,16 +376,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.literature",
     emoji: "📖",
     subcategoriesKeys: [
-      "Book reviews",
-      "Library organization",
-      "Book clubs and reading communities",
-      "Creative writing",
-      "Literary genres",
-      "Children's books",
-      "Bookstagram and book photography",
-      "Inspirational quotes",
-      "Authors and biographies",
-      "E-books and digital reading"
+      "subcategory.bookReviews",
+      "subcategory.libraryOrganization",
+      "subcategory.bookClubs",
+      "subcategory.creativeWriting",
+      "subcategory.literaryGenres",
+      "subcategory.childrensBooks",
+      "subcategory.bookstagram",
+      "subcategory.inspirationalQuotes",
+      "subcategory.authorsAndBiographies",
+      "subcategory.ebooksAndDigitalReading"
     ]
   },
   {
@@ -393,16 +393,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.gaming",
     emoji: "🎮",
     subcategoriesKeys: [
-      "Video games",
-      "Board games",
-      "Puzzles",
-      "Card games",
-      "Gaming setup",
-      "Cosplay and costumes",
-      "Streaming and content",
-      "Tournaments and competitions",
-      "Gaming collectibles",
-      "Retro games"
+      "subcategory.videoGames",
+      "subcategory.boardGames",
+      "subcategory.puzzles",
+      "subcategory.cardGames",
+      "subcategory.gamingSetup",
+      "subcategory.cosplayAndCostumes",
+      "subcategory.streamingAndContent",
+      "subcategory.tournamentsAndCompetitions",
+      "subcategory.gamingCollectibles",
+      "subcategory.retroGames"
     ]
   },
   {
@@ -410,16 +410,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.techGadgets",
     emoji: "📱",
     subcategoriesKeys: [
-      "Home gadgets",
-      "Wearable technology",
-      "Mobile accessories",
-      "Home office setup",
-      "Gaming and entertainment",
-      "Photography and cameras",
-      "Educational technology",
-      "Apps and software",
-      "Technological innovations",
-      "Vintage electronics"
+      "subcategory.homeGadgets",
+      "subcategory.wearableTechnology",
+      "subcategory.mobileAccessories",
+      "subcategory.homeOfficeSetup",
+      "subcategory.gamingAndEntertainment",
+      "subcategory.photographyAndCameras",
+      "subcategory.educationalTechnology",
+      "subcategory.appsAndSoftware",
+      "subcategory.technologicalInnovations",
+      "subcategory.vintageElectronics"
     ]
   },
   {
@@ -427,16 +427,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.history",
     emoji: "🏛️",
     subcategoriesKeys: [
-      "Ancient history",
-      "World cultures",
-      "Historical monuments",
-      "Historical art",
-      "Cultural traditions",
-      "Mythology and legends",
-      "Archaeology",
-      "Museums and heritage",
-      "Historical biographies",
-      "Historical events"
+      "subcategory.ancientHistory",
+      "subcategory.worldCultures",
+      "subcategory.historicalMonuments",
+      "subcategory.historicalArt",
+      "subcategory.culturalTraditions",
+      "subcategory.mythologyAndLegends",
+      "subcategory.archaeology",
+      "subcategory.museumsAndHeritage",
+      "subcategory.historicalBiographies",
+      "subcategory.historicalEvents"
     ]
   },
   {
@@ -444,16 +444,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.sustainability",
     emoji: "🌍",
     subcategoriesKeys: [
-      "Zero waste living",
-      "Eco-friendly products",
-      "Renewable energy",
-      "Recycling and reuse",
-      "Sustainable fashion",
-      "Organic food",
-      "Sustainable transportation",
-      "Eco-friendly home",
-      "Natural cosmetics",
-      "Environmental activism"
+      "subcategory.zeroWasteLiving",
+      "subcategory.ecoFriendlyProducts",
+      "subcategory.renewableEnergy",
+      "subcategory.recyclingAndReuse",
+      "subcategory.sustainableFashion",
+      "subcategory.organicFood",
+      "subcategory.sustainableTransportation",
+      "subcategory.ecoFriendlyHome",
+      "subcategory.naturalCosmetics",
+      "subcategory.environmentalActivism"
     ]
   },
   {
@@ -461,16 +461,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.photographyNiche",
     emoji: "📸",
     subcategoriesKeys: [
-      "Photography techniques",
-      "Equipment and accessories",
-      "Photo editing",
-      "Landscape photography",
-      "Portraits and people photography",
-      "Product photography",
-      "Street photography",
-      "Wedding photography",
-      "Macro photography",
-      "Night photography"
+      "subcategory.photographyTechniques",
+      "subcategory.equipmentAndAccessories",
+      "subcategory.photoEditing",
+      "subcategory.landscapePhotography",
+      "subcategory.portraitsAndSelfies",
+      "subcategory.productPhotography",
+      "subcategory.streetPhotography",
+      "subcategory.weddingPhotography",
+      "subcategory.macroPhotography",
+      "subcategory.nightPhotography"
     ]
   },
   {
@@ -478,16 +478,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.planning",
     emoji: "📅",
     subcategoriesKeys: [
-      "Bullet journaling",
-      "Planners and agendas",
-      "Home organization",
-      "Personal productivity",
-      "Time management",
-      "Event organization",
-      "Filing systems",
-      "Minimalism and decluttering",
-      "Daily routines",
-      "Goals and objectives"
+      "subcategory.bulletJournaling",
+      "subcategory.plannersAndAgendas",
+      "subcategory.homeOrganization",
+      "subcategory.productivity",
+      "subcategory.timeManagement",
+      "subcategory.eventOrganization",
+      "subcategory.filingSystems",
+      "subcategory.minimalismAndDecluttering",
+      "subcategory.dailyRoutines",
+      "subcategory.goalsAndObjectives"
     ]
   },
   {
@@ -495,16 +495,16 @@ export const getNicheSectors = (t: TranslationFunction) => [
     titleKey: "sector.psychology",
     emoji: "🧠",
     subcategoriesKeys: [
-      "Self-esteem and confidence",
-      "Emotional intelligence",
-      "Mindfulness and meditation",
-      "Healthy habits",
-      "Personal motivation",
-      "Interpersonal relationships",
-      "Stress management",
-      "Personal growth",
-      "Therapy and mental wellness",
-      "Life coaching"
+      "subcategory.selfEsteemAndConfidence",
+      "subcategory.emotionalIntelligence",
+      "subcategory.mindfulness",
+      "subcategory.healthyHabits",
+      "subcategory.personalMotivation",
+      "subcategory.interpersonalRelationships",
+      "subcategory.stressManagement",
+      "subcategory.personalGrowth",
+      "subcategory.therapyAndMentalWellness",
+      "subcategory.lifeCoaching"
     ]
   }
 ];

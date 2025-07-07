@@ -31,7 +31,7 @@ export function OtherSectorsSection() {
                 {sector.subcategoriesKeys.map((sub, idx) => (
                   <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
-                    {sub}
+                    {t(sub)}
                   </li>
                 ))}
               </ul>
