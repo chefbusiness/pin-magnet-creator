@@ -146,7 +146,7 @@ export function PinGenerator() {
                         <h4 className="font-semibold text-sm mb-2 line-clamp-2">
                           {pin.title}
                         </h4>
-                        <p className="text-xs text-muted-foreground mb-4 line-clamp-3">
+                        <p className="text-sm text-muted-foreground mb-4">
                           {pin.description}
                         </p>
                         
