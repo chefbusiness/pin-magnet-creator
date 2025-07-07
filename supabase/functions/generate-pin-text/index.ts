@@ -34,67 +34,65 @@ serve(async (req) => {
     const sourceTitle = og_title || title || 'Contenido interesante';
     const sourceDescription = og_description || description || content_summary?.substring(0, 200) || '';
 
-    // Optimización de títulos para mejor legibilidad
+    // Optimización inteligente de títulos para Ideogram
     const optimizeTitle = (title: string): string => {
-      // Límite razonable para Pinterest
+      // Límite estricto para mejor calidad en Ideogram
       const MAX_LENGTH = 45;
       
-      // Limpiar caracteres problemáticos
-      let cleanTitle = title
-        .replace(/[""''«»]/g, '"')  // Normalizar comillas
-        .replace(/[…]/g, '...')     // Normalizar puntos suspensivos
-        .replace(/[–—]/g, '-')      // Normalizar guiones
-        .trim();
-      
-      if (cleanTitle.length <= MAX_LENGTH) return cleanTitle;
+      if (title.length <= MAX_LENGTH) return title;
       
       // Truncate inteligente en palabras completas
-      const words = cleanTitle.split(' ');
+      const words = title.split(' ');
       let optimized = '';
       
       for (const word of words) {
-        if ((optimized + ' ' + word).trim().length <= MAX_LENGTH) {
+        if ((optimized + word).length <= MAX_LENGTH) {
           optimized += (optimized ? ' ' : '') + word;
         } else {
           break;
         }
       }
       
-      return optimized || cleanTitle.substring(0, MAX_LENGTH).trim();
+      return optimized || title.substring(0, MAX_LENGTH).trim();
     };
 
     const optimizedTitle = optimizeTitle(sourceTitle);
 
-    const prompt = `Crea 3 variaciones diferentes de texto para pines de Pinterest basadas en este contenido:
+    const prompt = `Como experto en Pinterest marketing especializado en español, crea 3 variaciones de texto optimizado para pines de Pinterest basado en este contenido:
 
-Título: "${sourceTitle}"
+Título original: "${sourceTitle}"
 Descripción: "${sourceDescription}"
 
-Requisitos:
-- Títulos: máximo 45 caracteres
-- Descripciones: 350-400 caracteres
-- Cada variación con enfoque diferente
-- Texto claro y directo en español
+IMPORTANTE - Requisitos específicos para generación de imágenes:
+- Títulos MÁXIMO 45 caracteres (crítico para calidad visual)
+- Usar palabras simples y directas en español
+- Evitar palabras muy largas o complejas
+- Priorizar claridad sobre originalidad
+- NO usar símbolos especiales o caracteres complicados
 
-Genera 3 enfoques:
-1. Informativo y directo
-2. Inspiracional 
-3. Práctico con beneficios
+Requisitos para cada variación:
+- Título llamativo y CONCISO (máximo 45 caracteres)
+- Descripción persuasiva de máximo 400 caracteres
+- Usar palabras clave relevantes para SEO
+- Incluir call-to-action atractivo
+- Tono emocional que genere engagement
+- Optimizado para audiencia hispana
+- Palabras fáciles de renderizar visualmente
 
-Responde solo con JSON válido:
+Responde SOLO con un JSON válido en este formato:
 {
   "variations": [
     {
-      "title": "Título directo 1",
-      "description": "Descripción práctica completa de 420-450 caracteres..."
+      "title": "Título optimizado 1",
+      "description": "Descripción persuasiva con CTA 1"
     },
     {
-      "title": "Título emocional 2", 
-      "description": "Descripción emocional completa de 420-450 caracteres..."
+      "title": "Título optimizado 2", 
+      "description": "Descripción persuasiva con CTA 2"
     },
     {
-      "title": "Título urgente 3",
-      "description": "Descripción urgente completa de 420-450 caracteres..."
+      "title": "Título optimizado 3",
+      "description": "Descripción persuasiva con CTA 3"
     }
   ]
 }`;
@@ -112,12 +110,12 @@ Responde solo con JSON válido:
         messages: [
           { 
             role: 'system', 
-            content: 'Eres un experto en Pinterest marketing. Crea contenido DIVERSO y ÚNICO. Responde SOLO con JSON válido.' 
+            content: 'Eres un experto en marketing de Pinterest. Siempre respondes con JSON válido sin texto adicional.' 
           },
           { role: 'user', content: prompt }
         ],
-        temperature: 0.7,
-        max_tokens: 1200,
+        temperature: 0.8,
+        max_tokens: 1000,
       }),
     });
 
@@ -137,23 +135,21 @@ Responde solo con JSON válido:
     } catch (parseError) {
       console.error('Failed to parse OpenAI response as JSON:', parseError);
       // Fallback variations
-      // Fallbacks diversos y únicos
-      const baseTitle = optimizeTitle(sourceTitle);
-      const shortDesc = sourceDescription.substring(0, 150);
-      
+      // Fallback optimizado con títulos cortos
+      const optimizedFallbackTitle = optimizeTitle(sourceTitle);
       textVariations = {
         variations: [
           {
-            title: baseTitle,
-            description: `Toda la información sobre ${shortDesc}. Descubre detalles importantes y consejos útiles. Contenido actualizado y verificado. Explora más sobre este tema interesante y aprovecha al máximo la información disponible. ¡Haz clic para saber más!`
+            title: optimizedFallbackTitle,
+            description: `Descubre ${sourceDescription.substring(0, 300)}... ¡No te lo pierdas!`
           },
           {
-            title: optimizeTitle("Aprende Más"),
-            description: `Transforma tu conocimiento con ${shortDesc}. Guía práctica con estrategias efectivas. Información valiosa que marcará la diferencia. Obtén resultados reales siguiendo estos consejos. ¡Empieza tu transformación hoy mismo!`
+            title: optimizeTitle(`✨ ${sourceTitle}`),
+            description: `${sourceDescription.substring(0, 350)} 💫 ¡Click para saber más!`
           },
           {
-            title: optimizeTitle("Tips Exclusivos"),
-            description: `Técnicas probadas para ${shortDesc}. Métodos que realmente funcionan y dan resultados. Información privilegiada al alcance de todos. Mejora tus habilidades con estos consejos especializados. ¡Accede al contenido completo!`
+            title: optimizeTitle(`🔥 ${sourceTitle}`),
+            description: `Todo lo que necesitas saber: ${sourceDescription.substring(0, 320)} ⬇️`
           }
         ]
       };

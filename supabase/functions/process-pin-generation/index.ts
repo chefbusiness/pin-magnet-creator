@@ -54,25 +54,6 @@ serve(async (req) => {
 
     const textVariations = textResponse.data.data.variations;
     console.log('Text variations generated:', textVariations.length);
-    console.log('Text variation titles:', textVariations.map(v => v.title));
-    
-    // Validar que las variaciones son realmente diferentes
-    const titles = textVariations.map(v => v.title);
-    const uniqueTitles = new Set(titles);
-    if (uniqueTitles.size < titles.length) {
-      console.error('ERROR: Identical text variations detected!', titles);
-      throw new Error('Generated identical pin variations. Please try again.');
-    }
-    
-    // Validar longitud de títulos
-    const longTitles = titles.filter(title => title.length > 45);
-    if (longTitles.length > 0) {
-      console.warn('WARNING: Some titles are too long:', longTitles);
-    }
-
-    // Extract domain from URL for branding
-    const domain = new URL(url).hostname.replace('www.', '');
-    console.log('Extracted domain for branding:', domain);
 
     // Step 3: Generate images for each text variation
     console.log('Step 3: Generating pin images...');
@@ -82,7 +63,6 @@ serve(async (req) => {
           body: {
             title: variation.title,
             description: variation.description,
-            domain: domain,
             style: ['modern', 'creative', 'elegant'][index] || 'modern'
           }
         });
