@@ -1,6 +1,9 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function Features() {
+  const { t } = useLanguage();
+  
   const features = [
     {
       icon: "🎯",
@@ -35,14 +38,14 @@ export function Features() {
   ];
 
   return (
-    <section className="py-20 px-4">
+    <section id="features" className="py-20 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Todo lo que Necesitas para Dominar Pinterest
+            {t('features.title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Herramientas poderosas diseñadas para automatizar completamente tu estrategia de Pinterest
+            {t('features.subtitle')}
           </p>
         </div>
 

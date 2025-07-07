@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export function Pricing() {
+  const { t } = useLanguage();
+  
   const plans = [
     {
       name: "Starter",
@@ -51,14 +54,14 @@ export function Pricing() {
   ];
 
   return (
-    <section className="py-20 px-4 bg-background/50">
+    <section id="pricing" className="py-20 px-4 bg-background/50">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Planes que Escalan con tu Negocio
+            {t('pricing.title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Comienza gratis y escala según creces. Todos los planes incluyen acceso completo a la plataforma.
+            {t('pricing.subtitle')}
           </p>
         </div>
 

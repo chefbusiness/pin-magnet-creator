@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export function PinGenerator() {
+  const { t } = useLanguage();
   const [url, setUrl] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -23,24 +25,24 @@ export function PinGenerator() {
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Genera Pines Profesionales Instantáneamente
+            {t('generator.title')}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Ingresa la URL de tu contenido y obtén múltiples diseños optimizados para Pinterest
+            {t('generator.subtitle')}
           </p>
         </div>
 
         <Card className="shadow-card border-0 bg-card/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle>Generador de Pines</CardTitle>
+            <CardTitle>{t('generator.title')}</CardTitle>
             <CardDescription>
-              Pega la URL de tu blog, artículo o página web para comenzar
+              {t('generator.subtitle')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex gap-4">
               <Input
-                placeholder="https://tu-blog.com/articulo-increible"
+                placeholder={t('generator.placeholder')}
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 className="text-lg h-12"
@@ -52,7 +54,7 @@ export function PinGenerator() {
                 disabled={!url || isGenerating}
                 className="px-8"
               >
-                {isGenerating ? "Generando..." : "Generar Pines"}
+                {isGenerating ? "Generando..." : t('generator.button')}
               </Button>
             </div>
 
