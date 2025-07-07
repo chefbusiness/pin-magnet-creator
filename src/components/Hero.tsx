@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import heroImage from "@/assets/hero-pins.jpg";
+import pinFitness from "@/assets/pin-fitness.jpg";
+import pinInterior from "@/assets/pin-interior.jpg";
+import pinTravel from "@/assets/pin-travel.jpg";
+import pinBusiness from "@/assets/pin-business.jpg";
+import pinRecipes from "@/assets/pin-recipes.jpg";
 
 export function Hero() {
   const { t } = useLanguage();
@@ -50,11 +54,59 @@ export function Hero() {
 
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-hero rounded-3xl opacity-20 blur-3xl transform rotate-6"></div>
-            <img 
-              src={heroImage} 
-              alt="Pinterest Pin Generator Preview" 
-              className="relative rounded-3xl shadow-2xl w-full max-w-md mx-auto"
-            />
+            
+            {/* Collage de pines en formato nube */}
+            <div className="relative w-full max-w-lg mx-auto h-96 lg:h-[500px]">
+              {/* Pin 1 - Fitness (centro-izquierda, más grande) */}
+              <div className="absolute top-8 left-4 w-20 lg:w-24 transform -rotate-12 hover:scale-110 transition-all duration-300 shadow-2xl z-20">
+                <img 
+                  src={pinFitness} 
+                  alt="Fitness Pin" 
+                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                />
+              </div>
+              
+              {/* Pin 2 - Interior (centro, principal) */}
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 rotate-6 w-28 lg:w-32 hover:scale-110 transition-all duration-300 shadow-2xl z-30">
+                <img 
+                  src={pinInterior} 
+                  alt="Interior Design Pin" 
+                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                />
+              </div>
+              
+              {/* Pin 3 - Travel (centro-derecha) */}
+              <div className="absolute top-12 right-4 w-20 lg:w-24 transform rotate-12 hover:scale-110 transition-all duration-300 shadow-2xl z-20">
+                <img 
+                  src={pinTravel} 
+                  alt="Travel Pin" 
+                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                />
+              </div>
+              
+              {/* Pin 4 - Business (abajo-izquierda) */}
+              <div className="absolute bottom-8 left-8 w-22 lg:w-26 transform rotate-3 hover:scale-110 transition-all duration-300 shadow-2xl z-25">
+                <img 
+                  src={pinBusiness} 
+                  alt="Business Pin" 
+                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                />
+              </div>
+              
+              {/* Pin 5 - Recipes (abajo-derecha) */}
+              <div className="absolute bottom-4 right-8 w-20 lg:w-24 transform -rotate-8 hover:scale-110 transition-all duration-300 shadow-2xl z-25">
+                <img 
+                  src={pinRecipes} 
+                  alt="Recipes Pin" 
+                  className="rounded-2xl aspect-[9/16] object-cover shadow-primary/20"
+                />
+              </div>
+              
+              {/* Elementos decorativos flotantes */}
+              <div className="absolute top-20 right-16 w-3 h-3 bg-primary/60 rounded-full animate-pulse"></div>
+              <div className="absolute bottom-20 left-16 w-2 h-2 bg-primary/40 rounded-full animate-pulse delay-700"></div>
+              <div className="absolute top-1/3 right-6 w-1 h-1 bg-primary/30 rounded-full animate-pulse delay-1000"></div>
+            </div>
           </div>
         </div>
       </div>
