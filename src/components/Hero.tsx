@@ -53,61 +53,83 @@ export function Hero() {
           </div>
 
           <div className="relative">
-            {/* Collage organizado con imagen central */}
-            <div className="relative w-full max-w-md mx-auto h-80 lg:h-96">
+            {/* Collage orgánico estilo Pinterest */}
+            <div className="relative w-full max-w-lg mx-auto h-80 lg:h-96">
               
-              {/* Pin Central (Interior Design) - Imagen principal */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 lg:w-28 z-30 hover:scale-110 transition-all duration-300">
+              {/* Pin 1 - Interior (principal, centro-derecha) */}
+              <div className="absolute top-12 right-16 w-20 lg:w-24 transform rotate-12 z-30 hover:scale-105 transition-all duration-300">
                 <img 
                   src={pinInterior} 
                   alt="Interior Design Pin" 
-                  className="rounded-xl aspect-[9/16] object-cover shadow-2xl shadow-primary/20"
+                  className="rounded-lg aspect-[9/16] object-cover shadow-xl"
                 />
               </div>
               
-              {/* Pin Fitness - Esquina superior izquierda */}
-              <div className="absolute top-4 left-4 w-20 lg:w-22 transform -rotate-12 z-20 hover:scale-110 transition-all duration-300">
-                <img 
-                  src={pinFitness} 
-                  alt="Fitness Pin" 
-                  className="rounded-xl aspect-[9/16] object-cover shadow-xl shadow-primary/15"
-                />
-              </div>
-              
-              {/* Pin Travel - Esquina superior derecha */}
-              <div className="absolute top-6 right-4 w-20 lg:w-22 transform rotate-15 z-20 hover:scale-110 transition-all duration-300">
+              {/* Pin 2 - Travel (superpuesto sobre interior, arriba) */}
+              <div className="absolute top-4 right-20 w-18 lg:w-20 transform -rotate-6 z-35 hover:scale-105 transition-all duration-300">
                 <img 
                   src={pinTravel} 
                   alt="Travel Pin" 
-                  className="rounded-xl aspect-[9/16] object-cover shadow-xl shadow-primary/15"
+                  className="rounded-lg aspect-[9/16] object-cover shadow-lg"
                 />
               </div>
               
-              {/* Pin Business - Esquina inferior izquierda */}
-              <div className="absolute bottom-4 left-6 w-18 lg:w-20 transform rotate-8 z-25 hover:scale-110 transition-all duration-300">
+              {/* Pin 3 - Fitness (izquierda, parcialmente detrás) */}
+              <div className="absolute top-8 left-12 w-22 lg:w-26 transform -rotate-15 z-25 hover:scale-105 transition-all duration-300">
+                <img 
+                  src={pinFitness} 
+                  alt="Fitness Pin" 
+                  className="rounded-lg aspect-[9/16] object-cover shadow-lg"
+                />
+              </div>
+              
+              {/* Pin 4 - Business (centro-izquierda, superpuesto) */}
+              <div className="absolute top-20 left-20 w-19 lg:w-22 transform rotate-8 z-32 hover:scale-105 transition-all duration-300">
                 <img 
                   src={pinBusiness} 
                   alt="Business Pin" 
-                  className="rounded-xl aspect-[9/16] object-cover shadow-xl shadow-primary/15"
+                  className="rounded-lg aspect-[9/16] object-cover shadow-lg"
                 />
               </div>
               
-              {/* Pin Recipes - Esquina inferior derecha */}
-              <div className="absolute bottom-6 right-6 w-18 lg:w-20 transform -rotate-10 z-25 hover:scale-110 transition-all duration-300">
+              {/* Pin 5 - Recipes (abajo centro) */}
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 rotate-3 w-21 lg:w-24 z-28 hover:scale-105 transition-all duration-300">
                 <img 
                   src={pinRecipes} 
                   alt="Recipes Pin" 
-                  className="rounded-xl aspect-[9/16] object-cover shadow-xl shadow-primary/15"
+                  className="rounded-lg aspect-[9/16] object-cover shadow-lg"
                 />
               </div>
               
-              {/* Elementos decorativos sutiles */}
-              <div className="absolute top-16 right-12 w-2 h-2 bg-primary/40 rounded-full animate-pulse"></div>
-              <div className="absolute bottom-16 left-12 w-1.5 h-1.5 bg-primary/30 rounded-full animate-pulse delay-700"></div>
-              <div className="absolute top-1/2 right-2 w-1 h-1 bg-primary/20 rounded-full animate-pulse delay-1000"></div>
+              {/* Pin duplicado 6 - Fitness pequeño (esquina superior izquierda) */}
+              <div className="absolute top-2 left-4 w-16 lg:w-18 transform -rotate-20 z-20 hover:scale-105 transition-all duration-300">
+                <img 
+                  src={pinFitness} 
+                  alt="Fitness Pin Small" 
+                  className="rounded-lg aspect-[9/16] object-cover shadow-md opacity-90"
+                />
+              </div>
               
-              {/* Fondo sutil con gradiente */}
-              <div className="absolute inset-0 bg-gradient-hero rounded-3xl opacity-5 blur-2xl -z-10"></div>
+              {/* Pin duplicado 7 - Interior pequeño (abajo derecha) */}
+              <div className="absolute bottom-4 right-8 w-17 lg:w-19 transform rotate-18 z-26 hover:scale-105 transition-all duration-300">
+                <img 
+                  src={pinInterior} 
+                  alt="Interior Pin Small" 
+                  className="rounded-lg aspect-[9/16] object-cover shadow-md opacity-85"
+                />
+              </div>
+              
+              {/* Pin duplicado 8 - Travel muy pequeño (centro-superior) */}
+              <div className="absolute top-6 left-1/2 transform -translate-x-1/2 -rotate-12 w-14 lg:w-16 z-22 hover:scale-105 transition-all duration-300">
+                <img 
+                  src={pinTravel} 
+                  alt="Travel Pin Tiny" 
+                  className="rounded-lg aspect-[9/16] object-cover shadow-sm opacity-80"
+                />
+              </div>
+              
+              {/* Fondo sutil */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl -z-10"></div>
             </div>
           </div>
         </div>
