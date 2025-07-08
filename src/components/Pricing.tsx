@@ -79,31 +79,30 @@ export function Pricing() {
           {plans.map((plan, index) => (
             <Card 
               key={index} 
-              className={`shadow-card border-0 relative ${
+              className={`shadow-card border relative ${
                 plan.popular 
-                  ? 'bg-gradient-primary text-white scale-105 shadow-2xl' 
-                  : 'bg-card/80 backdrop-blur-sm hover:shadow-primary/10 transition-all duration-300'
+                  ? 'bg-gradient-primary text-white scale-105 shadow-2xl border-yellow-400/30' 
+                  : 'bg-card/95 backdrop-blur-sm hover:shadow-primary/10 transition-all duration-300 border-border/50'
               }`}
             >
-              {plan.isLaunchOffer && (
-                <div className="absolute -top-4 left-4">
+              {/* Badge container reorganizado */}
+              <div className="absolute -top-4 left-0 right-0 flex justify-center items-start gap-2 px-4">
+                {plan.isLaunchOffer && (
                   <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold px-3 py-1 animate-pulse">
                     🚀 {t('pricing.launchOffer')}
                   </Badge>
-                </div>
-              )}
-              
-              {plan.popular && (
-                <div className="absolute -top-4 right-4">
+                )}
+                
+                {plan.popular && (
                   <Badge className="bg-yellow-400 text-gray-900 hover:bg-yellow-300 font-semibold px-4 py-1">
                     Más Popular
                   </Badge>
-                </div>
-              )}
+                )}
+              </div>
               
               {plan.isLaunchOffer && (
                 <div className="absolute top-4 right-4">
-                  <Badge className="bg-green-500 text-white font-semibold px-2 py-1 text-xs">
+                  <Badge className="bg-green-500/90 text-white font-semibold px-2 py-1 text-xs border border-green-400/50">
                     {t('pricing.save')} {plan.savings}/mes
                   </Badge>
                 </div>
@@ -159,7 +158,7 @@ export function Pricing() {
                 </ul>
                 
                 <Button 
-                  className="w-full" 
+                  className={`w-full ${plan.popular ? 'bg-yellow-400 text-gray-900 hover:bg-yellow-300 font-semibold' : ''}`}
                   variant={plan.popular ? "secondary" : "gradient"}
                   size="lg"
                 >
