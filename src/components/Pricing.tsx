@@ -95,7 +95,7 @@ export function Pricing() {
               
               {plan.popular && (
                 <div className="absolute -top-4 right-4">
-                  <Badge className="bg-white text-primary font-semibold px-4 py-1">
+                  <Badge className="bg-yellow-400 text-gray-900 hover:bg-yellow-300 font-semibold px-4 py-1">
                     Más Popular
                   </Badge>
                 </div>
