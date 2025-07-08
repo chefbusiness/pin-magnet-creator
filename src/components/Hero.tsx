@@ -15,7 +15,15 @@ export function Hero() {
                 {t('hero.title')}
               </h1>
               <h2 className="text-2xl lg:text-3xl text-foreground/80">
-                {t('hero.subtitle')}
+                <span className="inline-flex items-center gap-2">
+                  <span className="text-primary">⚡🤖</span>
+                  <span className="relative inline-block">
+                    <span className="relative z-10 px-3 py-1 rounded-full text-foreground font-semibold">
+                      {t('hero.subtitle')}
+                    </span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-yellow-400/80 to-orange-400/80 rounded-full animate-pulse"></span>
+                  </span>
+                </span>
               </h2>
             </div>
             

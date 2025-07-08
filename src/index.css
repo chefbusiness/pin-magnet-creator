@@ -36,6 +36,10 @@ All colors MUST be HSL.
     --shadow-primary: 0 10px 40px -10px hsl(346.8 77.2% 49.8% / 0.25);
     --shadow-card: 0 4px 12px -4px hsl(240 10% 3.9% / 0.1);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Highlight effect for time text */
+    --highlight-marker: linear-gradient(135deg, hsl(45 95% 70% / 0.8), hsl(35 95% 65% / 0.8));
+    --highlight-glow: 0 0 20px hsl(45 95% 70% / 0.4);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
