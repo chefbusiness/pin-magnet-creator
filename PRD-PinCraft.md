@@ -104,20 +104,20 @@
 
 ## 6. Modelo de Negocio
 
-### 6.1 Plan Freemium
+### 6.1 Plan Freemium - ese plan freemium ya no aplica
 **Gratis**:
 - 5 pines por mes
 - 2 plantillas básicas
 - Marca de agua de PinCraft
 
-**Pro ($19/mes)**:
+**Pro ($19/mes)**: - plan de precios ya implementados con mejoras
 - 100 pines por mes
 - Todas las plantillas
 - Sin marca de agua
 - Editor básico
 - Soporte por email
 
-**Business ($49/mes)**:
+**Business ($49/mes)**: - plan de precios ya implementados con mejoras
 - Pines ilimitados
 - Múltiples cuentas Pinterest
 - Programación de publicaciones
