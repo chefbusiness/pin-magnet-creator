@@ -7,33 +7,33 @@ export function Features() {
   const features = [
     {
       icon: "🎯",
-      title: "Extracción Automática",
-      description: "Analiza automáticamente el contenido de tu URL y extrae los elementos más importantes para crear pines efectivos."
+      title: t('features.feature1Title'),
+      description: t('features.feature1Desc')
     },
     {
       icon: "🎨",
-      title: "Múltiples Variaciones",
-      description: "Genera hasta 10 diseños diferentes del mismo contenido con estilos, colores y layouts únicos."
+      title: t('features.feature2Title'),
+      description: t('features.feature2Desc')
     },
     {
       icon: "📱",
-      title: "Optimizado para Pinterest",
-      description: "Todos los pines se crean en formato 9:16 optimizado para máximo engagement en Pinterest."
+      title: t('features.feature3Title'),
+      description: t('features.feature3Desc')
     },
     {
       icon: "⚡",
-      title: "Generación Instantánea",
-      description: "De URL a pines listos en menos de 30 segundos. Sin esperas, sin complicaciones."
+      title: t('features.feature4Title'),
+      description: t('features.feature4Desc')
     },
     {
       icon: "🔄",
-      title: "Programación Automática",
-      description: "Programa tus pines para publicarse automáticamente en el mejor momento para tu audiencia."
+      title: t('features.feature5Title'),
+      description: t('features.feature5Desc')
     },
     {
       icon: "📊",
-      title: "Analytics Integrado",
-      description: "Trackea el rendimiento de tus pines y optimiza tu estrategia de contenido."
+      title: t('features.feature6Title'),
+      description: t('features.feature6Desc')
     }
   ];
 
@@ -69,30 +69,30 @@ export function Features() {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="text-3xl font-bold mb-4">
-                ¿Listo para 10x tu Tráfico de Pinterest?
+                {t('features.ctaTitle')}
               </h3>
               <p className="text-xl opacity-90 mb-6">
-                Únete a miles de creators que ya están generando más tráfico con menos esfuerzo.
+                {t('features.ctaSubtitle')}
               </p>
               <div className="flex gap-4 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
-                  <span>Sin tarjeta de crédito</span>
+                  <span>{t('features.ctaFeature1')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
-                  <span>Resultados en 24h</span>
+                  <span>{t('features.ctaFeature2')}</span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 text-center">
               <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-2xl font-bold">2.5M+</div>
-                <div className="text-sm opacity-80">Pines generados</div>
+                <div className="text-2xl font-bold">{t('features.stat1')}</div>
+                <div className="text-sm opacity-80">{t('features.stat1Label')}</div>
               </div>
               <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-2xl font-bold">150%</div>
-                <div className="text-sm opacity-80">Aumento promedio de tráfico</div>
+                <div className="text-2xl font-bold">{t('features.stat2')}</div>
+                <div className="text-sm opacity-80">{t('features.stat2Label')}</div>
               </div>
             </div>
           </div>

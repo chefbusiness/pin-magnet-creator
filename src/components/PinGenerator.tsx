@@ -77,28 +77,28 @@ export function PinGenerator() {
                 disabled={!url || isGenerating}
                 className="px-8"
               >
-                {isGenerating ? (progress || "Generando...") : t('generator.button')}
+                {isGenerating ? (progress || t('pinGenerator.generating')) : t('generator.button')}
               </Button>
             </div>
 
             {!user ? (
               <div className="bg-gradient-primary/10 rounded-lg p-6 border border-primary/20 text-center">
                 <Lock className="w-12 h-12 mx-auto mb-4 text-primary" />
-                <h3 className="text-xl font-semibold mb-2">Autenticación Requerida</h3>
+                <h3 className="text-xl font-semibold mb-2">{t('pinGenerator.authTitle')}</h3>
                 <p className="text-muted-foreground mb-4">
-                  Inicia sesión para generar pines únicos con IA. Sin pruebas gratuitas - solo resultados premium.
+                  {t('pinGenerator.authDesc')}
                 </p>
                 <Button variant="gradient" size="lg" onClick={() => window.location.href = '/auth'}>
-                  Iniciar Sesión
+                  {t('pinGenerator.authButton')}
                 </Button>
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { icon: "🤖", title: "IA Generativa", desc: "Imágenes únicas" },
-                  { icon: "✨", title: "GPT Optimizado", desc: "Textos perfectos" },
-                  { icon: "🎯", title: "Pinterest Ready", desc: "Listos para subir" },
-                  { icon: "📈", title: "Alta Conversión", desc: "Más engagement" }
+                  { icon: "🤖", title: t('pinGenerator.aiFeature1'), desc: t('pinGenerator.aiFeature1Desc') },
+                  { icon: "✨", title: t('pinGenerator.aiFeature2'), desc: t('pinGenerator.aiFeature2Desc') },
+                  { icon: "🎯", title: t('pinGenerator.aiFeature3'), desc: t('pinGenerator.aiFeature3Desc') },
+                  { icon: "📈", title: t('pinGenerator.aiFeature4'), desc: t('pinGenerator.aiFeature4Desc') }
                 ].map((feature, index) => (
                   <div key={index} className="text-center p-4 rounded-lg bg-background/50">
                     <div className="text-3xl mb-2">{feature.icon}</div>
@@ -113,17 +113,17 @@ export function PinGenerator() {
               <div className="bg-gradient-primary/10 rounded-lg p-6 border border-primary/20">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                  <span className="font-semibold">{progress || "Generando tus pines..."}</span>
+                  <span className="font-semibold">{progress || t('pinGenerator.generating')}</span>
                 </div>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className={progress.includes('Analizando') ? 'text-primary' : 'opacity-50'}>
-                    {progress.includes('Analizando') ? '⏳' : '✓'} Analizando contenido de la URL
+                    {progress.includes('Analizando') ? '⏳' : '✓'} {t('pinGenerator.analyzing')}
                   </div>
                   <div className={progress.includes('texto') ? 'text-primary' : 'opacity-50'}>
-                    {progress.includes('texto') ? '⏳' : progress.includes('Generando') ? '✓' : '○'} Generando texto optimizado
+                    {progress.includes('texto') ? '⏳' : progress.includes('Generando') ? '✓' : '○'} {t('pinGenerator.generatingText')}
                   </div>
                   <div className={progress.includes('imagen') ? 'text-primary' : 'opacity-50'}>
-                    {progress.includes('imagen') ? '⏳' : progress.includes('exitosa') ? '✓' : '○'} Creando imágenes profesionales
+                    {progress.includes('imagen') ? '⏳' : progress.includes('exitosa') ? '✓' : '○'} {t('pinGenerator.creatingImages')}
                   </div>
                 </div>
               </div>
@@ -133,10 +133,10 @@ export function PinGenerator() {
               <div className="mt-8">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold">
-                    🎉 ¡{results.count} pines generados!
+                    {t('pinGenerator.resultTitle').replace('{count}', results.count.toString())}
                   </h3>
                   <Badge variant="secondary">
-                    URL: {results.urlAnalysis.title || 'Contenido analizado'}
+                    URL: {results.urlAnalysis.title || t('pinGenerator.contentAnalyzed')}
                   </Badge>
                 </div>
                 
@@ -175,7 +175,7 @@ export function PinGenerator() {
                             className="flex-1"
                           >
                             <Download className="w-3 h-3 mr-1" />
-                            Descargar
+                            {t('pinGenerator.download')}
                           </Button>
                           <Button
                             size="sm"
@@ -197,13 +197,13 @@ export function PinGenerator() {
                       onClick={() => navigate('/dashboard')}
                       className="px-6"
                     >
-                      Ver todos mis pines en Dashboard
+                      {t('pinGenerator.viewDashboard')}
                     </Button>
                   </div>
                   
                   <div className="p-4 bg-muted/50 rounded-lg">
                     <p className="text-sm text-muted-foreground text-center">
-                      💡 <strong>Tip:</strong> Descarga las imágenes y súbelas a Pinterest con sus respectivos títulos y descripciones para mejores resultados.
+                      {t('pinGenerator.tip')}
                     </p>
                   </div>
                 </div>
@@ -217,9 +217,9 @@ export function PinGenerator() {
                     <div className="absolute inset-0 bg-black/20"></div>
                     <div className="relative z-10 h-full flex flex-col justify-between text-white">
                       <div>
-                        <Badge className="bg-white/20 text-white mb-2">Ejemplo {i}</Badge>
+                        <Badge className="bg-white/20 text-white mb-2">{t('pinGenerator.example')} {i}</Badge>
                         <h3 className="font-bold text-lg leading-tight">
-                          Tu Título Aquí
+                          {t('pinGenerator.titlePlaceholder')}
                         </h3>
                       </div>
                       <div className="text-xs opacity-80">

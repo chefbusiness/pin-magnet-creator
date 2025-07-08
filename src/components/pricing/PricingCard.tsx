@@ -59,7 +59,7 @@ export function PricingCard({ plan }: PricingCardProps) {
           {plan.description}
         </CardDescription>
         <p className={`text-xs mt-2 ${plan.popular ? 'text-white/70' : 'text-muted-foreground'}`}>
-          Oferta por tiempo limitado
+          {t('pricing.limitedTimeOffer')}
         </p>
       </CardHeader>
       
@@ -88,13 +88,13 @@ export function PricingCard({ plan }: PricingCardProps) {
           variant={plan.popular ? "secondary" : "gradient"}
           size="lg"
         >
-          {plan.popular ? "Comenzar Ahora" : "Empezar Gratis"}
+          {plan.popular ? t('pricing.getStartedNow') : t('pricing.startFree')}
         </Button>
         
         <p className={`text-xs text-center ${
           plan.popular ? 'text-white/70' : 'text-muted-foreground'
         }`}>
-          Sin compromiso • Cancela cuando quieras
+          {t('pricing.noCommitment')}
         </p>
       </CardContent>
     </Card>

@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PricingCard } from "./pricing/PricingCard";
-import { pricingPlans } from "./pricing/pricingData";
+import { createPricingPlans } from "./pricing/pricingDataTranslated";
 
 export function Pricing() {
   const { t } = useLanguage();
+  const pricingPlans = createPricingPlans(t);
 
   return (
     <section id="pricing" className="py-20 px-4 bg-background/50">
@@ -26,20 +27,20 @@ export function Pricing() {
 
         <div className="mt-16 text-center">
           <p className="text-muted-foreground mb-6">
-            ¿Necesitas más de 500 pines por mes? 
+            {t('pricing.enterpriseQuestion')}
           </p>
           <Button variant="outline" size="lg">
-            Contactar Ventas para Plan Enterprise
+            {t('pricing.contactSales')}
           </Button>
         </div>
 
         <div className="mt-8 text-center">
           <div className="inline-flex items-center gap-2 bg-gradient-primary/10 rounded-full px-4 py-2 border border-primary/20">
-            <span className="text-sm font-medium">🤖 Generado con IA</span>
+            <span className="text-sm font-medium">{t('pricing.aiGenerated')}</span>
             <span className="text-xs text-muted-foreground">•</span>
-            <span className="text-sm font-medium">✨ Textos con GPT</span>
+            <span className="text-sm font-medium">{t('pricing.gptTexts')}</span>
             <span className="text-xs text-muted-foreground">•</span>
-            <span className="text-sm font-medium">🎨 Imágenes únicas</span>
+            <span className="text-sm font-medium">{t('pricing.uniqueImages')}</span>
           </div>
         </div>
       </div>

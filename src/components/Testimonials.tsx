@@ -6,21 +6,21 @@ export function Testimonials() {
   
   const testimonials = [
     {
-      name: "María González",
-      role: "Blogger de Lifestyle",
-      content: "PinCraft me ahorra horas cada semana. Antes tardaba 30 minutos por pin, ahora genero 10 variaciones en menos de 2 minutos.",
+      name: t('testimonials.user1Name'),
+      role: t('testimonials.user1Role'),
+      content: t('testimonials.user1Content'),
       avatar: "👩‍💻"
     },
     {
-      name: "Carlos Martín",
-      role: "Marketing Manager",
-      content: "Nuestro tráfico de Pinterest aumentó 300% desde que empezamos a usar PinCraft. La calidad de los pines es increíble.",
+      name: t('testimonials.user2Name'),
+      role: t('testimonials.user2Role'),
+      content: t('testimonials.user2Content'),
       avatar: "👨‍💼"
     },
     {
-      name: "Ana Silva",
-      role: "E-commerce Owner",
-      content: "Como dueña de una tienda online, necesitaba crear pines constantemente. PinCraft me permite mantener una presencia consistente sin esfuerzo.",
+      name: t('testimonials.user3Name'),
+      role: t('testimonials.user3Role'),
+      content: t('testimonials.user3Content'),
       avatar: "👩‍🎨"
     }
   ];
@@ -30,10 +30,10 @@ export function Testimonials() {
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Lo Que Dicen Nuestros Usuarios
+            {t('testimonials.title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Miles de creators ya están multiplicando su tráfico con PinCraft
+            {t('testimonials.subtitle')}
           </p>
         </div>
 
