@@ -17,7 +17,7 @@ export const esTranslations = {
   
   // Hero
   'hero.title': 'Crea 1 Mes de Contenido para Pinterest',
-  'hero.subtitle': 'En 1 Minuto',
+  'hero.subtitle': 'En 15 Minutos',
   'hero.description': 'Crear pines atractivos solía tomar horas. Hemos reducido el proceso a segundos. Simplemente ingresa la URL de tu contenido y genera múltiples variaciones profesionales.',
   'hero.cta': 'Generar Mis Pines',
   'hero.tutorial': 'Ver Tutorial (1 min)',

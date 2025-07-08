@@ -15,7 +15,7 @@ export function Hero() {
                 {t('hero.title')}
               </h1>
               <h2 className="text-2xl lg:text-3xl text-foreground/80">
-                {t('hero.subtitle')} <span className="text-primary font-semibold">1 {t('hero.subtitle').includes('Minute') ? 'Minute' : 'Minuto'}</span>
+                {t('hero.subtitle')}
               </h2>
             </div>
             
