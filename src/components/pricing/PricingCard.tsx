@@ -30,24 +30,13 @@ export function PricingCard({ plan }: PricingCardProps) {
           : 'bg-card/95 backdrop-blur-sm hover:shadow-primary/10 transition-all duration-300 border-border/50'
       }`}
     >
-      {/* Badge container reorganizado */}
-      <div className="absolute -top-4 left-0 right-0 flex justify-center items-start gap-2 px-4">
-        {plan.isLaunchOffer && (
-          <PricingBadge type="launch" />
-        )}
-        
-        {plan.popular && (
+      {plan.popular && (
+        <div className="absolute -top-4 left-0 right-0 flex justify-center">
           <PricingBadge type="popular" />
-        )}
-      </div>
-      
-      {plan.isLaunchOffer && (
-        <div className="absolute top-4 right-4">
-          <PricingBadge type="savings" savings={plan.savings} />
         </div>
       )}
       
-      <CardHeader className="text-center pb-2 pt-8">
+      <CardHeader className="text-center pb-2 pt-6">
         <CardTitle className={`text-2xl ${plan.popular ? 'text-white' : ''}`}>
           {plan.name}
         </CardTitle>
@@ -69,11 +58,9 @@ export function PricingCard({ plan }: PricingCardProps) {
         <CardDescription className={plan.popular ? 'text-white/90' : ''}>
           {plan.description}
         </CardDescription>
-        {plan.isLaunchOffer && (
-          <p className={`text-xs mt-2 ${plan.popular ? 'text-white/70' : 'text-muted-foreground'}`}>
-            {t('pricing.limitedTime')}
-          </p>
-        )}
+        <p className={`text-xs mt-2 ${plan.popular ? 'text-white/70' : 'text-muted-foreground'}`}>
+          Oferta por tiempo limitado
+        </p>
       </CardHeader>
       
       <CardContent className="space-y-6">
@@ -101,12 +88,7 @@ export function PricingCard({ plan }: PricingCardProps) {
           variant={plan.popular ? "secondary" : "gradient"}
           size="lg"
         >
-          {plan.isLaunchOffer 
-            ? t('pricing.getStarted')
-            : plan.popular 
-              ? "Comenzar Ahora" 
-              : t('pricing.tryFree')
-          }
+          {plan.popular ? "Comenzar Ahora" : "Empezar Gratis"}
         </Button>
         
         <p className={`text-xs text-center ${
