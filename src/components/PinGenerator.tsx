@@ -64,7 +64,7 @@ export function PinGenerator() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Input
                 placeholder={t('generator.placeholder')}
                 value={url}
