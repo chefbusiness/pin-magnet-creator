@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
@@ -13,7 +14,14 @@ serve(async (req) => {
   }
 
   try {
-    const { url, customContent, nicheId, specializedPrompt, imageStylePrompt, userId } = await req.json();
+    const { 
+      url, 
+      customContent, 
+      userId = null, 
+      nicheId,
+      specializedPrompt,
+      imageStylePrompt 
+    } = await req.json();
     
     if (!url && !customContent) {
       return new Response(
@@ -22,125 +30,174 @@ serve(async (req) => {
       );
     }
 
-    if (!userId) {
-      return new Response(
-        JSON.stringify({ error: 'User ID is required' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
 
-    console.log(`Starting pin generation process for: ${url ? `URL: ${url}` : 'Custom content'} (userId: ${userId})`);
+    console.log(`Starting pin generation process for: ${url ? `URL: ${url}` : 'custom content'} (userId: ${userId})`);
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-    // Step 1: Analyze URL or use custom content
-    console.log(url ? 'Step 1: Analyzing URL...' : 'Step 1: Processing custom content...');
-    
     let urlAnalysis;
+
     if (url) {
-      const { data: analysisData, error: analysisError } = await supabase.functions.invoke('analyze-url', {
+      // Step 1: Analyze URL
+      console.log('Step 1: Analyzing URL...');
+      const analyzeResponse = await supabase.functions.invoke('analyze-url', {
         body: { url }
       });
 
-      if (analysisError) {
-        throw new Error(`URL analysis failed: ${analysisError.message}`);
+      if (analyzeResponse.error) {
+        throw new Error(`URL analysis failed: ${analyzeResponse.error.message}`);
       }
 
-      urlAnalysis = analysisData;
+      urlAnalysis = analyzeResponse.data.data;
       console.log('URL analysis completed:', urlAnalysis.title);
     } else {
-      // For custom content, create a mock analysis
+      // Create analysis object from custom content
       urlAnalysis = {
         title: 'Contenido Personalizado',
-        description: customContent,
-        content: customContent,
+        description: customContent.substring(0, 150) + '...',
+        content_summary: customContent,
         url: null
       };
-      console.log('Custom content processed');
+      console.log('Using custom content for generation');
     }
 
-    // Step 2: Generate text variations
+    // Step 2: Generate text variations with specialized prompts
     console.log('Step 2: Generating text variations...');
-    
-    const { data: textData, error: textError } = await supabase.functions.invoke('generate-pin-text', {
+    const textResponse = await supabase.functions.invoke('generate-pin-text', {
       body: { 
-        title: urlAnalysis.title, 
-        description: urlAnalysis.description || urlAnalysis.content || customContent,
-        url: url,
-        nicheId: nicheId,
-        specializedPrompt: specializedPrompt
+        urlAnalysis,
+        specializedPrompt,
+        nicheId
       }
     });
 
-    if (textError) {
-      throw new Error(`Text generation failed: ${textError.message}`);
+    if (textResponse.error) {
+      throw new Error(`Text generation failed: ${textResponse.error.message}`);
     }
 
-    console.log('Text variations generated:', textData.variations.length);
+    const textVariations = textResponse.data.data.variations;
+    console.log('Text variations generated:', textVariations.length);
 
-    // Step 3: Generate pin images with variations
+    // Step 3: Generate exactly ONE image for each text variation (total: 3 images)
     console.log('Step 3: Generating pin images...');
-    
-    const pins = [];
-    const styles = ['profesional-elegante', 'moderno-llamativo', 'aesthetic-tendencia'];
-    
-    for (let i = 0; i < textData.variations.length && i < 3; i++) {
-      const variation = textData.variations[i];
-      const style = styles[i % styles.length];
-      
-      console.log(`Generating image ${i + 1}/3 for variation: ${variation.title}`);
-      
+    const imagePromises = textVariations.map(async (variation: any, index: number) => {
       try {
-        const { data: imageData, error: imageError } = await supabase.functions.invoke('generate-pin-image', {
+        console.log(`Generating image ${index + 1}/3 for variation: ${variation.title}`);
+        
+        // Generate style names based on imageStylePrompt content and user selection
+        let styleName = 'personalizado';
+        
+        if (imageStylePrompt) {
+          // Extract meaningful style indicators from the prompt
+          if (imageStylePrompt.includes('plant-filled') || imageStylePrompt.includes('botanical')) {
+            styleName = 'botanico-plantas';
+          } else if (imageStylePrompt.includes('scandinavian') || imageStylePrompt.includes('nordic')) {
+            styleName = 'escandinavo-nordico';
+          } else if (imageStylePrompt.includes('bohemian') || imageStylePrompt.includes('boho')) {
+            styleName = 'bohemio-ethnic';
+          } else if (imageStylePrompt.includes('industrial')) {
+            styleName = 'industrial-moderno';
+          } else if (imageStylePrompt.includes('vintage') || imageStylePrompt.includes('retro')) {
+            styleName = 'vintage-retro';
+          } else if (imageStylePrompt.includes('aesthetic') || imageStylePrompt.includes('cozy')) {
+            styleName = 'aesthetic-acogedor';
+          } else if (imageStylePrompt.includes('minimalist') || imageStylePrompt.includes('minimal')) {
+            styleName = 'minimalista-limpio';
+          } else if (imageStylePrompt.includes('rustic') || imageStylePrompt.includes('farmhouse')) {
+            styleName = 'rustico-campestre';
+          } else {
+            // Generate different style variations for each pin
+            const styleVariations = [
+              'estilo-especializado-1',
+              'tendencia-pinterest-2', 
+              'personalizado-optimizado-3'
+            ];
+            styleName = styleVariations[index] || 'personalizado-unico';
+          }
+        }
+
+        const imageResponse = await supabase.functions.invoke('generate-pin-image', {
           body: {
             title: variation.title,
             description: variation.description,
-            style: style,
-            url: url,
-            imageStylePrompt: imageStylePrompt,
-            pinIndex: i // Pass the index for visual variation
+            style: styleName,
+            url: url || null,
+            imageStylePrompt
           }
         });
 
-        if (imageError) {
-          console.error(`Failed to generate image ${i + 1}:`, imageError);
-          continue;
+        if (imageResponse.error) {
+          console.error(`Image generation failed for variation ${index + 1}:`, imageResponse.error);
+          return null;
         }
 
-        if (imageData?.data?.images?.[0]) {
-          pins.push({
-            title: variation.title,
-            description: variation.description,
-            imageUrl: imageData.data.images[0].imageUrl,
-            style: style,
-            pinId: `pin-${Date.now()}-${i}`
-          });
-          
-          const modelUsed = imageData.data.images[0].model || 'unknown';
-          const variationInfo = imageData.data.images[0].variation || `Pin ${i + 1}`;
-          console.log(`Successfully generated pin ${i + 1}/3 with ${modelUsed} - ${variationInfo}`);
+        // The updated generate-pin-image now returns exactly 1 image
+        const imageData = imageResponse.data.data.images[0];
+        
+        if (!imageData) {
+          console.error(`No image generated for variation ${index + 1}`);
+          return null;
         }
+
+        // Create pin record in database
+        const pinData = {
+          user_id: userId,
+          url: url || 'custom-content',
+          title: variation.title,
+          description: variation.description,
+          image_url: imageData.imageUrl,
+          image_prompt: `Generated with ${imageData.model || 'AI'}`,
+          template_style: styleName,
+          status: 'completed'
+        };
+
+        const { data: pin, error: pinError } = await supabase
+          .from('pins')
+          .insert(pinData)
+          .select()
+          .single();
+
+        if (pinError) {
+          console.error('Error saving pin to database:', pinError);
+          return null;
+        }
+
+        console.log(`Successfully generated pin ${index + 1}/3 with ${imageData.model}`);
+
+        return {
+          title: variation.title,
+          description: variation.description,
+          imageUrl: imageData.imageUrl,
+          style: styleName,
+          pinId: pin?.id,
+          model: imageData.model || 'unknown'
+        };
+
       } catch (error) {
-        console.error(`Error generating pin ${i + 1}:`, error);
-        continue;
+        console.error(`Error processing variation ${index + 1}:`, error);
+        return null;
       }
-    }
+    });
 
-    if (pins.length === 0) {
+    const results = await Promise.allSettled(imagePromises);
+    const successfulPins = results
+      .filter(result => result.status === 'fulfilled' && result.value !== null)
+      .map(result => (result as PromiseFulfilledResult<any>).value);
+
+    if (successfulPins.length === 0) {
       throw new Error('Failed to generate any pins');
     }
 
-    console.log(`Pin generation completed: ${pins.length} pins created`);
+    console.log(`Pin generation completed: ${successfulPins.length} pins created`);
 
-    // Return the generated pins
     return new Response(
-      JSON.stringify({
+      JSON.stringify({ 
         data: {
-          pins: pins,
-          urlAnalysis: urlAnalysis,
-          count: pins.length
+          pins: successfulPins,
+          urlAnalysis,
+          count: successfulPins.length
         }
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -149,10 +206,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in process-pin-generation function:', error);
     return new Response(
-      JSON.stringify({ 
-        error: error.message,
-        details: 'Check function logs for detailed error information'
-      }),
+      JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

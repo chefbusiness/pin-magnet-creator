@@ -1,4 +1,5 @@
 
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
@@ -14,7 +15,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, style, url, imageStylePrompt, pinIndex = 0 } = await req.json();
+    const { title, description, style, url, imageStylePrompt } = await req.json();
     
     if (!title || !description) {
       return new Response(
@@ -55,7 +56,7 @@ serve(async (req) => {
       }
     }
 
-    // Extract visual concept from description, NOT the text content
+    // SOLUTION: Extract visual concept from description, NOT the text content
     let visualConcept = 'interior design scene';
     
     // Extract key visual concepts without including text content
@@ -69,72 +70,47 @@ serve(async (req) => {
       visualConcept = 'bathroom interior design';
     }
 
-    // CREATE VISUAL VARIATIONS BASED ON PIN INDEX - 3 DISTINCT STYLES
-    const visualVariations = [
-      // Pin 1: Wide angle room view
-      {
-        angle: 'wide-angle room view',
-        perspective: 'spacious full room perspective showing complete layout',
-        lighting: 'bright natural lighting from large windows, airy atmosphere'
-      },
-      // Pin 2: Cozy corner focus  
-      {
-        angle: 'intimate cozy corner detail',
-        perspective: 'focused on comfortable seating area or reading nook',
-        lighting: 'warm ambient lighting, golden hour soft glow'
-      },
-      // Pin 3: Modern minimalist
-      {
-        angle: 'clean minimalist architectural view',
-        perspective: 'geometric symmetry and clean lines, magazine-style composition',
-        lighting: 'crisp professional lighting, bright and clean'
-      }
-    ];
-
-    const currentVariation = visualVariations[pinIndex % 3];
-
-    // OPTIMIZED PROMPT STRUCTURE - VISUAL CONCEPT + CLEAR TEXT POSITIONING
+    // COMPLETELY NEW PROMPT STRUCTURE - NO DESCRIPTION TEXT
     let basePrompt = `Pinterest pin 9:16 vertical format. 
+    
+BACKGROUND: Full-screen ${visualConcept} photograph, high-quality interior design image.`;
 
-BACKGROUND IMAGE: Full-screen ${visualConcept} photograph, high-quality interior design image.
-VISUAL STYLE: ${currentVariation.angle}, ${currentVariation.perspective}, ${currentVariation.lighting}.
-COMPOSITION: Complete uncut scene, full room visible, no cropping or partial elements.`;
-
-    // Add style specifications if provided
+    // Add style specifications
     if (imageStylePrompt) {
       basePrompt += ` ${imageStylePrompt} style.`;
     }
 
-    // CLEAR TEXT POSITIONING INSTRUCTIONS + ANTI-PARAGRAPH RULES
+    // AGGRESSIVE ANTI-TEXT INSTRUCTIONS
     basePrompt += `
 
-TEXT OVERLAY POSITIONING:
-- Title "${displayTitle}" positioned at TOP of image with transparent background
-- Domain "${websiteDomain}" positioned at BOTTOM of image with transparent background  
-- Text directly overlaid on background image, NO solid background panels
+OVERLAY TEXT ONLY:
+- Title overlay: "${displayTitle}"
+- Domain watermark: "${websiteDomain}"
 
 CRITICAL RESTRICTIONS:
-- NO paragraphs or article text in the image
-- NO body text content or descriptions in the image
-- NO text blocks, sentences, or content snippets
-- NO background boxes, panels, or frames around text
-- Complete background image fills entire 9:16 frame
-- Image NOT cropped, bordered, or partially cut off
-- Full scene visible with all elements complete
-- Only title at top and domain at bottom as text overlays`;
+- NO paragraphs in image
+- NO descriptions in image  
+- NO body text
+- NO article content
+- NO text blocks
+- NO sentences
+- Image fills entire frame
+- NOT framed or bordered
+- Background image only with minimal text overlay`;
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
-    console.log(`Pin Variation ${pinIndex + 1}/3: ${currentVariation.angle}`);
-    console.log('Optimized Prompt:', basePrompt);
+    console.log('NEW Visual-Only Prompt:', basePrompt);
 
     try {
-      // IDEOGRAM V3-TURBO DIRECT STRUCTURE (NO INPUT WRAPPER)
+      // Generate image with Ideogram v3-turbo (using correct API format)
       const requestBody = {
-        prompt: basePrompt,
-        resolution: "None",
-        style_type: "None", 
-        aspect_ratio: "9:16",
-        magic_prompt_option: "Auto"
+        input: {
+          prompt: basePrompt,
+          aspect_ratio: "9:16",
+          style_type: "None",
+          resolution: "None", 
+          magic_prompt_option: "Auto"
+        }
       };
 
       console.log('Ideogram request body:', JSON.stringify(requestBody, null, 2));
@@ -232,15 +208,14 @@ CRITICAL RESTRICTIONS:
       console.log('=== IDEOGRAM SUCCESS ===');
       console.log('Final URL:', publicUrl);
 
-      // Return single image with variation info
+      // Return single image (not multiple)
       return new Response(
         JSON.stringify({ 
           data: {
             images: [{
               imageUrl: publicUrl,
               fileName: fileName,
-              model: 'ideogram-v3-turbo',
-              variation: `${currentVariation.angle} (Pin ${pinIndex + 1}/3)`
+              model: 'ideogram-v3-turbo'
             }],
             totalGenerated: 1
           }
@@ -252,6 +227,7 @@ CRITICAL RESTRICTIONS:
       console.error('=== IDEOGRAM FAILED, TRYING FLUX FALLBACK ===');
       console.error('Ideogram error:', ideogramError.message);
       
+      // Fallback to Flux only if Ideogram fails
       try {
         const fluxResponse = await fetch('https://api.replicate.com/v1/models/black-forest-labs/flux-schnell/predictions', {
           method: 'POST',
@@ -332,8 +308,7 @@ CRITICAL RESTRICTIONS:
               images: [{
                 imageUrl: fluxPublicUrl,
                 fileName: fluxFileName,
-                model: 'flux-schnell-fallback',
-                variation: `${currentVariation.angle} (Pin ${pinIndex + 1}/3) - Fallback`
+                model: 'flux-schnell-fallback'
               }],
               totalGenerated: 1
             }
@@ -363,3 +338,4 @@ CRITICAL RESTRICTIONS:
     );
   }
 });
+
