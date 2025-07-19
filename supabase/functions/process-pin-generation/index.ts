@@ -13,11 +13,18 @@ serve(async (req) => {
   }
 
   try {
-    const { url, userId = null } = await req.json();
+    const { 
+      url, 
+      customContent, 
+      userId = null, 
+      nicheId,
+      specializedPrompt,
+      imageStylePrompt 
+    } = await req.json();
     
-    if (!url) {
+    if (!url && !customContent) {
       return new Response(
-        JSON.stringify({ error: 'URL is required' }),
+        JSON.stringify({ error: 'URL or custom content is required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -27,25 +34,42 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    console.log('Starting pin generation process for:', url);
+    console.log(`Starting pin generation process for: ${url ? `URL: ${url}` : 'custom content'} (userId: ${userId})`);
 
-    // Step 1: Analyze URL
-    console.log('Step 1: Analyzing URL...');
-    const analyzeResponse = await supabase.functions.invoke('analyze-url', {
-      body: { url }
-    });
+    let urlAnalysis;
 
-    if (analyzeResponse.error) {
-      throw new Error(`URL analysis failed: ${analyzeResponse.error.message}`);
+    if (url) {
+      // Step 1: Analyze URL
+      console.log('Step 1: Analyzing URL...');
+      const analyzeResponse = await supabase.functions.invoke('analyze-url', {
+        body: { url }
+      });
+
+      if (analyzeResponse.error) {
+        throw new Error(`URL analysis failed: ${analyzeResponse.error.message}`);
+      }
+
+      urlAnalysis = analyzeResponse.data.data;
+      console.log('URL analysis completed:', urlAnalysis.title);
+    } else {
+      // Create analysis object from custom content
+      urlAnalysis = {
+        title: 'Contenido Personalizado',
+        description: customContent.substring(0, 150) + '...',
+        content_summary: customContent,
+        url: null
+      };
+      console.log('Using custom content for generation');
     }
 
-    const urlAnalysis = analyzeResponse.data.data;
-    console.log('URL analysis completed:', urlAnalysis.title);
-
-    // Step 2: Generate text variations
+    // Step 2: Generate text variations with specialized prompts
     console.log('Step 2: Generating text variations...');
     const textResponse = await supabase.functions.invoke('generate-pin-text', {
-      body: { urlAnalysis }
+      body: { 
+        urlAnalysis,
+        specializedPrompt,
+        nicheId
+      }
     });
 
     if (textResponse.error) {
@@ -64,7 +88,8 @@ serve(async (req) => {
             title: variation.title,
             description: variation.description,
             style: ['modern', 'creative', 'elegant'][index] || 'modern',
-            url: url
+            url: url || null,
+            imageStylePrompt
           }
         });
 
@@ -76,7 +101,7 @@ serve(async (req) => {
         // Create pin record in database
         const pinData = {
           user_id: userId,
-          url: url,
+          url: url || 'custom-content',
           title: variation.title,
           description: variation.description,
           image_url: imageResponse.data.data.imageUrl,

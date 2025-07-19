@@ -19,13 +19,20 @@ export interface GenerationResult {
 export const usePinGeneration = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState('');
+  const [generatedPins, setGeneratedPins] = useState<PinResult[]>([]);
   const { toast } = useToast();
 
-  const generatePins = async (url: string, user?: any): Promise<GenerationResult | null> => {
-    if (!url) {
+  const generatePins = async (params: { 
+    url?: string; 
+    customContent?: string; 
+    nicheId?: string; 
+    specializedPrompt?: string; 
+    imageStylePrompt?: string; 
+  }, user?: any): Promise<GenerationResult | null> => {
+    if (!params.url && !params.customContent) {
       toast({
         title: "Error",
-        description: "Por favor ingresa una URL válida",
+        description: "Por favor ingresa una URL o contenido personalizado",
         variant: "destructive",
       });
       return null;
@@ -45,17 +52,26 @@ export const usePinGeneration = () => {
     setProgress('Iniciando generación...');
 
     try {
-      // Validate URL format
-      try {
-        new URL(url);
-      } catch {
-        throw new Error('Por favor ingresa una URL válida (ej: https://ejemplo.com)');
+      // Validate URL format if URL is provided
+      if (params.url) {
+        try {
+          new URL(params.url);
+        } catch {
+          throw new Error('Por favor ingresa una URL válida (ej: https://ejemplo.com)');
+        }
       }
 
-      setProgress('Analizando contenido de la URL...');
+      setProgress(params.url ? 'Analizando contenido de la URL...' : 'Procesando contenido personalizado...');
       
       const { data, error } = await supabase.functions.invoke('process-pin-generation', {
-        body: { url, userId: user.id }
+        body: { 
+          url: params.url,
+          customContent: params.customContent,
+          nicheId: params.nicheId,
+          specializedPrompt: params.specializedPrompt,
+          imageStylePrompt: params.imageStylePrompt,
+          userId: user.id 
+        }
       });
 
       if (error) {
@@ -67,6 +83,7 @@ export const usePinGeneration = () => {
       }
 
       setProgress('¡Pines generados exitosamente!');
+      setGeneratedPins(data.data.pins);
       
       toast({
         title: "¡Éxito!",
@@ -93,9 +110,16 @@ export const usePinGeneration = () => {
     }
   };
 
+  const reset = () => {
+    setGeneratedPins([]);
+    setProgress('');
+  };
+
   return {
     generatePins,
     isGenerating,
-    progress
+    progress,
+    generatedPins,
+    reset
   };
 };

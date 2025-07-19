@@ -13,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, style = 'modern', url } = await req.json();
+    const { title, description, style = 'modern', url, imageStylePrompt } = await req.json();
     
     if (!title) {
       return new Response(
@@ -36,11 +36,11 @@ serve(async (req) => {
 
     // Create Pinterest-optimized prompt for Ideogram
     const stylePrompts = {
-      modern: 'modern food photography background, clean white text with bold sans-serif typography, geometric shapes, bright professional lighting, high-end restaurant aesthetic',
-      creative: 'vibrant colorful food background, artistic hand-lettered typography, watercolor elements, fresh ingredients, dynamic composition with visual hierarchy',
-      elegant: 'luxury dark background with gold accents, sophisticated serif typography, premium food styling, marble textures, upscale restaurant ambiance',
+      modern: 'modern clean background, clean white text with bold sans-serif typography, geometric shapes, bright professional lighting, high-end aesthetic',
+      creative: 'vibrant colorful background, artistic hand-lettered typography, watercolor elements, fresh ingredients, dynamic composition with visual hierarchy',
+      elegant: 'luxury dark background with gold accents, sophisticated serif typography, premium styling, marble textures, upscale ambiance',
       bold: 'dramatic high-contrast background, extra bold typography with shadows, striking color palette, eye-catching visual elements, attention-grabbing design',
-      lifestyle: 'warm cozy kitchen background, friendly handwritten-style typography, natural lighting, homestyle cooking aesthetic, inviting atmosphere'
+      lifestyle: 'warm cozy background, friendly handwritten-style typography, natural lighting, homestyle aesthetic, inviting atmosphere'
     };
 
     const selectedStyle = stylePrompts[style as keyof typeof stylePrompts] || stylePrompts.modern;
@@ -56,15 +56,22 @@ serve(async (req) => {
       }
     }
     
-    const prompt = `Create a stunning Pinterest pin (736x1104 vertical format) that will go viral. Design requirements:
+    let basePrompt = `Create a stunning Pinterest pin (736x1104 vertical format) that will go viral. Design requirements:
 
 MAIN TEXT: "${title}" (make this text HUGE, bold, and impossible to ignore)
 ${description ? `SECONDARY TEXT: "${description.substring(0, 80)}"` : ''}
 
-Visual Style: ${selectedStyle}
+Visual Style: ${selectedStyle}`;
+
+    // Add specialized image style if provided
+    if (imageStylePrompt) {
+      basePrompt += `\n\nSPECIALIZED STYLE: ${imageStylePrompt}`;
+    }
+
+    const prompt = basePrompt + `
 
 CRITICAL DESIGN REQUIREMENTS:
-- Background: Beautiful, appetizing food/restaurant photography that relates to the content topic
+- Background: Beautiful, professional photography that relates to the content topic
 - Typography: Use LARGE, BOLD, high-contrast text that pops against the background
 - Color scheme: Eye-catching colors that work well on Pinterest (bright, vibrant, but professional)
 - Layout: Top 1/3 for background image, middle section for main text overlay, bottom for subtitle/branding
@@ -77,6 +84,9 @@ ${domain ? `- Website branding: Include "${domain}" at the bottom of the pin in 
 The final result should be so attractive that Pinterest users can't scroll past it without clicking!`;
 
     console.log('Generating Pinterest pin image with Ideogram...');
+    if (imageStylePrompt) {
+      console.log('Using specialized image style prompt');
+    }
     console.log('Prompt:', prompt);
 
     const output = await replicate.run(

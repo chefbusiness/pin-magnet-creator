@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { urlAnalysis } = await req.json();
+    const { urlAnalysis, specializedPrompt, nicheId } = await req.json();
     
     if (!urlAnalysis) {
       return new Response(
@@ -34,7 +34,7 @@ serve(async (req) => {
     const sourceTitle = og_title || title || 'Contenido interesante';
     const sourceDescription = og_description || description || content_summary?.substring(0, 200) || '';
 
-    const prompt = `Como experto en Pinterest marketing, crea 3 variaciones de texto optimizado para pines de Pinterest basado en este contenido:
+    let basePrompt = `Como experto en Pinterest marketing, crea 3 variaciones de texto optimizado para pines de Pinterest basado en este contenido:
 
 Título original: "${sourceTitle}"
 Descripción: "${sourceDescription}"
@@ -45,7 +45,14 @@ Requisitos para cada variación:
 - Usar palabras clave relevantes para SEO
 - Incluir call-to-action atractivo
 - Tone emocional que genere engagement
-- Adaptar para audiencia hispana
+- Adaptar para audiencia hispana`;
+
+    // Add specialized prompt if provided
+    if (specializedPrompt) {
+      basePrompt += `\n\nIMPORTANTE - ESPECIALIZACIÓN: ${specializedPrompt}`;
+    }
+
+    const prompt = basePrompt + `
 
 Responde SOLO con un JSON válido en este formato:
 {
@@ -66,6 +73,9 @@ Responde SOLO con un JSON válido en este formato:
 }`;
 
     console.log('Generating Pinterest text variations...');
+    if (specializedPrompt) {
+      console.log('Using specialized prompt for niche:', nicheId);
+    }
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

@@ -14,6 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
+      niche_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          emoji: string | null
+          icon_name: string | null
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          emoji?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          emoji?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      niche_subcategories: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_style_prompt: string | null
+          is_active: boolean
+          is_premium: boolean
+          meta_description: string | null
+          meta_title: string | null
+          name: string
+          slug: string
+          sort_order: number | null
+          specialized_prompt: string
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_style_prompt?: string | null
+          is_active?: boolean
+          is_premium?: boolean
+          meta_description?: string | null
+          meta_title?: string | null
+          name: string
+          slug: string
+          sort_order?: number | null
+          specialized_prompt: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_style_prompt?: string | null
+          is_active?: boolean
+          is_premium?: boolean
+          meta_description?: string | null
+          meta_title?: string | null
+          name?: string
+          slug?: string
+          sort_order?: number | null
+          specialized_prompt?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "niche_subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "niche_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pins: {
         Row: {
           created_at: string

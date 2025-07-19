@@ -21,7 +21,7 @@ export function PinGenerator() {
   const handleGenerate = async () => {
     if (!url) return;
     
-    const result = await generatePins(url, user);
+    const result = await generatePins({ url }, user);
     if (result) {
       setResults(result);
     }
