@@ -54,7 +54,7 @@ serve(async (req) => {
       }
     }
 
-    // SOLUTION: Extract visual concept from description, NOT the text content
+    // Extract visual concept from description, NOT the text content
     let visualConcept = 'interior design scene';
     
     // Extract key visual concepts without including text content
@@ -68,76 +68,72 @@ serve(async (req) => {
       visualConcept = 'bathroom interior design';
     }
 
-    // CREATE VISUAL VARIATIONS BASED ON PIN INDEX
+    // CREATE VISUAL VARIATIONS BASED ON PIN INDEX - 3 DISTINCT STYLES
     const visualVariations = [
       // Pin 1: Wide angle room view
       {
         angle: 'wide-angle room view',
-        perspective: 'spacious full room perspective',
-        lighting: 'bright natural lighting from large windows'
+        perspective: 'spacious full room perspective showing complete layout',
+        lighting: 'bright natural lighting from large windows, airy atmosphere'
       },
-      // Pin 2: Cozy corner focus
+      // Pin 2: Cozy corner focus  
       {
-        angle: 'cozy corner detail',
-        perspective: 'intimate reading nook or seating area',
-        lighting: 'warm ambient lighting, golden hour'
+        angle: 'intimate cozy corner detail',
+        perspective: 'focused on comfortable seating area or reading nook',
+        lighting: 'warm ambient lighting, golden hour soft glow'
       },
       // Pin 3: Modern minimalist
       {
-        angle: 'clean minimalist view',
-        perspective: 'architectural symmetry and clean lines',
-        lighting: 'crisp professional lighting, magazine-style'
+        angle: 'clean minimalist architectural view',
+        perspective: 'geometric symmetry and clean lines, magazine-style composition',
+        lighting: 'crisp professional lighting, bright and clean'
       }
     ];
 
     const currentVariation = visualVariations[pinIndex % 3];
 
-    // COMPLETELY NEW PROMPT STRUCTURE - NO DESCRIPTION TEXT + VISUAL VARIATION
+    // OPTIMIZED PROMPT STRUCTURE - VISUAL CONCEPT + CLEAR TEXT POSITIONING
     let basePrompt = `Pinterest pin 9:16 vertical format. 
-    
-BACKGROUND: Full-screen ${visualConcept} photograph, high-quality interior design image.
-VISUAL STYLE: ${currentVariation.angle}, ${currentVariation.perspective}, ${currentVariation.lighting}.
-COMPOSITION: Complete uncut scene, full room visible, no cropping or framing.`;
 
-    // Add style specifications
+BACKGROUND IMAGE: Full-screen ${visualConcept} photograph, high-quality interior design image.
+VISUAL STYLE: ${currentVariation.angle}, ${currentVariation.perspective}, ${currentVariation.lighting}.
+COMPOSITION: Complete uncut scene, full room visible, no cropping or partial elements.`;
+
+    // Add style specifications if provided
     if (imageStylePrompt) {
       basePrompt += ` ${imageStylePrompt} style.`;
     }
 
-    // AGGRESSIVE ANTI-TEXT + POSITIONING INSTRUCTIONS
+    // CLEAR TEXT POSITIONING INSTRUCTIONS + ANTI-PARAGRAPH RULES
     basePrompt += `
 
 TEXT OVERLAY POSITIONING:
-- Title "${displayTitle}" at TOP of image with transparent background
-- Domain "${websiteDomain}" at BOTTOM of image with transparent background
-- Text directly over image, NO background boxes or panels
+- Title "${displayTitle}" positioned at TOP of image with transparent background
+- Domain "${websiteDomain}" positioned at BOTTOM of image with transparent background  
+- Text directly overlaid on background image, NO solid background panels
 
 CRITICAL RESTRICTIONS:
-- NO paragraphs in image
-- NO descriptions in image  
-- NO body text content
-- NO article text
-- NO text blocks or sentences
-- NO text background or boxes
-- Complete uncut image fills entire frame
-- NOT framed, bordered, or cropped
-- Background image only with transparent text overlay
-- Full scene visible, no partial elements`;
+- NO paragraphs or article text in the image
+- NO body text content or descriptions in the image
+- NO text blocks, sentences, or content snippets
+- NO background boxes, panels, or frames around text
+- Complete background image fills entire 9:16 frame
+- Image NOT cropped, bordered, or partially cut off
+- Full scene visible with all elements complete
+- Only title at top and domain at bottom as text overlays`;
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
     console.log(`Pin Variation ${pinIndex + 1}/3: ${currentVariation.angle}`);
-    console.log('Visual-Only Prompt:', basePrompt);
+    console.log('Optimized Prompt:', basePrompt);
 
     try {
-      // Generate image with Ideogram v3-turbo (using correct API format)
+      // RESTORE ORIGINAL WORKING IDEOGRAM CONFIGURATION
       const requestBody = {
-        input: {
-          prompt: basePrompt,
-          aspect_ratio: "9:16",
-          style_type: "None",
-          resolution: "None", 
-          magic_prompt_option: "Auto"
-        }
+        prompt: basePrompt,
+        resolution: "None",
+        style_type: "None", 
+        aspect_ratio: "9:16",
+        magic_prompt_option: "Auto"
       };
 
       console.log('Ideogram request body:', JSON.stringify(requestBody, null, 2));
@@ -148,7 +144,7 @@ CRITICAL RESTRICTIONS:
           'Authorization': `Token ${replicateApiKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify({ input: requestBody }),
       });
 
       console.log('Ideogram response status:', response.status);
@@ -235,7 +231,7 @@ CRITICAL RESTRICTIONS:
       console.log('=== IDEOGRAM SUCCESS ===');
       console.log('Final URL:', publicUrl);
 
-      // Return single image (not multiple)
+      // Return single image with variation info
       return new Response(
         JSON.stringify({ 
           data: {
@@ -243,7 +239,7 @@ CRITICAL RESTRICTIONS:
               imageUrl: publicUrl,
               fileName: fileName,
               model: 'ideogram-v3-turbo',
-              variation: `${currentVariation.angle} (${pinIndex + 1}/3)`
+              variation: `${currentVariation.angle} (Pin ${pinIndex + 1}/3)`
             }],
             totalGenerated: 1
           }
@@ -255,7 +251,6 @@ CRITICAL RESTRICTIONS:
       console.error('=== IDEOGRAM FAILED, TRYING FLUX FALLBACK ===');
       console.error('Ideogram error:', ideogramError.message);
       
-      // Fallback to Flux only if Ideogram fails
       try {
         const fluxResponse = await fetch('https://api.replicate.com/v1/models/black-forest-labs/flux-schnell/predictions', {
           method: 'POST',
@@ -337,7 +332,7 @@ CRITICAL RESTRICTIONS:
                 imageUrl: fluxPublicUrl,
                 fileName: fluxFileName,
                 model: 'flux-schnell-fallback',
-                variation: `${currentVariation.angle} (${pinIndex + 1}/3) - Fallback`
+                variation: `${currentVariation.angle} (Pin ${pinIndex + 1}/3) - Fallback`
               }],
               totalGenerated: 1
             }
