@@ -99,15 +99,13 @@ VISUAL REQUIREMENTS:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        version: "da0feef18eddd6df0a5b39bf552a77e5b2e04f7bdc3b47fb96e6f98f2b6b0e45",
+        model: "ideogram-ai/ideogram-v3-turbo",
         input: {
           prompt: basePrompt,
-          model: "ideogram-ai/ideogram-v3-turbo",
           width: 736,
           height: 1104,
           output_format: "png",
-          output_quality: 95,
-          num_inference_steps: 20
+          output_quality: 95
         }
       }),
     });
