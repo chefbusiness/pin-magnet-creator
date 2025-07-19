@@ -12,7 +12,6 @@ import { Loader2, Sparkles, Globe, FileText, Image, Download } from "lucide-reac
 import { GenerationProgress } from "@/components/pin-generator/GenerationProgress";
 import { PinResults } from "@/components/pin-generator/PinResults";
 import { StyleTagSelector } from "@/components/niche/StyleTagSelector";
-import { NicheExamplePins } from "@/components/niche/NicheExamplePins";
 import { getStyleTagsForNiche } from "@/data/nicheStyleTags";
 import { toast } from "sonner";
 
@@ -131,13 +130,6 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      {/* Examples Section - específicos del nicho */}
-      <NicheExamplePins 
-        nicheName={nicheData.name}
-        categorySlug={categoryData.slug}
-        categoryEmoji={categoryData.emoji}
-      />
-
       {/* Features Section */}
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         <Card className="text-center">
