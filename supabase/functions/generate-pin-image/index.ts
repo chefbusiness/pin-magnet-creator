@@ -66,13 +66,15 @@ serve(async (req) => {
     console.log('Simple Direct Prompt:', basePrompt);
 
     try {
-      // CORRECTED: Generate image with Ideogram v3-turbo using direct format
+      // CORRECTED: Generate image with Ideogram v3-turbo with proper input wrapper
       const requestBody = {
-        prompt: basePrompt,
-        aspect_ratio: "9:16",
-        style_type: "None",
-        resolution: "None", 
-        magic_prompt_option: "Auto"
+        input: {
+          prompt: basePrompt,
+          aspect_ratio: "9:16",
+          style_type: "None",
+          resolution: "None", 
+          magic_prompt_option: "Auto"
+        }
       };
 
       console.log('Ideogram request body:', JSON.stringify(requestBody, null, 2));
