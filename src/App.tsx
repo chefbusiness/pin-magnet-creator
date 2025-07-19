@@ -31,7 +31,7 @@ const App = () => (
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/pinterest-guide" element={<PinterestGuide />} />
+                <Route path="/generate-pins" element={<PinterestGuide />} />
                 <Route path="/niche/:category/:subcategory" element={<NichePage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

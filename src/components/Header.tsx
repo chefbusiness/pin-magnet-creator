@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -52,16 +53,16 @@ export function Header() {
               {user ? (
                 <>
                   <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
-                    {t('nav.generatePin')}
+                    {t('nav.home')}
+                  </Link>
+                  <Link to="/generate-pins" className="text-sm font-medium hover:text-primary transition-colors">
+                    {t('nav.generatePins')}
                   </Link>
                   <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.dashboard')}
                   </Link>
                   <Link to="/profile" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.profile')}
-                  </Link>
-                  <Link to="/pinterest-guide" className="text-sm font-medium hover:text-primary transition-colors">
-                    {t('nav.pinterestGuide')}
                   </Link>
                 </>
               ) : (
@@ -75,8 +76,8 @@ export function Header() {
                   <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.pricing')}
                   </a>
-                  <Link to="/pinterest-guide" className="text-sm font-medium hover:text-primary transition-colors">
-                    {t('nav.pinterestGuide')}
+                  <Link to="/generate-pins" className="text-sm font-medium hover:text-primary transition-colors">
+                    {t('nav.generatePins')}
                   </Link>
                 </>
               )}
@@ -223,16 +224,16 @@ export function Header() {
                         </div>
 
                         <Link to="/" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
-                          <span>{t('nav.generatePin')}</span>
+                          <span>{t('nav.home')}</span>
+                        </Link>
+                        <Link to="/generate-pins" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
+                          <span>{t('nav.generatePins')}</span>
                         </Link>
                         <Link to="/dashboard" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.dashboard')}</span>
                         </Link>
                         <Link to="/profile" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.profile')}</span>
-                        </Link>
-                        <Link to="/pinterest-guide" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
-                          <span>{t('nav.pinterestGuide')}</span>
                         </Link>
                         
                         <div className="border-t pt-4">
@@ -263,8 +264,8 @@ export function Header() {
                         <a href="#pricing" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.pricing')}</span>
                         </a>
-                        <Link to="/pinterest-guide" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
-                          <span>{t('nav.pinterestGuide')}</span>
+                        <Link to="/generate-pins" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
+                          <span>{t('nav.generatePins')}</span>
                         </Link>
                         
                         <div className="border-t pt-4 space-y-2">
