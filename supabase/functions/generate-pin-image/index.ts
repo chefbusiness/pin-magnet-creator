@@ -1,6 +1,7 @@
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -119,14 +120,57 @@ IMPORTANT: This is a Pinterest pin, so text overlay is ESSENTIAL for engagement.
       throw new Error('No image generated');
     }
 
-    const imageUrl = result.output[0];
-    console.log('Generated image URL:', imageUrl);
+    const replicateImageUrl = result.output[0];
+    console.log('Generated image URL from Replicate:', replicateImageUrl);
+
+    // Download image from Replicate and upload to Supabase
+    console.log('Downloading image from Replicate...');
+    const imageResponse = await fetch(replicateImageUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to download image: ${imageResponse.status}`);
+    }
+    
+    const imageBuffer = await imageResponse.arrayBuffer();
+    const imageBlob = new Blob([imageBuffer], { type: 'image/png' });
+    
+    // Initialize Supabase client
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Generate unique filename
+    const timestamp = Date.now();
+    const randomId = Math.random().toString(36).substring(2, 15);
+    const fileName = `pin-${timestamp}-${randomId}.png`;
+    
+    console.log('Uploading image to Supabase Storage:', fileName);
+    
+    // Upload to Supabase Storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('pin-images')
+      .upload(fileName, imageBlob, {
+        contentType: 'image/png',
+        cacheControl: '3600'
+      });
+    
+    if (uploadError) {
+      console.error('Supabase upload error:', uploadError);
+      throw new Error(`Failed to upload to Supabase: ${uploadError.message}`);
+    }
+    
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('pin-images')
+      .getPublicUrl(fileName);
+    
+    console.log('Image uploaded successfully. Public URL:', publicUrl);
 
     return new Response(
       JSON.stringify({ 
         data: {
-          imageUrl,
-          prompt: basePrompt
+          imageUrl: publicUrl,
+          prompt: basePrompt,
+          fileName: fileName
         }
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
