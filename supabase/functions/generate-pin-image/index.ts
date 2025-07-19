@@ -46,40 +46,38 @@ serve(async (req) => {
     }
 
     // Optimized prompt for Ideogram v3-turbo (specialized in text on images)
-    let basePrompt = `Create a Pinterest pin image (vertical format, 9:16 aspect ratio) with the following content:
+    let basePrompt = `Create a professional Pinterest pin image (vertical 9:16 format) with:
 
-TITLE TEXT: "${title}"
-DESCRIPTION: "${description}"
+MAIN TITLE: "${title}"
 
-VISUAL REQUIREMENTS:
-- High-quality Pinterest pin design
-- Vertical format optimized for Pinterest (9:16 aspect ratio)
-- Eye-catching and professional
-- Clean, readable layout with clear text overlay`;
+VISUAL STYLE: Pinterest pin design, vertical format, professional quality`;
 
-    // Add style specification if provided
+    // Add niche-specific style if provided
     if (imageStylePrompt) {
-      basePrompt += `\nSTYLE: ${imageStylePrompt}`;
+      basePrompt += `\nSTYLE AESTHETIC: ${imageStylePrompt}`;
     }
 
-    // Add mandatory text overlay requirements (Ideogram's strength)
-    basePrompt += `\n\nTEXT OVERLAY (CRITICAL):
-- Display the title text clearly: "${title}"
-- Use large, readable fonts
-- High contrast text (white on dark background or dark on light background)
-- Position text strategically for maximum readability
-- Make text large enough to read on mobile devices
-- Add text background or shadow for better readability`;
+    // Simplified text overlay instructions (Ideogram's strength)
+    basePrompt += `\n\nTEXT REQUIREMENTS:
+- Large, bold title text: "${title}"
+- High contrast and readable
+- Modern Pinterest typography
+- Clean text overlay design`;
 
-    // Add website credit if available
+    // Prominent website credit
     if (websiteDomain) {
       basePrompt += `\n\nWEBSITE CREDIT:
-- Include small text: "${websiteDomain}"
-- Place in corner or bottom area
-- Keep it subtle but readable`;
+- Display "${websiteDomain}" at bottom
+- Visible but elegant placement
+- Professional branding style`;
     }
 
-    basePrompt += `\n\nFINAL OUTPUT: Professional Pinterest pin with clear, readable text overlay`;
+    // Final Pinterest optimization
+    basePrompt += `\n\nPINTEREST OPTIMIZATION:
+- Vertical 9:16 aspect ratio
+- Eye-catching and clickable
+- Professional Pinterest aesthetic
+- Mobile-friendly text size`;
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
     console.log('Prompt:', basePrompt);
