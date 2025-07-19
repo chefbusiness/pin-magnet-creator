@@ -47,63 +47,34 @@ serve(async (req) => {
 
     // Optimize title length for better visual balance
     let displayTitle = title;
-    if (title.length > 50) {
-      // For long titles, truncate or use key words
+    if (title.length > 60) {
+      // For very long titles, truncate intelligently
       const words = title.split(' ');
-      if (words.length > 8) {
-        displayTitle = words.slice(0, 8).join(' ') + '...';
+      if (words.length > 10) {
+        displayTitle = words.slice(0, 10).join(' ') + '...';
       }
     }
 
-    // Optimized prompt for Ideogram v3-turbo with better text/image balance
-    let basePrompt = `Create a professional Pinterest pin image (vertical 9:16 format) with:
+    // DRAMATICALLY SIMPLIFIED prompt - minimalist approach like the examples shared
+    let basePrompt = `Create a professional Pinterest pin (vertical 9:16 format):
 
-MAIN TITLE: "${displayTitle}"
-
-VISUAL COMPOSITION:
-- Background image should be the main visual focus (60% prominence)
-- High-quality, eye-catching background related to the topic
-- Professional Pinterest pin aesthetic`;
+BACKGROUND: High-quality, eye-catching image related to: "${description}"`;
 
     // Add niche-specific style if provided
     if (imageStylePrompt) {
-      basePrompt += `\nSTYLE AESTHETIC: ${imageStylePrompt}`;
+      basePrompt += `\nSTYLE: ${imageStylePrompt}`;
     }
 
-    // Optimized text overlay instructions for better visibility
-    basePrompt += `\n\nTEXT OVERLAY REQUIREMENTS:
-- SMALL, elegant title text: "${displayTitle}"
-- Use modern, readable but THIN typography (avoid bold/thick fonts)
-- Position text at TOP of image primarily (never center, rarely bottom)
-- Compact text area - maximum 25% of image height
-- Semi-transparent background behind text for readability
-- Background image must occupy 75% of visual space
-- Text should be subtle and enhance, never dominate the visual`;
-
-    // Title length optimization
-    if (title.length > 50) {
-      basePrompt += `\n- Use thinner, more elegant font for long titles
-- Prioritize readability while keeping text compact`;
-    }
-
-    // Prominent but elegant website credit
-    if (websiteDomain) {
-      basePrompt += `\n\nWEBSITE BRANDING:
-- Display "${websiteDomain}" at bottom corner
-- Small, elegant text that doesn't interfere with main design
-- Subtle but visible branding placement`;
-    }
-
-    // Final optimization instructions
-    basePrompt += `\n\nFINAL OPTIMIZATION:
-- Vertical 9:16 aspect ratio for Pinterest
-- Background image should be clearly visible and attractive
-- Text overlay should be readable but not overpowering
-- Professional, eye-catching design that drives clicks
-- Mobile-friendly text size and contrast`;
+    // MINIMALIST text overlay - very small and unobtrusive
+    basePrompt += `\n\nTEXT (very small and minimal):
+- Top area: "${displayTitle}" in tiny, elegant font
+- Bottom corner: "${websiteDomain}" (very small)
+- Text must be BARELY VISIBLE but readable
+- Image must fill 90% of the space
+- Clean, professional Pinterest aesthetic`;
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
-    console.log('Prompt:', basePrompt);
+    console.log('Simplified Prompt:', basePrompt);
 
     try {
       // Generate image with Ideogram v3-turbo (using correct API format)
