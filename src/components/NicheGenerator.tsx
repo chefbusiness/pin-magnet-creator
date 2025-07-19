@@ -12,6 +12,7 @@ import { Loader2, Sparkles, Globe, FileText, Image, Download } from "lucide-reac
 import { GenerationProgress } from "@/components/pin-generator/GenerationProgress";
 import { PinResults } from "@/components/pin-generator/PinResults";
 import { StyleTagSelector } from "@/components/niche/StyleTagSelector";
+import { NicheExamplePins } from "@/components/niche/NicheExamplePins";
 import { getStyleTagsForNiche } from "@/data/nicheStyleTags";
 import { toast } from "sonner";
 
@@ -36,12 +37,13 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
   const [customContent, setCustomContent] = useState("");
   const [inputMode, setInputMode] = useState<"url" | "custom">("url");
   const [selectedStyleTags, setSelectedStyleTags] = useState<string[]>([]);
+  const [selectedTrendTags, setSelectedTrendTags] = useState<string[]>([]);
   const { user } = useAuth();
   const { language } = useLanguage();
   const { generatePins, isGenerating, progress, generatedPins, reset } = usePinGeneration();
 
-  // Get available style tags for this niche category
-  const availableStyleTags = getStyleTagsForNiche(categoryData.slug);
+  // Get available style tags and trends for this niche category
+  const nicheTagsData = getStyleTagsForNiche(categoryData.slug);
 
   const handleGenerate = async () => {
     if (!user) {
@@ -60,14 +62,16 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
     }
 
     try {
-      // Combine selected style tags into the image style prompt
+      // Combine selected style and trend tags into the image style prompt
       let enhancedImageStylePrompt = nicheData.image_style_prompt;
       
-      if (selectedStyleTags.length > 0) {
-        const selectedTagObjects = availableStyleTags.filter(tag => 
-          selectedStyleTags.includes(tag.id)
-        );
-        const styleModifiers = selectedTagObjects.map(tag => tag.promptModifier).join(', ');
+      const allSelectedTags = [
+        ...nicheTagsData.visualStyles.filter(tag => selectedStyleTags.includes(tag.id)),
+        ...nicheTagsData.trends.filter(tag => selectedTrendTags.includes(tag.id))
+      ];
+      
+      if (allSelectedTags.length > 0) {
+        const styleModifiers = allSelectedTags.map(tag => tag.promptModifier).join(', ');
         enhancedImageStylePrompt = `${nicheData.image_style_prompt}, ${styleModifiers}`;
       }
 
@@ -89,6 +93,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
     setUrl("");
     setCustomContent("");
     setSelectedStyleTags([]);
+    setSelectedTrendTags([]);
   };
 
   if (generatedPins.length > 0) {
@@ -126,6 +131,13 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
+      {/* Examples Section - específicos del nicho */}
+      <NicheExamplePins 
+        nicheName={nicheData.name}
+        categorySlug={categoryData.slug}
+        categoryEmoji={categoryData.emoji}
+      />
+
       {/* Features Section */}
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         <Card className="text-center">
@@ -140,9 +152,9 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
         <Card className="text-center">
           <CardContent className="pt-6">
             <Image className="w-8 h-8 mx-auto mb-3 text-primary" />
-            <h3 className="font-semibold mb-2">Estilo Visual Único</h3>
+            <h3 className="font-semibold mb-2">Tendencias Pinterest</h3>
             <p className="text-sm text-muted-foreground">
-              Imágenes adaptadas al estilo de {categoryData.name}
+              Incorpora las tendencias más populares de Pinterest
             </p>
           </CardContent>
         </Card>
@@ -230,9 +242,12 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
 
           {/* Style Tag Selector */}
           <StyleTagSelector
-            availableTags={availableStyleTags}
-            selectedTags={selectedStyleTags}
-            onTagsChange={setSelectedStyleTags}
+            availableStyleTags={nicheTagsData.visualStyles}
+            availableTrendTags={nicheTagsData.trends}
+            selectedStyleTags={selectedStyleTags}
+            selectedTrendTags={selectedTrendTags}
+            onStyleTagsChange={setSelectedStyleTags}
+            onTrendTagsChange={setSelectedTrendTags}
             nicheName={nicheData.name}
           />
 
@@ -259,7 +274,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
           {/* Info Text */}
           <p className="text-xs text-center text-muted-foreground">
             Los pines se generarán con prompts especializados para {nicheData.name}
-            {selectedStyleTags.length > 0 && ` y los estilos seleccionados`}
+            {(selectedStyleTags.length > 0 || selectedTrendTags.length > 0) && ` y las opciones seleccionadas`}
           </p>
         </CardContent>
       </Card>

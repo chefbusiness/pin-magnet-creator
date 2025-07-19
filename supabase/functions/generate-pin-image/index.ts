@@ -1,6 +1,6 @@
+
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
-import Replicate from "https://esm.sh/replicate@0.25.2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,11 +13,11 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, style = 'modern', url, imageStylePrompt } = await req.json();
+    const { title, description, style, url, imageStylePrompt } = await req.json();
     
-    if (!title) {
+    if (!title || !description) {
       return new Response(
-        JSON.stringify({ error: 'Title is required for image generation' }),
+        JSON.stringify({ error: 'Title and description are required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -30,133 +30,99 @@ serve(async (req) => {
       );
     }
 
-    const replicate = new Replicate({
-      auth: replicateApiKey,
-    });
+    // Enhanced prompt for Pinterest pin generation with better text overlay
+    let basePrompt = `Create a Pinterest pin image (736x1104 pixels, vertical format) with the following specifications:
 
-    // Create Pinterest-optimized prompt for Ideogram
-    const stylePrompts = {
-      modern: 'modern clean background, clean white text with bold sans-serif typography, geometric shapes, bright professional lighting, high-end aesthetic',
-      creative: 'vibrant colorful background, artistic hand-lettered typography, watercolor elements, fresh ingredients, dynamic composition with visual hierarchy',
-      elegant: 'luxury dark background with gold accents, sophisticated serif typography, premium styling, marble textures, upscale ambiance',
-      bold: 'dramatic high-contrast background, extra bold typography with shadows, striking color palette, eye-catching visual elements, attention-grabbing design',
-      lifestyle: 'warm cozy background, friendly handwritten-style typography, natural lighting, homestyle aesthetic, inviting atmosphere'
-    };
+MAIN CONTENT: "${title}"
+CONTEXT: "${description}"
 
-    const selectedStyle = stylePrompts[style as keyof typeof stylePrompts] || stylePrompts.modern;
-    
-    // Extract domain from URL for branding
-    let domain = '';
-    if (url) {
-      try {
-        const urlObj = new URL(url);
-        domain = urlObj.hostname.replace('www.', '');
-      } catch (error) {
-        console.log('Could not extract domain from URL:', url);
-      }
-    }
-    
-    let basePrompt = `Create a stunning Pinterest pin (736x1104 vertical format) that will go viral. Design requirements:
-
-MAIN TEXT: "${title}" (make this text HUGE, bold, and impossible to ignore)
-${description ? `SECONDARY TEXT: "${description.substring(0, 80)}"` : ''}
-
-Visual Style: ${selectedStyle}`;
+VISUAL REQUIREMENTS:
+- High-quality, Pinterest-optimized design
+- Vertical aspect ratio (736x1104)
+- Eye-catching and shareable
+- Professional photography or illustration style`;
 
     // Add specialized image style if provided
     if (imageStylePrompt) {
-      basePrompt += `\n\nSPECIALIZED STYLE: ${imageStylePrompt}`;
+      basePrompt += `\nSTYLE SPECIFICATION: ${imageStylePrompt}`;
     }
 
-    const prompt = basePrompt + `
+    // Enhanced text overlay instructions
+    basePrompt += `\n\nTEXT OVERLAY REQUIREMENTS:
+- Add elegant text overlay with the title: "${title}"
+- Text should be clearly readable but NOT dominate the entire image
+- Position text in corner or strategic location (not center)
+- Use professional typography with good contrast
+- Text overlay should occupy maximum 30% of the image
+- Background image must remain the main visual focus
+- Use subtle background blur or shadow behind text for readability
+- Modern, Pinterest-style text treatment
+- Color scheme should be cohesive and appealing`;
 
-CRITICAL DESIGN REQUIREMENTS:
-- Background: Beautiful, professional photography that relates to the content topic
-- Typography: Use LARGE, BOLD, high-contrast text that pops against the background
-- Color scheme: Eye-catching colors that work well on Pinterest (bright, vibrant, but professional)
-- Layout: Top 1/3 for background image, middle section for main text overlay, bottom for subtitle/branding
-- Text treatment: Add subtle shadows or outlines to text for maximum readability
-- Professional quality: This should look like it was designed by a top Pinterest marketing agency
-- Visual hierarchy: Main title should be the dominant element, supporting text smaller but still readable
-- Pinterest optimization: Bright, scroll-stopping visual that makes people want to click and save
-${domain ? `- Website branding: Include "${domain}" at the bottom of the pin in small, elegant text for credibility` : ''}
+    basePrompt += `\n\nFINAL OUTPUT: Pinterest pin ready for publishing, optimized for engagement and clicks`;
 
-The final result should be so attractive that Pinterest users can't scroll past it without clicking!`;
+    console.log('Generating Pinterest pin with prompt:', basePrompt);
 
-    console.log('Generating Pinterest pin image with Ideogram...');
-    if (imageStylePrompt) {
-      console.log('Using specialized image style prompt');
-    }
-    console.log('Prompt:', prompt);
-
-    const output = await replicate.run(
-      "ideogram-ai/ideogram-v2",
-      {
+    const response = await fetch('https://api.replicate.com/v1/predictions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Token ${replicateApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        version: "5599ed30703defd1d160a25a63321b4dec97101d98b4674bcc56e41f62f35637",
         input: {
-          prompt: prompt,
-          aspect_ratio: "10:16", // Pinterest pin ratio
-          model: "V_2",
-          magic_prompt_option: "Auto"
+          prompt: basePrompt,
+          go_fast: true,
+          megapixels: "1",
+          num_outputs: 1,
+          aspect_ratio: "9:16",
+          output_format: "png",
+          output_quality: 90,
+          num_inference_steps: 4
         }
-      }
-    );
+      }),
+    });
 
-    console.log('Ideogram response:', output);
-
-    if (!output || (Array.isArray(output) && output.length === 0)) {
-      throw new Error('No image generated from Ideogram');
+    if (!response.ok) {
+      throw new Error(`Replicate API error: ${response.status}`);
     }
 
-    const temporaryImageUrl = Array.isArray(output) ? output[0] : output;
+    const prediction = await response.json();
+    console.log('Replicate prediction created:', prediction.id);
 
-    // Initialize Supabase client
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
-    // Download the image from Replicate
-    console.log('Downloading image from Replicate...');
-    const imageResponse = await fetch(temporaryImageUrl);
-    if (!imageResponse.ok) {
-      throw new Error('Failed to download image from Replicate');
-    }
-    
-    const imageBlob = await imageResponse.blob();
-    const imageBuffer = await imageBlob.arrayBuffer();
-    
-    // Generate unique filename
-    const timestamp = new Date().getTime();
-    const randomId = crypto.randomUUID();
-    const filename = `pin_${timestamp}_${randomId}.jpg`;
-    
-    // Upload to Supabase Storage
-    console.log('Uploading image to Supabase Storage...');
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('pin-images')
-      .upload(filename, imageBuffer, {
-        contentType: 'image/jpeg',
-        upsert: false
+    // Poll for completion
+    let result = prediction;
+    while (result.status === 'starting' || result.status === 'processing') {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const pollResponse = await fetch(`https://api.replicate.com/v1/predictions/${result.id}`, {
+        headers: {
+          'Authorization': `Token ${replicateApiKey}`,
+        },
       });
-
-    if (uploadError) {
-      console.error('Error uploading to Supabase Storage:', uploadError);
-      throw new Error(`Failed to upload image: ${uploadError.message}`);
+      
+      result = await pollResponse.json();
+      console.log('Polling result:', result.status);
     }
 
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('pin-images')
-      .getPublicUrl(filename);
+    if (result.status === 'failed') {
+      throw new Error(`Image generation failed: ${result.error}`);
+    }
 
-    console.log('Image uploaded successfully:', publicUrl);
+    if (!result.output || result.output.length === 0) {
+      throw new Error('No image generated');
+    }
+
+    const imageUrl = result.output[0];
+    console.log('Generated image URL:', imageUrl);
 
     return new Response(
       JSON.stringify({ 
-        data: { 
-          imageUrl: publicUrl,
-          prompt: prompt.substring(0, 200) + '...'
-        } 
+        data: {
+          imageUrl,
+          prompt: basePrompt
+        }
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
