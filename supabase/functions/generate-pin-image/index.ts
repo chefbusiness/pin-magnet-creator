@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
@@ -127,13 +128,15 @@ CRITICAL RESTRICTIONS:
     console.log('Optimized Prompt:', basePrompt);
 
     try {
-      // RESTORE ORIGINAL WORKING IDEOGRAM CONFIGURATION
+      // CORRECT REPLICATE REQUEST BODY STRUCTURE FOR IDEOGRAM V3-TURBO
       const requestBody = {
-        prompt: basePrompt,
-        resolution: "None",
-        style_type: "None", 
-        aspect_ratio: "9:16",
-        magic_prompt_option: "Auto"
+        input: {
+          prompt: basePrompt,
+          resolution: "None",
+          style_type: "None", 
+          aspect_ratio: "9:16",
+          magic_prompt_option: "Auto"
+        }
       };
 
       console.log('Ideogram request body:', JSON.stringify(requestBody, null, 2));
@@ -144,7 +147,7 @@ CRITICAL RESTRICTIONS:
           'Authorization': `Token ${replicateApiKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ input: requestBody }),
+        body: JSON.stringify(requestBody),
       });
 
       console.log('Ideogram response status:', response.status);
