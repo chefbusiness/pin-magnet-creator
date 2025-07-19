@@ -1,5 +1,3 @@
-
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
@@ -15,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, style, url, imageStylePrompt } = await req.json();
+    const { title, description, style, url, imageStylePrompt, pinIndex = 0 } = await req.json();
     
     if (!title || !description) {
       return new Response(
@@ -70,36 +68,65 @@ serve(async (req) => {
       visualConcept = 'bathroom interior design';
     }
 
-    // COMPLETELY NEW PROMPT STRUCTURE - NO DESCRIPTION TEXT
+    // CREATE VISUAL VARIATIONS BASED ON PIN INDEX
+    const visualVariations = [
+      // Pin 1: Wide angle room view
+      {
+        angle: 'wide-angle room view',
+        perspective: 'spacious full room perspective',
+        lighting: 'bright natural lighting from large windows'
+      },
+      // Pin 2: Cozy corner focus
+      {
+        angle: 'cozy corner detail',
+        perspective: 'intimate reading nook or seating area',
+        lighting: 'warm ambient lighting, golden hour'
+      },
+      // Pin 3: Modern minimalist
+      {
+        angle: 'clean minimalist view',
+        perspective: 'architectural symmetry and clean lines',
+        lighting: 'crisp professional lighting, magazine-style'
+      }
+    ];
+
+    const currentVariation = visualVariations[pinIndex % 3];
+
+    // COMPLETELY NEW PROMPT STRUCTURE - NO DESCRIPTION TEXT + VISUAL VARIATION
     let basePrompt = `Pinterest pin 9:16 vertical format. 
     
-BACKGROUND: Full-screen ${visualConcept} photograph, high-quality interior design image.`;
+BACKGROUND: Full-screen ${visualConcept} photograph, high-quality interior design image.
+VISUAL STYLE: ${currentVariation.angle}, ${currentVariation.perspective}, ${currentVariation.lighting}.
+COMPOSITION: Complete uncut scene, full room visible, no cropping or framing.`;
 
     // Add style specifications
     if (imageStylePrompt) {
       basePrompt += ` ${imageStylePrompt} style.`;
     }
 
-    // AGGRESSIVE ANTI-TEXT INSTRUCTIONS
+    // AGGRESSIVE ANTI-TEXT + POSITIONING INSTRUCTIONS
     basePrompt += `
 
-OVERLAY TEXT ONLY:
-- Title overlay: "${displayTitle}"
-- Domain watermark: "${websiteDomain}"
+TEXT OVERLAY POSITIONING:
+- Title "${displayTitle}" at TOP of image with transparent background
+- Domain "${websiteDomain}" at BOTTOM of image with transparent background
+- Text directly over image, NO background boxes or panels
 
 CRITICAL RESTRICTIONS:
 - NO paragraphs in image
 - NO descriptions in image  
-- NO body text
-- NO article content
-- NO text blocks
-- NO sentences
-- Image fills entire frame
-- NOT framed or bordered
-- Background image only with minimal text overlay`;
+- NO body text content
+- NO article text
+- NO text blocks or sentences
+- NO text background or boxes
+- Complete uncut image fills entire frame
+- NOT framed, bordered, or cropped
+- Background image only with transparent text overlay
+- Full scene visible, no partial elements`;
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
-    console.log('NEW Visual-Only Prompt:', basePrompt);
+    console.log(`Pin Variation ${pinIndex + 1}/3: ${currentVariation.angle}`);
+    console.log('Visual-Only Prompt:', basePrompt);
 
     try {
       // Generate image with Ideogram v3-turbo (using correct API format)
@@ -215,7 +242,8 @@ CRITICAL RESTRICTIONS:
             images: [{
               imageUrl: publicUrl,
               fileName: fileName,
-              model: 'ideogram-v3-turbo'
+              model: 'ideogram-v3-turbo',
+              variation: `${currentVariation.angle} (${pinIndex + 1}/3)`
             }],
             totalGenerated: 1
           }
@@ -308,7 +336,8 @@ CRITICAL RESTRICTIONS:
               images: [{
                 imageUrl: fluxPublicUrl,
                 fileName: fluxFileName,
-                model: 'flux-schnell-fallback'
+                model: 'flux-schnell-fallback',
+                variation: `${currentVariation.angle} (${pinIndex + 1}/3) - Fallback`
               }],
               totalGenerated: 1
             }
@@ -338,4 +367,3 @@ CRITICAL RESTRICTIONS:
     );
   }
 });
-
