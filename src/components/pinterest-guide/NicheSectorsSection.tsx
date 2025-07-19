@@ -49,8 +49,8 @@ export function NicheSectorsSection() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="space-y-1">
-                  {sector.subcategoriesKeys.slice(0, 8).map((subcategory: any) => (
+                <div className="space-y-2">
+                  {sector.subcategoriesKeys.map((subcategory: any) => (
                     <div
                       key={subcategory.key}
                       className="flex items-center justify-between text-sm text-muted-foreground hover:text-foreground transition-colors group p-1 rounded hover:bg-accent/50"
@@ -64,11 +64,6 @@ export function NicheSectorsSection() {
                       </Badge>
                     </div>
                   ))}
-                  {sector.subcategoriesKeys.length > 8 && (
-                    <p className="text-xs text-muted-foreground px-2 pt-2">
-                      +{sector.subcategoriesKeys.length - 8} nichos más...
-                    </p>
-                  )}
                 </div>
               </div>
             </CardContent>

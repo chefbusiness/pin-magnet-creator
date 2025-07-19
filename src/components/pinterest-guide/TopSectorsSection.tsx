@@ -61,7 +61,7 @@ export function TopSectorsSection() {
                   <p className="font-medium text-muted-foreground text-sm">
                     {t('guide.subcategories')} ({sector.subcategoriesKeys.length})
                   </p>
-                  <div className="grid gap-2 max-h-40 overflow-y-auto">
+                  <div className="space-y-2">
                     {sector.subcategoriesKeys.map((subcategory: any) => (
                       <div
                         key={subcategory.key}
@@ -72,7 +72,8 @@ export function TopSectorsSection() {
                             to={subcategory.link}
                             className="flex items-center justify-between w-full group/link"
                           >
-                            <span className="text-sm text-muted-foreground group-hover/link:text-foreground">
+                            <span className="text-sm text-muted-foreground group-hover/link:text-foreground flex items-start gap-2">
+                              <span className="text-primary mt-1">•</span>
                               {subcategory.name}
                             </span>
                             <div className="flex items-center gap-1">
@@ -84,7 +85,8 @@ export function TopSectorsSection() {
                           </Link>
                         ) : (
                           <>
-                            <span className="text-sm text-muted-foreground">
+                            <span className="text-sm text-muted-foreground flex items-start gap-2">
+                              <span className="text-primary mt-1">•</span>
                               {subcategory.name}
                             </span>
                             <Badge variant="outline" className="text-xs">
