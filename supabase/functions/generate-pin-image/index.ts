@@ -1,4 +1,5 @@
 
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
@@ -55,19 +56,50 @@ serve(async (req) => {
       }
     }
 
-    // RADICAL SIMPLIFICATION - ONLY background image with text overlay
-    let basePrompt = `Pinterest pin format 9:16. FULL SCREEN background image about "${description}".`;
-
-    // Add niche-specific style if provided
-    if (imageStylePrompt) {
-      basePrompt += ` Style: ${imageStylePrompt}.`;
+    // SOLUTION: Extract visual concept from description, NOT the text content
+    let visualConcept = 'interior design scene';
+    
+    // Extract key visual concepts without including text content
+    if (description.toLowerCase().includes('sala') || description.toLowerCase().includes('living')) {
+      visualConcept = 'modern living room interior';
+    } else if (description.toLowerCase().includes('cocina') || description.toLowerCase().includes('kitchen')) {
+      visualConcept = 'modern kitchen interior';
+    } else if (description.toLowerCase().includes('dormitorio') || description.toLowerCase().includes('bedroom')) {
+      visualConcept = 'bedroom interior design';
+    } else if (description.toLowerCase().includes('baño') || description.toLowerCase().includes('bathroom')) {
+      visualConcept = 'bathroom interior design';
     }
 
-    // CRITICAL: Specify ONLY overlay text, NO paragraphs
-    basePrompt += ` Text overlay ONLY: title "${displayTitle}" at top, domain "${websiteDomain}" at bottom. NO paragraphs, NO descriptions, NO additional text blocks. Image fills entire background, not framed.`;
+    // COMPLETELY NEW PROMPT STRUCTURE - NO DESCRIPTION TEXT
+    let basePrompt = `Pinterest pin 9:16 vertical format. 
+    
+BACKGROUND: Full-screen ${visualConcept} photograph, high-quality interior design image.`;
+
+    // Add style specifications
+    if (imageStylePrompt) {
+      basePrompt += ` ${imageStylePrompt} style.`;
+    }
+
+    // AGGRESSIVE ANTI-TEXT INSTRUCTIONS
+    basePrompt += `
+
+OVERLAY TEXT ONLY:
+- Title overlay: "${displayTitle}"
+- Domain watermark: "${websiteDomain}"
+
+CRITICAL RESTRICTIONS:
+- NO paragraphs in image
+- NO descriptions in image  
+- NO body text
+- NO article content
+- NO text blocks
+- NO sentences
+- Image fills entire frame
+- NOT framed or bordered
+- Background image only with minimal text overlay`;
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
-    console.log('Simplified Prompt:', basePrompt);
+    console.log('NEW Visual-Only Prompt:', basePrompt);
 
     try {
       // Generate image with Ideogram v3-turbo (using correct API format)
@@ -306,3 +338,4 @@ serve(async (req) => {
     );
   }
 });
+
