@@ -92,6 +92,7 @@ VISUAL REQUIREMENTS:
 
     console.log('Generating Pinterest pin with enhanced text overlay prompt:', basePrompt);
 
+    // Use Ideogram v3-turbo with correct parameters
     const response = await fetch('https://api.replicate.com/v1/models/ideogram-ai/ideogram-v3-turbo/predictions', {
       method: 'POST',
       headers: {
@@ -101,23 +102,35 @@ VISUAL REQUIREMENTS:
       body: JSON.stringify({
         input: {
           prompt: basePrompt,
-          width: 736,
-          height: 1104,
-          output_format: "png"
+          aspect_ratio: "9:16", // Pinterest pin aspect ratio
+          model: "V_3_TURBO",
+          style_type: "DESIGN", // Good for Pinterest pins
+          prompt_adherence: 0.8, // High adherence to text requirements
+          negative_prompt: "blurry, low quality, bad text, unreadable text, cropped text, cut off text",
+          seed: Math.floor(Math.random() * 1000000)
         }
       }),
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Replicate API error: ${response.status} - ${errorText}`);
       throw new Error(`Replicate API error: ${response.status}`);
     }
 
     const prediction = await response.json();
     console.log('Replicate prediction created:', prediction.id);
 
-    // Poll for completion
+    // Poll for completion with timeout
     let result = prediction;
+    let pollCount = 0;
+    const maxPolls = 60; // 60 seconds timeout
+    
     while (result.status === 'starting' || result.status === 'processing') {
+      if (pollCount >= maxPolls) {
+        throw new Error('Image generation timeout');
+      }
+      
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const pollResponse = await fetch(`https://api.replicate.com/v1/predictions/${result.id}`, {
@@ -126,20 +139,41 @@ VISUAL REQUIREMENTS:
         },
       });
       
+      if (!pollResponse.ok) {
+        throw new Error(`Polling error: ${pollResponse.status}`);
+      }
+      
       result = await pollResponse.json();
       console.log('Polling result:', result.status);
+      pollCount++;
     }
 
     if (result.status === 'failed') {
-      throw new Error(`Image generation failed: ${result.error}`);
+      console.error('Generation failed:', result.error);
+      throw new Error(`Image generation failed: ${result.error || 'Unknown error'}`);
     }
 
     if (!result.output || result.output.length === 0) {
+      console.error('No output received:', result);
       throw new Error('No image generated');
     }
 
     const replicateImageUrl = result.output[0];
     console.log('Generated image URL from Replicate:', replicateImageUrl);
+
+    // Validate the URL before proceeding
+    if (!replicateImageUrl || typeof replicateImageUrl !== 'string' || replicateImageUrl.length < 10) {
+      console.error('Invalid image URL received:', replicateImageUrl);
+      throw new Error('Invalid image URL received from Replicate');
+    }
+
+    // Validate URL format
+    try {
+      new URL(replicateImageUrl);
+    } catch (urlError) {
+      console.error('Malformed URL:', replicateImageUrl);
+      throw new Error('Malformed image URL received from Replicate');
+    }
 
     // Download image from Replicate and upload to Supabase
     console.log('Downloading image from Replicate...');
