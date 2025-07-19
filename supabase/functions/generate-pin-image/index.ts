@@ -72,12 +72,13 @@ VISUAL COMPOSITION:
 
     // Optimized text overlay instructions for better visibility
     basePrompt += `\n\nTEXT OVERLAY REQUIREMENTS:
-- Medium-sized, elegant title text: "${displayTitle}"
-- Use modern, readable typography (not too bold/thick)
-- Position text at top or bottom third of image (not center)
+- SMALL, elegant title text: "${displayTitle}"
+- Use modern, readable but THIN typography (avoid bold/thick fonts)
+- Position text at TOP of image primarily (never center, rarely bottom)
+- Compact text area - maximum 25% of image height
 - Semi-transparent background behind text for readability
-- Ensure background image remains clearly visible
-- Text should enhance, not dominate the visual`;
+- Background image must occupy 75% of visual space
+- Text should be subtle and enhance, never dominate the visual`;
 
     // Title length optimization
     if (title.length > 50) {
