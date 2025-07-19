@@ -92,7 +92,7 @@ VISUAL REQUIREMENTS:
 
     console.log('Generating Pinterest pin with enhanced text overlay prompt:', basePrompt);
 
-    // Use Ideogram v3-turbo with CORRECT parameters according to official Replicate documentation
+    // Use Ideogram v3-turbo with ONLY VALID parameters according to official documentation
     const response = await fetch('https://api.replicate.com/v1/models/ideogram-ai/ideogram-v3-turbo/predictions', {
       method: 'POST',
       headers: {
@@ -102,9 +102,7 @@ VISUAL REQUIREMENTS:
       body: JSON.stringify({
         input: {
           prompt: basePrompt,
-          aspect_ratio: "9:16", // Pinterest pin aspect ratio - CORRECT parameter
-          style_type: "Design", // Good for Pinterest pins - CORRECT parameter
-          negative_prompt: "blurry, low quality, bad text, unreadable text, cropped text, cut off text"
+          aspect_ratio: "9:16" // Pinterest pin aspect ratio - ONLY confirmed valid parameter
         }
       }),
     });
