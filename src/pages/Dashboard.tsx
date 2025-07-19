@@ -9,7 +9,7 @@ import { PinGrid } from '@/components/dashboard/PinGrid';
 
 const Dashboard = () => {
   const { user, profile, getRemainingPins } = useAuth();
-  const { pins, loading, deletePin, downloadImage } = usePins();
+  const { pins, loading, loadingMore, totalCount, hasMorePins, deletePin, downloadImage, loadMorePins } = usePins();
   const { t } = useLanguage();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -53,7 +53,7 @@ const Dashboard = () => {
           </p>
           
           <StatsCards
-            totalPins={pins.length}
+            totalPins={totalCount}
             pinsThisMonth={profile?.pins_generated_this_month || 0}
             remainingPins={getRemainingPins()}
           />
@@ -62,6 +62,9 @@ const Dashboard = () => {
         <PinGrid
           pins={pins}
           loading={loading}
+          loadingMore={loadingMore}
+          hasMorePins={hasMorePins}
+          onLoadMore={loadMorePins}
           onDownload={handleDownload}
           onDelete={handleDelete}
           deletingId={deletingId}

@@ -1,5 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { PinCard } from './PinCard';
 import { EmptyState } from './EmptyState';
 
@@ -16,13 +17,16 @@ interface Pin {
 interface PinGridProps {
   pins: Pin[];
   loading: boolean;
+  loadingMore?: boolean;
+  hasMorePins?: boolean;
+  onLoadMore?: () => void;
   onDownload: (imageUrl: string, title: string) => void;
   onDelete: (pinId: string) => void;
   deletingId: string | null;
   formatDate: (dateString: string) => string;
 }
 
-export function PinGrid({ pins, loading, onDownload, onDelete, deletingId, formatDate }: PinGridProps) {
+export function PinGrid({ pins, loading, loadingMore, hasMorePins, onLoadMore, onDownload, onDelete, deletingId, formatDate }: PinGridProps) {
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -44,17 +48,41 @@ export function PinGrid({ pins, loading, onDownload, onDelete, deletingId, forma
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-      {pins.map((pin) => (
-        <PinCard
-          key={pin.id}
-          pin={pin}
-          onDownload={onDownload}
-          onDelete={onDelete}
-          isDeleting={deletingId === pin.id}
-          formatDate={formatDate}
-        />
-      ))}
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        {pins.map((pin) => (
+          <PinCard
+            key={pin.id}
+            pin={pin}
+            onDownload={onDownload}
+            onDelete={onDelete}
+            isDeleting={deletingId === pin.id}
+            formatDate={formatDate}
+          />
+        ))}
+      </div>
+      
+      {/* Load More Button */}
+      {hasMorePins && (
+        <div className="flex justify-center">
+          <Button
+            onClick={onLoadMore}
+            disabled={loadingMore}
+            variant="outline"
+            size="lg"
+            className="min-w-[200px]"
+          >
+            {loadingMore ? (
+              <>
+                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
+                Cargando más...
+              </>
+            ) : (
+              'Cargar más pines'
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

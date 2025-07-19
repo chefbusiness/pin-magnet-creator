@@ -18,14 +18,21 @@ export interface Pin {
 export const usePins = () => {
   const [pins, setPins] = useState<Pin[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const fetchPins = async (page = 1, limit = 12) => {
+  const fetchPins = async (page = 1, limit = 12, append = false) => {
     if (!user) return;
 
-    setLoading(true);
+    if (append) {
+      setLoadingMore(true);
+    } else {
+      setLoading(true);
+    }
+
     try {
       const from = (page - 1) * limit;
       const to = from + limit - 1;
@@ -39,8 +46,13 @@ export const usePins = () => {
 
       if (error) throw error;
 
-      setPins(data || []);
+      if (append) {
+        setPins(prev => [...prev, ...(data || [])]);
+      } else {
+        setPins(data || []);
+      }
       setTotalCount(count || 0);
+      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching pins:', error);
       toast({
@@ -50,7 +62,13 @@ export const usePins = () => {
       });
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
+  };
+
+  const loadMorePins = async () => {
+    const nextPage = currentPage + 1;
+    await fetchPins(nextPage, 12, true);
   };
 
   const deletePin = async (pinId: string) => {
@@ -118,11 +136,16 @@ export const usePins = () => {
     }
   }, [user]);
 
+  const hasMorePins = pins.length < totalCount;
+
   return {
     pins,
     loading,
+    loadingMore,
     totalCount,
+    hasMorePins,
     fetchPins,
+    loadMorePins,
     deletePin,
     downloadImage,
   };
