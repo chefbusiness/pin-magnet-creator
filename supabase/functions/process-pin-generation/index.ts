@@ -131,34 +131,55 @@ serve(async (req) => {
           return null;
         }
 
-        // Create pin record in database
-        const pinData = {
-          user_id: userId,
-          url: url || 'custom-content',
-          title: variation.title,
-          description: variation.description,
-          image_url: imageResponse.data.data.imageUrl,
-          image_prompt: imageResponse.data.data.prompt,
-          template_style: styleName,
-          status: 'completed'
-        };
-
-        const { data: pin, error: pinError } = await supabase
-          .from('pins')
-          .insert(pinData)
-          .select()
-          .single();
-
-        if (pinError) {
-          console.error('Error saving pin to database:', pinError);
+        // Handle multiple images response from generate-pin-image
+        const images = imageResponse.data.data.images || [];
+        
+        if (images.length === 0) {
+          console.error(`No images generated for variation ${index}`);
+          return null;
         }
 
-        return {
-          ...variation,
-          imageUrl: imageResponse.data.data.imageUrl,
-          style: styleName,
-          pinId: pin?.id
-        };
+        // Create pins for each generated image
+        const pinsForVariation = [];
+        
+        for (let i = 0; i < images.length; i++) {
+          const image = images[i];
+          const pinStyleName = `${styleName}-v${i + 1}`;
+          
+          // Create pin record in database
+          const pinData = {
+            user_id: userId,
+            url: url || 'custom-content',
+            title: variation.title,
+            description: variation.description,
+            image_url: image.imageUrl,
+            image_prompt: `Generated with ${image.model || 'AI'}`,
+            template_style: pinStyleName,
+            status: 'completed'
+          };
+
+          const { data: pin, error: pinError } = await supabase
+            .from('pins')
+            .insert(pinData)
+            .select()
+            .single();
+
+          if (pinError) {
+            console.error('Error saving pin to database:', pinError);
+            continue;
+          }
+
+          pinsForVariation.push({
+            title: variation.title,
+            description: variation.description,
+            imageUrl: image.imageUrl,
+            style: pinStyleName,
+            pinId: pin?.id,
+            model: image.model || 'unknown'
+          });
+        }
+
+        return pinsForVariation;
       } catch (error) {
         console.error(`Error processing variation ${index}:`, error);
         return null;
@@ -166,22 +187,23 @@ serve(async (req) => {
     });
 
     const results = await Promise.allSettled(imagePromises);
-    const pins = results
+    const allPins = results
       .filter(result => result.status === 'fulfilled' && result.value !== null)
-      .map(result => (result as PromiseFulfilledResult<any>).value);
+      .map(result => (result as PromiseFulfilledResult<any>).value)
+      .flat(); // Flatten the array since each variation now returns multiple pins
 
-    if (pins.length === 0) {
+    if (allPins.length === 0) {
       throw new Error('Failed to generate any pins');
     }
 
-    console.log(`Pin generation completed: ${pins.length} pins created`);
+    console.log(`Pin generation completed: ${allPins.length} pins created`);
 
     return new Response(
       JSON.stringify({ 
         data: {
-          pins,
+          pins: allPins,
           urlAnalysis,
-          count: pins.length
+          count: allPins.length
         }
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
