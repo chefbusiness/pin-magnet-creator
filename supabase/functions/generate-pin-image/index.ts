@@ -55,25 +55,16 @@ serve(async (req) => {
       }
     }
 
-    // ULTRA SIMPLE prompt - full background image with minimal text overlay
-    let basePrompt = `Create a Pinterest pin (9:16 vertical):
-
-FULL BACKGROUND IMAGE: Complete, unframed background image about "${description}"`;
+    // RADICAL SIMPLIFICATION - ONLY background image with text overlay
+    let basePrompt = `Pinterest pin format 9:16. FULL SCREEN background image about "${description}".`;
 
     // Add niche-specific style if provided
     if (imageStylePrompt) {
-      basePrompt += ` with ${imageStylePrompt} aesthetic`;
+      basePrompt += ` Style: ${imageStylePrompt}.`;
     }
 
-    // ONLY title and domain overlay - NO paragraphs or descriptions
-    basePrompt += `
-
-TEXT OVERLAY ONLY:
-- Title: "${displayTitle}" (small, top area)
-- Domain: "${websiteDomain}" (tiny, bottom corner)
-- NO paragraphs, NO descriptions, NO additional text
-- Full background image, NOT framed or encapsulated
-- Text as subtle overlay only`;
+    // CRITICAL: Specify ONLY overlay text, NO paragraphs
+    basePrompt += ` Text overlay ONLY: title "${displayTitle}" at top, domain "${websiteDomain}" at bottom. NO paragraphs, NO descriptions, NO additional text blocks. Image fills entire background, not framed.`;
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
     console.log('Simplified Prompt:', basePrompt);
