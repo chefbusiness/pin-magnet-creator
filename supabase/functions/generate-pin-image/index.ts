@@ -54,73 +54,25 @@ serve(async (req) => {
       }
     }
 
-    // IMPROVED: Extract visual concept from description for diversity
-    let visualConcept = 'interior design scene';
-    let visualVariation = '';
-    
-    // Extract key visual concepts
-    if (description.toLowerCase().includes('sala') || description.toLowerCase().includes('living')) {
-      visualConcept = 'modern living room interior';
-    } else if (description.toLowerCase().includes('cocina') || description.toLowerCase().includes('kitchen')) {
-      visualConcept = 'modern kitchen interior';
-    } else if (description.toLowerCase().includes('dormitorio') || description.toLowerCase().includes('bedroom')) {
-      visualConcept = 'bedroom interior design';
-    } else if (description.toLowerCase().includes('baño') || description.toLowerCase().includes('bathroom')) {
-      visualConcept = 'bathroom interior design';
-    }
-
-    // NEW: Add visual variations for diversity between pins
-    const visualVariations = [
-      'wide-angle shot, spacious view, full room perspective',
-      'cozy corner setup, intimate detailed view, warm close-up perspective', 
-      'minimalist composition, clean lines, simple elegant layout'
-    ];
-
-    // Randomly select a variation to ensure diversity
-    const randomIndex = Math.floor(Math.random() * visualVariations.length);
-    visualVariation = visualVariations[randomIndex];
-
-    // IMPROVED PROMPT STRUCTURE with visual diversity
-    let basePrompt = `Pinterest pin 9:16 vertical format.
-    
-BACKGROUND IMAGE: Full-screen ${visualConcept} photograph, ${visualVariation}, high-quality interior design image.`;
+    // SIMPLE AND DIRECT PROMPT - NO EXTRA TEXT
+    let basePrompt = `Pinterest pin vertical image. ${displayTitle}. Clean design with title "${displayTitle}" at top and "${websiteDomain}" at bottom. Modern interior design photo background.`;
 
     // Add style specifications if provided
     if (imageStylePrompt) {
-      basePrompt += ` ${imageStylePrompt} aesthetic.`;
+      basePrompt += ` ${imageStylePrompt}.`;
     }
 
-    // CLEAR TEXT POSITIONING INSTRUCTIONS
-    basePrompt += `
-
-TEXT OVERLAY POSITIONING:
-- Title text at TOP: "${displayTitle}" (large, bold, readable font)
-- Domain watermark at BOTTOM: "${websiteDomain}" (small, subtle)
-- Both texts with semi-transparent background for readability
-
-CRITICAL VISUAL RESTRICTIONS:
-- NO article paragraphs in image
-- NO body text content
-- NO description blocks  
-- NO sentences from article
-- NO text walls or content blocks
-- Image fills entire 9:16 frame
-- Background image only with minimal text overlay
-- Clean, professional Pinterest pin format`;
-
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
-    console.log('Improved Visual Prompt:', basePrompt);
+    console.log('Simple Direct Prompt:', basePrompt);
 
     try {
-      // Generate image with Ideogram v3-turbo
+      // CORRECTED: Generate image with Ideogram v3-turbo using direct format
       const requestBody = {
-        input: {
-          prompt: basePrompt,
-          aspect_ratio: "9:16",
-          style_type: "None",
-          resolution: "None", 
-          magic_prompt_option: "Auto"
-        }
+        prompt: basePrompt,
+        aspect_ratio: "9:16",
+        style_type: "None",
+        resolution: "None", 
+        magic_prompt_option: "Auto"
       };
 
       console.log('Ideogram request body:', JSON.stringify(requestBody, null, 2));
