@@ -31,6 +31,17 @@ serve(async (req) => {
       );
     }
 
+    // Extract domain from URL if provided
+    let websiteDomain = '';
+    if (url) {
+      try {
+        const urlObj = new URL(url);
+        websiteDomain = urlObj.hostname.replace('www.', '');
+      } catch (error) {
+        console.log('Could not extract domain from URL:', url);
+      }
+    }
+
     // Enhanced prompt for Pinterest pin generation with mandatory text overlay
     let basePrompt = `Create a Pinterest pin image (736x1104 pixels, vertical format) with the following specifications:
 
@@ -61,11 +72,23 @@ VISUAL REQUIREMENTS:
 - Text must be large enough to read on mobile devices
 - EXAMPLE STYLES: White bold text with dark semi-transparent background, or dark text with light semi-transparent background
 - The background image must remain the primary visual focus
-- Text overlay is MANDATORY - do not create pin without visible text
+- Text overlay is MANDATORY - do not create pin without visible text`;
 
-IMPORTANT: This is a Pinterest pin, so text overlay is ESSENTIAL for engagement. Do not generate without clear, readable text overlay.`;
+    // Add website credit if domain is available
+    if (websiteDomain) {
+      basePrompt += `\n\nWEBSITE CREDIT REQUIREMENTS (MANDATORY):
+- YOU MUST include a small, legible website credit: "${websiteDomain}"
+- Position website credit in bottom corner or small space that doesn't interfere with main content
+- Use smaller but clearly readable font size
+- Ensure high contrast for legibility (white text on dark background or dark text on light background)
+- Website credit should be professional and Pinterest-appropriate
+- Credit must be visible and readable on mobile devices
+- Example placement: Small text in bottom right corner with semi-transparent background`;
+    }
 
-    basePrompt += `\n\nFINAL OUTPUT: Pinterest pin with mandatory text overlay, ready for publishing, optimized for engagement and clicks`;
+    basePrompt += `\n\nIMPORTANT: This is a Pinterest pin, so text overlay is ESSENTIAL for engagement. Do not generate without clear, readable text overlay${websiteDomain ? ' and website credit' : ''}.`;
+
+    basePrompt += `\n\nFINAL OUTPUT: Pinterest pin with mandatory text overlay${websiteDomain ? ' and website credit' : ''}, ready for publishing, optimized for engagement and clicks`;
 
     console.log('Generating Pinterest pin with enhanced text overlay prompt:', basePrompt);
 
