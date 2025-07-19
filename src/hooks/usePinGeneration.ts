@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -28,6 +29,7 @@ export const usePinGeneration = () => {
     nicheId?: string; 
     specializedPrompt?: string; 
     imageStylePrompt?: string; 
+    noTextOverlay?: boolean;
   }, user?: any): Promise<GenerationResult | null> => {
     if (!params.url && !params.customContent) {
       toast({
@@ -70,6 +72,7 @@ export const usePinGeneration = () => {
           nicheId: params.nicheId,
           specializedPrompt: params.specializedPrompt,
           imageStylePrompt: params.imageStylePrompt,
+          noTextOverlay: params.noTextOverlay || false,
           userId: user.id 
         }
       });

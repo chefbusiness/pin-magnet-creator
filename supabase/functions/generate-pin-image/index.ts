@@ -14,7 +14,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, style, url, imageStylePrompt } = await req.json();
+    const { title, description, style, url, imageStylePrompt, noTextOverlay = false } = await req.json();
     
     if (!title || !description) {
       return new Response(
@@ -54,19 +54,31 @@ serve(async (req) => {
       }
     }
 
-    // SIMPLE AND DIRECT PROMPT - NO EXTRA TEXT
-    let basePrompt = `Pinterest pin vertical image. ${displayTitle}. Clean design with title "${displayTitle}" at top and "${websiteDomain}" at bottom. Modern interior design photo background.`;
-
-    // Add style specifications if provided
-    if (imageStylePrompt) {
-      basePrompt += ` ${imageStylePrompt}.`;
+    // Build prompt based on noTextOverlay setting
+    let basePrompt;
+    
+    if (noTextOverlay) {
+      // NO TEXT OVERLAY VERSION - Clean image with domain only at bottom
+      basePrompt = `Pinterest pin vertical image. Clean modern design, no text overlay on image. ${imageStylePrompt || 'Modern interior design photo background'}.`;
+      if (websiteDomain) {
+        basePrompt += ` Show "${websiteDomain}" subtly at bottom corner.`;
+      }
+    } else {
+      // ORIGINAL VERSION WITH TEXT OVERLAY
+      basePrompt = `Pinterest pin vertical image. ${displayTitle}. Clean design with title "${displayTitle}" at top and "${websiteDomain}" at bottom. Modern interior design photo background.`;
+      
+      // Add style specifications if provided
+      if (imageStylePrompt) {
+        basePrompt += ` ${imageStylePrompt}.`;
+      }
     }
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
-    console.log('Simple Direct Prompt:', basePrompt);
+    console.log(`Mode: ${noTextOverlay ? 'NO TEXT OVERLAY' : 'WITH TEXT OVERLAY'}`);
+    console.log('Prompt:', basePrompt);
 
     try {
-      // CORRECTED: Generate image with Ideogram v3-turbo with proper input wrapper
+      // Generate image with Ideogram v3-turbo with proper input wrapper
       const requestBody = {
         input: {
           prompt: basePrompt,

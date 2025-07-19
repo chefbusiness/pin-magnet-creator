@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePinGeneration } from "@/hooks/usePinGeneration";
-import { Loader2, Sparkles, Globe, FileText, Image, Download } from "lucide-react";
+import { Loader2, Sparkles, Globe, FileText, Image, Download, ImageOff } from "lucide-react";
 import { GenerationProgress } from "@/components/pin-generator/GenerationProgress";
 import { PinResults } from "@/components/pin-generator/PinResults";
 import { StyleTagSelector } from "@/components/niche/StyleTagSelector";
@@ -37,6 +38,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
   const [inputMode, setInputMode] = useState<"url" | "custom">("url");
   const [selectedStyleTags, setSelectedStyleTags] = useState<string[]>([]);
   const [selectedTrendTags, setSelectedTrendTags] = useState<string[]>([]);
+  const [noTextOverlay, setNoTextOverlay] = useState(false);
   const { user } = useAuth();
   const { language } = useLanguage();
   const { generatePins, isGenerating, progress, generatedPins, reset } = usePinGeneration();
@@ -79,7 +81,8 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
         customContent: inputMode === "custom" ? customContent : undefined,
         nicheId: nicheData.id,
         specializedPrompt: nicheData.specialized_prompt,
-        imageStylePrompt: enhancedImageStylePrompt
+        imageStylePrompt: enhancedImageStylePrompt,
+        noTextOverlay
       }, user);
     } catch (error) {
       console.error("Error generating pins:", error);
@@ -93,6 +96,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
     setCustomContent("");
     setSelectedStyleTags([]);
     setSelectedTrendTags([]);
+    setNoTextOverlay(false);
   };
 
   if (generatedPins.length > 0) {
@@ -243,6 +247,30 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
             nicheName={nicheData.name}
           />
 
+          {/* No Text Overlay Toggle */}
+          <Card className="border-dashed">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between space-x-4">
+                <div className="flex items-center space-x-3">
+                  <ImageOff className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <label htmlFor="no-text-overlay" className="text-sm font-medium cursor-pointer">
+                      Generar imágenes sin texto overlay
+                    </label>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Las imágenes se generarán sin texto superpuesto, solo con el dominio al pie
+                    </p>
+                  </div>
+                </div>
+                <Switch
+                  id="no-text-overlay"
+                  checked={noTextOverlay}
+                  onCheckedChange={setNoTextOverlay}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Generate Button */}
           <Button
             onClick={handleGenerate}
@@ -267,6 +295,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
           <p className="text-xs text-center text-muted-foreground">
             Los pines se generarán con prompts especializados para {nicheData.name}
             {(selectedStyleTags.length > 0 || selectedTrendTags.length > 0) && ` y las opciones seleccionadas`}
+            {noTextOverlay && ` (sin texto overlay)`}
           </p>
         </CardContent>
       </Card>

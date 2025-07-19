@@ -20,7 +20,8 @@ serve(async (req) => {
       userId = null, 
       nicheId,
       specializedPrompt,
-      imageStylePrompt 
+      imageStylePrompt,
+      noTextOverlay = false
     } = await req.json();
     
     if (!url && !customContent) {
@@ -35,7 +36,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    console.log(`Starting pin generation process for: ${url ? `URL: ${url}` : 'custom content'} (userId: ${userId})`);
+    console.log(`Starting pin generation process for: ${url ? `URL: ${url}` : 'custom content'} (userId: ${userId}, noTextOverlay: ${noTextOverlay})`);
 
     let urlAnalysis;
 
@@ -124,7 +125,8 @@ serve(async (req) => {
             description: variation.description,
             style: styleName,
             url: url || null,
-            imageStylePrompt
+            imageStylePrompt,
+            noTextOverlay
           }
         });
 
@@ -148,7 +150,7 @@ serve(async (req) => {
           title: variation.title,
           description: variation.description,
           image_url: imageData.imageUrl,
-          image_prompt: `Generated with ${imageData.model || 'AI'}`,
+          image_prompt: `Generated with ${imageData.model || 'AI'}${noTextOverlay ? ' (no text overlay)' : ''}`,
           template_style: styleName,
           status: 'completed'
         };
@@ -164,7 +166,7 @@ serve(async (req) => {
           return null;
         }
 
-        console.log(`Successfully generated pin ${index + 1}/3 with ${imageData.model}`);
+        console.log(`Successfully generated pin ${index + 1}/3 with ${imageData.model}${noTextOverlay ? ' (no text overlay)' : ''}`);
 
         return {
           title: variation.title,
@@ -190,7 +192,7 @@ serve(async (req) => {
       throw new Error('Failed to generate any pins');
     }
 
-    console.log(`Pin generation completed: ${successfulPins.length} pins created`);
+    console.log(`Pin generation completed: ${successfulPins.length} pins created${noTextOverlay ? ' (no text overlay)' : ''}`);
 
     return new Response(
       JSON.stringify({ 
