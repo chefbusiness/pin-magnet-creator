@@ -70,15 +70,15 @@ export function Header() {
                   <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.home')}
                   </a>
+                  <Link to="/generate-pins" className="text-sm font-medium hover:text-primary transition-colors">
+                    {t('nav.generatePins')}
+                  </Link>
                   <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.features')}
                   </a>
                   <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.pricing')}
                   </a>
-                  <Link to="/generate-pins" className="text-sm font-medium hover:text-primary transition-colors">
-                    {t('nav.generatePins')}
-                  </Link>
                 </>
               )}
             </nav>
@@ -258,15 +258,15 @@ export function Header() {
                         <a href="#home" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.home')}</span>
                         </a>
+                        <Link to="/generate-pins" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
+                          <span>{t('nav.generatePins')}</span>
+                        </Link>
                         <a href="#features" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.features')}</span>
                         </a>
                         <a href="#pricing" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.pricing')}</span>
                         </a>
-                        <Link to="/generate-pins" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
-                          <span>{t('nav.generatePins')}</span>
-                        </Link>
                         
                         <div className="border-t pt-4 space-y-2">
                           <Button variant="ghost" asChild className="w-full justify-start">
