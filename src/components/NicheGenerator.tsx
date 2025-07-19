@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -245,6 +244,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
             onStyleTagsChange={setSelectedStyleTags}
             onTrendTagsChange={setSelectedTrendTags}
             nicheName={nicheData.name}
+            hideIllustration={inputMode === "url"}
           />
 
           {/* No Text Overlay Toggle */}

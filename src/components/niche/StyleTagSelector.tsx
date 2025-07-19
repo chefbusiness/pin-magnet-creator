@@ -15,6 +15,7 @@ interface StyleTagSelectorProps {
   onStyleTagsChange: (tags: string[]) => void;
   onTrendTagsChange: (tags: string[]) => void;
   nicheName: string;
+  hideIllustration?: boolean;
 }
 
 export const StyleTagSelector = ({ 
@@ -24,8 +25,14 @@ export const StyleTagSelector = ({
   selectedTrendTags,
   onStyleTagsChange,
   onTrendTagsChange,
-  nicheName 
+  nicheName,
+  hideIllustration = false
 }: StyleTagSelectorProps) => {
+  // Filter out illustration style if hideIllustration is true
+  const filteredStyleTags = hideIllustration 
+    ? availableStyleTags.filter(tag => tag.id !== 'illustration-style')
+    : availableStyleTags;
+
   const toggleStyleTag = (tagId: string) => {
     if (selectedStyleTags.includes(tagId)) {
       onStyleTagsChange(selectedStyleTags.filter(id => id !== tagId));
@@ -105,7 +112,7 @@ export const StyleTagSelector = ({
                 Elige el tipo de imagen que mejor represente tu contenido
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {availableStyleTags.map((tag) => (
+                {filteredStyleTags.map((tag) => (
                   <TagButton
                     key={tag.id}
                     tag={tag}
@@ -141,7 +148,7 @@ export const StyleTagSelector = ({
             <div className="text-sm font-medium mb-2">Selección actual:</div>
             <div className="flex flex-wrap gap-2">
               {selectedStyleTags.map((tagId) => {
-                const tag = availableStyleTags.find(t => t.id === tagId);
+                const tag = filteredStyleTags.find(t => t.id === tagId);
                 return tag ? (
                   <Badge key={tagId} variant="default" className="text-xs">
                     <Palette className="w-3 h-3 mr-1" />
@@ -165,3 +172,36 @@ export const StyleTagSelector = ({
     </Card>
   );
 };
+
+const TagButton = ({ 
+  tag, 
+  isSelected, 
+  onToggle 
+}: { 
+  tag: StyleTag | TrendTag; 
+  isSelected: boolean; 
+  onToggle: () => void; 
+}) => (
+  <button
+    onClick={onToggle}
+    className={cn(
+      "relative p-3 rounded-lg border-2 text-left transition-all duration-200 hover:scale-105",
+      isSelected 
+        ? "border-primary bg-primary/5 shadow-md" 
+        : "border-border hover:border-primary/50 hover:bg-muted/50"
+    )}
+  >
+    {isSelected && (
+      <div className="absolute top-2 right-2">
+        <Check className="w-4 h-4 text-primary" />
+      </div>
+    )}
+    
+    <div className="space-y-1">
+      <div className="font-medium text-sm">{tag.name}</div>
+      <div className="text-xs text-muted-foreground line-clamp-2">
+        {tag.description}
+      </div>
+    </div>
+  </button>
+);
