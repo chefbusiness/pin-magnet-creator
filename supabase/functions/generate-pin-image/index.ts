@@ -85,12 +85,14 @@ VISUAL REQUIREMENTS:
     console.log('Prompt:', basePrompt);
 
     try {
-      // Generate image with Ideogram v3-turbo
+      // Generate image with Ideogram v3-turbo (using correct API format)
       const requestBody = {
         input: {
           prompt: basePrompt,
           aspect_ratio: "9:16",
-          model: "turbo" // For ideogram-v3-turbo
+          style_type: "None",
+          resolution: "None", 
+          magic_prompt_option: "Auto"
         }
       };
 
