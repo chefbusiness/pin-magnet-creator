@@ -103,11 +103,8 @@ VISUAL REQUIREMENTS:
         input: {
           prompt: basePrompt,
           aspect_ratio: "9:16", // Pinterest pin aspect ratio
-          model: "V_3_TURBO",
           style_type: "Design", // Good for Pinterest pins
-          prompt_adherence: 0.8, // High adherence to text requirements
-          negative_prompt: "blurry, low quality, bad text, unreadable text, cropped text, cut off text",
-          seed: Math.floor(Math.random() * 1000000)
+          negative_prompt: "blurry, low quality, bad text, unreadable text, cropped text, cut off text"
         }
       }),
     });
