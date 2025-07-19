@@ -128,15 +128,13 @@ CRITICAL RESTRICTIONS:
     console.log('Optimized Prompt:', basePrompt);
 
     try {
-      // CORRECT REPLICATE REQUEST BODY STRUCTURE FOR IDEOGRAM V3-TURBO
+      // IDEOGRAM V3-TURBO DIRECT STRUCTURE (NO INPUT WRAPPER)
       const requestBody = {
-        input: {
-          prompt: basePrompt,
-          resolution: "None",
-          style_type: "None", 
-          aspect_ratio: "9:16",
-          magic_prompt_option: "Auto"
-        }
+        prompt: basePrompt,
+        resolution: "None",
+        style_type: "None", 
+        aspect_ratio: "9:16",
+        magic_prompt_option: "Auto"
       };
 
       console.log('Ideogram request body:', JSON.stringify(requestBody, null, 2));
