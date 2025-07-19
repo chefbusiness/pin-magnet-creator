@@ -83,10 +83,13 @@ VISUAL REQUIREMENTS:
     console.log('API Key exists:', !!replicateApiKey);
     console.log('=== ATTEMPTING REPLICATE API CALL ===');
 
-    // Use minimum required parameters for ideogram-v3-turbo
+    // Use correct parameters for ideogram-v3-turbo
     const requestBody = {
       input: {
-        prompt: basePrompt
+        prompt: basePrompt,
+        aspect_ratio: "9:16",
+        model: "v_3_turbo",
+        magic_prompt_option: "Auto"
       }
     };
 
