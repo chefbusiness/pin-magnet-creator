@@ -77,8 +77,8 @@ export function TopSectorsSection() {
                               {subcategory.name}
                             </span>
                             <div className="flex items-center gap-1">
-                              <Badge variant="default" className="text-xs bg-primary">
-                                Premium
+                              <Badge variant="default" className="text-xs bg-primary hover:bg-primary/80">
+                                Generate Pins
                               </Badge>
                               <ExternalLink className="h-3 w-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
                             </div>

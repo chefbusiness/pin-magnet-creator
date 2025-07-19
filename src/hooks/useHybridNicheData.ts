@@ -1,3 +1,4 @@
+
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getTopSectors, getOtherSectors, getNicheSectors } from "@/data/pinterestSectors";
@@ -26,50 +27,70 @@ export const useHybridNicheData = () => {
     staleTime: 5 * 60 * 1000,
   });
 
+  // Mapeo correcto de keys de traducción a slugs de BD
+  const categoryMap: Record<string, string> = {
+    'sector.homeDecor': 'home-decor',
+    'sector.recipes': 'recipes',
+    'sector.fashion': 'fashion',
+    'sector.beauty': 'beauty',
+    'sector.weddings': 'weddings',
+    'sector.maternity': 'maternity',
+    'sector.travel': 'travel',
+    'sector.fitness': 'fitness',
+    'sector.health': 'health',
+    'sector.photography': 'photography'
+  };
+
+  // Mapeo específico de subcategorías (keys de traducción → slugs de BD)
+  const subcategoryMap: Record<string, Record<string, string>> = {
+    'sector.homeDecor': {
+      'subcategory.livingRoomDecoration': 'living-room-decor'
+      // Agregar más subcategorías aquí según se vayan implementando
+    },
+    'sector.recipes': {
+      // Agregar subcategorías de recetas cuando estén implementadas
+    },
+    'sector.fashion': {
+      // Agregar subcategorías de moda cuando estén implementadas
+    },
+    'sector.beauty': {
+      // Agregar subcategorías de belleza cuando estén implementadas
+    },
+    'sector.weddings': {
+      // Agregar subcategorías de bodas cuando estén implementadas
+    }
+  };
+
   // Función para verificar si una subcategoría está implementada en BD
   const isSubcategoryImplemented = (categoryTitleKey: string, subcategoryKey: string) => {
     if (!dbCategories) return false;
 
-    // Mapear las keys a los slugs de la BD
-    const categoryMap: Record<string, string> = {
-      'sector.homeDecor': 'decoracion-del-hogar',
-      'sector.recipes': 'recetas-y-comida',
-      'sector.fashion': 'moda-femenina',
-      'sector.beauty': 'belleza-y-cuidado-personal',
-      'sector.weddings': 'bodas-y-eventos'
-    };
-
     const categorySlug = categoryMap[categoryTitleKey];
     if (!categorySlug) return false;
+
+    // Verificar si existe mapeo específico para esta subcategoría
+    const subcategorySlug = subcategoryMap[categoryTitleKey]?.[subcategoryKey];
+    if (!subcategorySlug) return false;
 
     const dbCategory = dbCategories.find(cat => cat.slug === categorySlug);
     if (!dbCategory) return false;
 
-    // Verificar si existe la subcategoría en la BD
-    return dbCategory.niche_subcategories?.some((sub: any) => sub.is_active) || false;
+    // Verificar si existe la subcategoría específica en la BD
+    return dbCategory.niche_subcategories?.some((sub: any) => 
+      sub.is_active && sub.slug === subcategorySlug
+    ) || false;
   };
 
   // Función para obtener el link de la subcategoría si está implementada
   const getSubcategoryLink = (categoryTitleKey: string, subcategoryKey: string) => {
     if (!isSubcategoryImplemented(categoryTitleKey, subcategoryKey)) return null;
 
-    const categoryMap: Record<string, string> = {
-      'sector.homeDecor': 'decoracion-del-hogar',
-      'sector.recipes': 'recetas-y-comida', 
-      'sector.fashion': 'moda-femenina',
-      'sector.beauty': 'belleza-y-cuidado-personal',
-      'sector.weddings': 'bodas-y-eventos'
-    };
-
     const categorySlug = categoryMap[categoryTitleKey];
-    if (!categorySlug) return null;
+    const subcategorySlug = subcategoryMap[categoryTitleKey]?.[subcategoryKey];
+    
+    if (!categorySlug || !subcategorySlug) return null;
 
-    const dbCategory = dbCategories?.find(cat => cat.slug === categorySlug);
-    const dbSubcategory = dbCategory?.niche_subcategories?.[0]; // Tomar la primera implementada
-
-    if (!dbSubcategory) return null;
-
-    return `/niche/${categorySlug}/${dbSubcategory.slug}`;
+    return `/niche/${categorySlug}/${subcategorySlug}`;
   };
 
   const getTopSectorsWithStatus = () => {
