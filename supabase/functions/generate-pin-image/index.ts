@@ -76,16 +76,17 @@ IMPORTANT: This is a Pinterest pin, so text overlay is ESSENTIAL for engagement.
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        version: "5599ed30703defd1d160a25a63321b4dec97101d98b4674bcc56e41f62f35637",
+        version: "39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08d",
         input: {
           prompt: basePrompt,
-          go_fast: true,
-          megapixels: "1",
+          width: 736,
+          height: 1104,
+          guidance_scale: 3.5,
+          num_inference_steps: 28,
           num_outputs: 1,
-          aspect_ratio: "9:16",
+          aspect_ratio: "custom",
           output_format: "png",
-          output_quality: 90,
-          num_inference_steps: 4
+          output_quality: 90
         }
       }),
     });
