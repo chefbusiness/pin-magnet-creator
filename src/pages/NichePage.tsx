@@ -1,4 +1,3 @@
-
 import { useParams, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,39 +11,40 @@ import { AuthRequiredSection } from "@/components/pin-generator/AuthRequiredSect
 import NicheGenerator from "@/components/NicheGenerator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { NicheBreadcrumbs } from "@/components/niche/NicheBreadcrumbs";
-
 const NichePage = () => {
-  const { category, subcategory } = useParams();
-  const { user } = useAuth();
-  const { language } = useLanguage();
+  const {
+    category,
+    subcategory
+  } = useParams();
+  const {
+    user
+  } = useAuth();
+  const {
+    language
+  } = useLanguage();
   const t = translations[language];
-
-  const { data: nicheData, isLoading, error } = useQuery({
+  const {
+    data: nicheData,
+    isLoading,
+    error
+  } = useQuery({
     queryKey: ['niche', category, subcategory],
     queryFn: async () => {
       if (!category || !subcategory) return null;
-      
-      const { data, error } = await supabase
-        .from('niche_subcategories')
-        .select(`
+      const {
+        data,
+        error
+      } = await supabase.from('niche_subcategories').select(`
           *,
           niche_categories!inner(*)
-        `)
-        .eq('slug', subcategory)
-        .eq('niche_categories.slug', category)
-        .eq('is_active', true)
-        .eq('niche_categories.is_active', true)
-        .single();
-
+        `).eq('slug', subcategory).eq('niche_categories.slug', category).eq('is_active', true).eq('niche_categories.is_active', true).single();
       if (error) throw error;
       return data;
     },
     enabled: !!category && !!subcategory
   });
-
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background">
+    return <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="space-y-8">
@@ -58,28 +58,20 @@ const NichePage = () => {
           </div>
         </main>
         <Footer />
-      </div>
-    );
+      </div>;
   }
-
   if (error || !nicheData) {
     return <Navigate to="/404" replace />;
   }
-
   const category_data = {
     ...nicheData.niche_categories,
     slug: category // Ensure we pass the slug from URL params
   };
   const isAuthRequired = nicheData.is_premium && !user;
-
-  return (
-    <>
+  return <>
       <Helmet>
         <title>{nicheData.meta_title || `${nicheData.name} - PinCraft`}</title>
-        <meta 
-          name="description" 
-          content={nicheData.meta_description || nicheData.description} 
-        />
+        <meta name="description" content={nicheData.meta_description || nicheData.description} />
         <meta property="og:title" content={nicheData.meta_title || `${nicheData.name} - PinCraft`} />
         <meta property="og:description" content={nicheData.meta_description || nicheData.description} />
         <link rel="canonical" href={`https://pincraft.pro/niche/${category}/${subcategory}`} />
@@ -89,47 +81,31 @@ const NichePage = () => {
         <Header />
         <main className="container mx-auto px-4 py-8">
           {/* Breadcrumbs */}
-          <NicheBreadcrumbs
-            categoryName={category_data.name}
-            categorySlug={category_data.slug}
-            categoryEmoji={category_data.emoji || ''}
-            subcategoryName={nicheData.name}
-          />
+          <NicheBreadcrumbs categoryName={category_data.name} categorySlug={category_data.slug} categoryEmoji={category_data.emoji || ''} subcategoryName={nicheData.name} />
 
           {/* Hero Section */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 py-[40px]">
             <div className="flex items-center justify-center gap-3 mb-4">
               <span className="text-4xl">{category_data.emoji}</span>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-rose-500">
                 {nicheData.name}
               </h1>
             </div>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               {nicheData.description}
             </p>
-            {nicheData.is_premium && (
-              <div className="mt-4">
+            {nicheData.is_premium && <div className="mt-4">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
                   ✨ Premium
                 </span>
-              </div>
-            )}
+              </div>}
           </div>
 
           {/* Pin Generator or Auth Required */}
-          {isAuthRequired ? (
-            <AuthRequiredSection />
-          ) : (
-            <NicheGenerator 
-              nicheData={nicheData}
-              categoryData={category_data}
-            />
-          )}
+          {isAuthRequired ? <AuthRequiredSection /> : <NicheGenerator nicheData={nicheData} categoryData={category_data} />}
         </main>
         <Footer />
       </div>
-    </>
-  );
+    </>;
 };
-
 export default NichePage;
