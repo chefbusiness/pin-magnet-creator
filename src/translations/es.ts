@@ -73,6 +73,8 @@ export const esTranslations = {
   'guide.conclusion': '💡 Conclusión',
   'guide.conclusionText': 'Pinterest ofrece oportunidades prácticamente ilimitadas para crear contenido visual atractivo en una amplia variedad de sectores. Desde los nichos más populares como decoración del hogar y recetas, hasta especializaciones como tecnología o sostenibilidad, cada sector tiene su audiencia específica y potencial de engagement.',
   'guide.subcategories': 'Subcategorías:',
+  'guide.generatePins': 'Generar Pines',
+  'guide.soon': 'Próximamente',
   
   // Sectors
   'sector.homeDecor': 'Decoración del Hogar y DIY',

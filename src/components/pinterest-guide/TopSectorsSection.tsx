@@ -78,7 +78,7 @@ export function TopSectorsSection() {
                             </span>
                             <div className="flex items-center gap-1">
                               <Badge variant="default" className="text-xs bg-primary hover:bg-primary/80">
-                                Generate Pins
+                                {t('guide.generatePins')}
                               </Badge>
                               <ExternalLink className="h-3 w-3 opacity-0 group-hover/link:opacity-100 transition-opacity" />
                             </div>
@@ -90,7 +90,7 @@ export function TopSectorsSection() {
                               {subcategory.name}
                             </span>
                             <Badge variant="outline" className="text-xs">
-                              Soon
+                              {t('guide.soon')}
                             </Badge>
                           </>
                         )}
