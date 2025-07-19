@@ -80,24 +80,47 @@ serve(async (req) => {
     const textVariations = textResponse.data.data.variations;
     console.log('Text variations generated:', textVariations.length);
 
-    // Step 3: Generate images for each text variation with descriptive styles
+    // Step 3: Generate images for each text variation with user-selected styles
     console.log('Step 3: Generating pin images...');
     const imagePromises = textVariations.map(async (variation: any, index: number) => {
       try {
-        // Generate descriptive style names based on content and selection
-        const styleNames = [
-          'profesional-elegante',
-          'moderno-llamativo', 
-          'aesthetic-tendencia'
-        ];
+        // Generate style names based on imageStylePrompt content and user selection
+        let styleName = 'personalizado';
         
-        const currentStyle = styleNames[index] || 'personalizado';
+        if (imageStylePrompt) {
+          // Extract meaningful style indicators from the prompt
+          if (imageStylePrompt.includes('plant-filled') || imageStylePrompt.includes('botanical')) {
+            styleName = 'botanico-plantas';
+          } else if (imageStylePrompt.includes('scandinavian') || imageStylePrompt.includes('nordic')) {
+            styleName = 'escandinavo-nordico';
+          } else if (imageStylePrompt.includes('bohemian') || imageStylePrompt.includes('boho')) {
+            styleName = 'bohemio-ethnic';
+          } else if (imageStylePrompt.includes('industrial')) {
+            styleName = 'industrial-moderno';
+          } else if (imageStylePrompt.includes('vintage') || imageStylePrompt.includes('retro')) {
+            styleName = 'vintage-retro';
+          } else if (imageStylePrompt.includes('aesthetic') || imageStylePrompt.includes('cozy')) {
+            styleName = 'aesthetic-acogedor';
+          } else if (imageStylePrompt.includes('minimalist') || imageStylePrompt.includes('minimal')) {
+            styleName = 'minimalista-limpio';
+          } else if (imageStylePrompt.includes('rustic') || imageStylePrompt.includes('farmhouse')) {
+            styleName = 'rustico-campestre';
+          } else {
+            // Generate different style variations for each pin
+            const styleVariations = [
+              'estilo-especializado-1',
+              'tendencia-pinterest-2', 
+              'personalizado-optimizado-3'
+            ];
+            styleName = styleVariations[index] || 'personalizado-unico';
+          }
+        }
 
         const imageResponse = await supabase.functions.invoke('generate-pin-image', {
           body: {
             title: variation.title,
             description: variation.description,
-            style: currentStyle,
+            style: styleName,
             url: url || null,
             imageStylePrompt
           }
@@ -116,7 +139,7 @@ serve(async (req) => {
           description: variation.description,
           image_url: imageResponse.data.data.imageUrl,
           image_prompt: imageResponse.data.data.prompt,
-          template_style: currentStyle,
+          template_style: styleName,
           status: 'completed'
         };
 
@@ -133,7 +156,7 @@ serve(async (req) => {
         return {
           ...variation,
           imageUrl: imageResponse.data.data.imageUrl,
-          style: currentStyle,
+          style: styleName,
           pinId: pin?.id
         };
       } catch (error) {
