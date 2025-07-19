@@ -1,9 +1,10 @@
 
+import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import livingRoomScandinavian from "@/assets/examples/living-room-scandinavian.png";
-import livingRoomSmallSpace from "@/assets/examples/living-room-small-space.png";
-import livingRoomBohemian from "@/assets/examples/living-room-bohemian.png";
+import { Button } from "@/components/ui/button";
+import { Loader2, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NicheExamplePinsProps {
   nicheName: string;
@@ -19,19 +20,19 @@ const getExamplesForNiche = (categorySlug: string, nicheName: string) => {
         title: "Sala de Estar Escandinava: 7 Ideas que Transformarán tu Hogar",
         description: "Descubre cómo crear una sala acogedora con estilo nórdico. Muebles de madera clara, textiles suaves y plantas naturales.",
         tags: ["Escandinavo", "Fotografía Real"],
-        imageUrl: livingRoomScandinavian
+        imageUrl: null
       },
       {
         title: "Decoración de Sala Pequeña: Maximiza tu Espacio con Estilo",
         description: "Ideas inteligentes para salas compactas. Soluciones de almacenaje y trucos visuales que amplían el espacio.",
         tags: ["Pequeña", "Aesthetic"],
-        imageUrl: livingRoomSmallSpace
+        imageUrl: null
       },
       {
         title: "Tendencia 2024: Salas Bohemias con Plantas y Texturas",
         description: "El estilo boho está de vuelta. Cojines étnicos, plantas colgantes y alfombras texturizadas para crear un oasis urbano.",
         tags: ["Bohemio", "Con Plantas"],
-        imageUrl: livingRoomBohemian
+        imageUrl: null
       }
     ];
   }
@@ -84,7 +85,39 @@ const getExamplesForNiche = (categorySlug: string, nicheName: string) => {
 };
 
 export const NicheExamplePins = ({ nicheName, categorySlug, categoryEmoji }: NicheExamplePinsProps) => {
+  const [exampleImages, setExampleImages] = useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
+  
   const examples = getExamplesForNiche(categorySlug, nicheName);
+
+  const generateExampleImage = async () => {
+    setIsGenerating(true);
+    try {
+      console.log('Generating test image with Ideogram v3-turbo...');
+      
+      const { data, error } = await supabase.functions.invoke('generate-pin-image', {
+        body: {
+          title: "Sala de Estar Escandinava: 7 Ideas que Transformarán tu Hogar",
+          description: "Descubre cómo crear una sala acogedora con estilo nórdico. Muebles de madera clara, textiles suaves y plantas naturales.",
+          style: "ejemplo-escandinavo",
+          url: null,
+          imageStylePrompt: "Interior design, living room, modern decor, cozy atmosphere, elegant furniture, warm lighting, high-quality interior photography, realistic lighting, professional home staging, scandinavian nordic style, light woods, neutral colors, hygge aesthetic"
+        }
+      });
+
+      if (error) {
+        console.error('Error generating example:', error);
+        return;
+      }
+
+      console.log('Generated image URL:', data.data.imageUrl);
+      setExampleImages([data.data.imageUrl]);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -93,26 +126,44 @@ export const NicheExamplePins = ({ nicheName, categorySlug, categoryEmoji }: Nic
           <span>{categoryEmoji}</span>
           Ejemplos de Pines para {nicheName}
         </h2>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground mb-4">
           Inspiración basada en pines exitosos de Pinterest para tu nicho específico
         </p>
+        
+        <Button
+          onClick={generateExampleImage}
+          disabled={isGenerating}
+          className="mb-6"
+        >
+          {isGenerating ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Generando con Ideogram v3...
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-4 h-4 mr-2" />
+              Generar Ejemplo con Ideogram
+            </>
+          )}
+        </Button>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
         {examples.map((example, index) => (
           <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="aspect-[3/4] bg-gradient-to-br from-primary/10 to-secondary/10 relative">
-              {example.imageUrl ? (
+              {exampleImages[index] ? (
                 <img 
-                  src={example.imageUrl} 
+                  src={exampleImages[index]} 
                   alt={example.title}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               ) : (
                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                   <div className="text-white text-center p-4">
-                    <div className="text-sm font-medium">Próximamente</div>
-                    <div className="text-xs opacity-80">Imagen de ejemplo</div>
+                    <div className="text-sm font-medium">Ejemplo de Ideogram v3</div>
+                    <div className="text-xs opacity-80">Texto overlay perfecto</div>
                   </div>
                 </div>
               )}
@@ -138,7 +189,7 @@ export const NicheExamplePins = ({ nicheName, categorySlug, categoryEmoji }: Nic
 
       <div className="text-center">
         <p className="text-sm text-muted-foreground">
-          💡 Estos ejemplos muestran cómo se verán tus pines para este nicho específico
+          💡 Ideogram v3-turbo es excelente para generar texto overlay legible en pines
         </p>
       </div>
     </div>
