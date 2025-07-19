@@ -92,20 +92,18 @@ VISUAL REQUIREMENTS:
 
     console.log('Generating Pinterest pin with enhanced text overlay prompt:', basePrompt);
 
-    const response = await fetch('https://api.replicate.com/v1/predictions', {
+    const response = await fetch('https://api.replicate.com/v1/models/ideogram-ai/ideogram-v3-turbo/predictions', {
       method: 'POST',
       headers: {
         'Authorization': `Token ${replicateApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "ideogram-ai/ideogram-v3-turbo",
         input: {
           prompt: basePrompt,
           width: 736,
           height: 1104,
-          output_format: "png",
-          output_quality: 95
+          output_format: "png"
         }
       }),
     });
