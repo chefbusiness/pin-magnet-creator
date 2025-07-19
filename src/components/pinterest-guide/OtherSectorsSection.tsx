@@ -1,7 +1,9 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Target } from "lucide-react";
+import { Target, ExternalLink } from "lucide-react";
 import { getOtherSectors } from "@/data/pinterestSectors";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Link } from "react-router-dom";
 
 export function OtherSectorsSection() {
   const { t } = useLanguage();
@@ -29,9 +31,16 @@ export function OtherSectorsSection() {
             <CardContent>
               <ul className="space-y-1">
                 {sector.subcategoriesKeys.map((sub, idx) => (
-                  <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
-                    <span className="text-primary mt-1">•</span>
-                    {t(sub)}
+                  <li key={idx} className="text-sm text-muted-foreground flex items-center justify-between hover:text-foreground transition-colors group p-1 rounded hover:bg-accent/50">
+                    <span className="flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      {t(sub)}
+                    </span>
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                        Próximamente
+                      </span>
+                    </div>
                   </li>
                 ))}
               </ul>

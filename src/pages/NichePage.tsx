@@ -1,3 +1,4 @@
+
 import { useParams, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +11,7 @@ import { Footer } from "@/components/Footer";
 import { AuthRequiredSection } from "@/components/pin-generator/AuthRequiredSection";
 import NicheGenerator from "@/components/NicheGenerator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { NicheBreadcrumbs } from "@/components/niche/NicheBreadcrumbs";
 
 const NichePage = () => {
   const { category, subcategory } = useParams();
@@ -46,6 +48,7 @@ const NichePage = () => {
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="space-y-8">
+            <Skeleton className="h-6 w-1/2" />
             <Skeleton className="h-12 w-1/2" />
             <Skeleton className="h-6 w-3/4" />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -82,6 +85,14 @@ const NichePage = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-4 py-8">
+          {/* Breadcrumbs */}
+          <NicheBreadcrumbs
+            categoryName={category_data.name}
+            categorySlug={category_data.slug}
+            categoryEmoji={category_data.emoji || ''}
+            subcategoryName={nicheData.name}
+          />
+
           {/* Hero Section */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
