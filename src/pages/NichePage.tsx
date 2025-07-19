@@ -66,7 +66,10 @@ const NichePage = () => {
     return <Navigate to="/404" replace />;
   }
 
-  const category_data = nicheData.niche_categories;
+  const category_data = {
+    ...nicheData.niche_categories,
+    slug: category // Ensure we pass the slug from URL params
+  };
   const isAuthRequired = nicheData.is_premium && !user;
 
   return (

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,8 @@ import { usePinGeneration } from "@/hooks/usePinGeneration";
 import { Loader2, Sparkles, Globe, FileText, Image, Download } from "lucide-react";
 import { GenerationProgress } from "@/components/pin-generator/GenerationProgress";
 import { PinResults } from "@/components/pin-generator/PinResults";
+import { StyleTagSelector } from "@/components/niche/StyleTagSelector";
+import { getStyleTagsForNiche } from "@/data/nicheStyleTags";
 import { toast } from "sonner";
 
 interface NicheGeneratorProps {
@@ -24,6 +27,7 @@ interface NicheGeneratorProps {
   categoryData: {
     name: string;
     emoji: string;
+    slug: string;
   };
 }
 
@@ -31,9 +35,13 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
   const [url, setUrl] = useState("");
   const [customContent, setCustomContent] = useState("");
   const [inputMode, setInputMode] = useState<"url" | "custom">("url");
+  const [selectedStyleTags, setSelectedStyleTags] = useState<string[]>([]);
   const { user } = useAuth();
   const { language } = useLanguage();
   const { generatePins, isGenerating, progress, generatedPins, reset } = usePinGeneration();
+
+  // Get available style tags for this niche category
+  const availableStyleTags = getStyleTagsForNiche(categoryData.slug);
 
   const handleGenerate = async () => {
     if (!user) {
@@ -52,12 +60,23 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
     }
 
     try {
+      // Combine selected style tags into the image style prompt
+      let enhancedImageStylePrompt = nicheData.image_style_prompt;
+      
+      if (selectedStyleTags.length > 0) {
+        const selectedTagObjects = availableStyleTags.filter(tag => 
+          selectedStyleTags.includes(tag.id)
+        );
+        const styleModifiers = selectedTagObjects.map(tag => tag.promptModifier).join(', ');
+        enhancedImageStylePrompt = `${nicheData.image_style_prompt}, ${styleModifiers}`;
+      }
+
       await generatePins({
         url: inputMode === "url" ? url : undefined,
         customContent: inputMode === "custom" ? customContent : undefined,
         nicheId: nicheData.id,
         specializedPrompt: nicheData.specialized_prompt,
-        imageStylePrompt: nicheData.image_style_prompt
+        imageStylePrompt: enhancedImageStylePrompt
       }, user);
     } catch (error) {
       console.error("Error generating pins:", error);
@@ -69,6 +88,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
     reset();
     setUrl("");
     setCustomContent("");
+    setSelectedStyleTags([]);
   };
 
   if (generatedPins.length > 0) {
@@ -208,6 +228,14 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
             </div>
           )}
 
+          {/* Style Tag Selector */}
+          <StyleTagSelector
+            availableTags={availableStyleTags}
+            selectedTags={selectedStyleTags}
+            onTagsChange={setSelectedStyleTags}
+            nicheName={nicheData.name}
+          />
+
           {/* Generate Button */}
           <Button
             onClick={handleGenerate}
@@ -231,6 +259,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
           {/* Info Text */}
           <p className="text-xs text-center text-muted-foreground">
             Los pines se generarán con prompts especializados para {nicheData.name}
+            {selectedStyleTags.length > 0 && ` y los estilos seleccionados`}
           </p>
         </CardContent>
       </Card>
