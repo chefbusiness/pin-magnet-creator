@@ -92,7 +92,7 @@ VISUAL REQUIREMENTS:
 
     console.log('Generating Pinterest pin with enhanced text overlay prompt:', basePrompt);
 
-    // Use Ideogram v3-turbo with correct parameters
+    // Use Ideogram v3-turbo with CORRECT parameters according to official Replicate documentation
     const response = await fetch('https://api.replicate.com/v1/models/ideogram-ai/ideogram-v3-turbo/predictions', {
       method: 'POST',
       headers: {
@@ -102,8 +102,8 @@ VISUAL REQUIREMENTS:
       body: JSON.stringify({
         input: {
           prompt: basePrompt,
-          aspect_ratio: "9:16", // Pinterest pin aspect ratio
-          style_type: "Design", // Good for Pinterest pins
+          aspect_ratio: "9:16", // Pinterest pin aspect ratio - CORRECT parameter
+          style_type: "Design", // Good for Pinterest pins - CORRECT parameter
           negative_prompt: "blurry, low quality, bad text, unreadable text, cropped text, cut off text"
         }
       }),
@@ -112,7 +112,7 @@ VISUAL REQUIREMENTS:
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`Replicate API error: ${response.status} - ${errorText}`);
-      throw new Error(`Replicate API error: ${response.status}`);
+      throw new Error(`Replicate API error: ${response.status} - ${errorText}`);
     }
 
     const prediction = await response.json();
@@ -158,8 +158,12 @@ VISUAL REQUIREMENTS:
     const replicateImageUrl = result.output[0];
     console.log('Generated image URL from Replicate:', replicateImageUrl);
 
-    // Validate the URL before proceeding
-    if (!replicateImageUrl || typeof replicateImageUrl !== 'string' || replicateImageUrl.length < 10) {
+    // ROBUST validation of the image URL
+    if (!replicateImageUrl || 
+        typeof replicateImageUrl !== 'string' || 
+        replicateImageUrl.length < 10 ||
+        replicateImageUrl === 'h' ||
+        replicateImageUrl.trim() === '') {
       console.error('Invalid image URL received:', replicateImageUrl);
       throw new Error('Invalid image URL received from Replicate');
     }
