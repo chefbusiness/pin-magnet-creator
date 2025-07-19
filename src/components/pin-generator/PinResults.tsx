@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,6 +15,19 @@ interface PinResultsProps {
 export function PinResults({ results, onDownloadImage }: PinResultsProps) {
   const { t } = useLanguage();
   const navigate = useNavigate();
+
+  // Function to translate generic style names to Spanish
+  const translateStyle = (style: string) => {
+    const translations: Record<string, string> = {
+      'profesional-elegante': 'Profesional',
+      'moderno-llamativo': 'Moderno',
+      'aesthetic-tendencia': 'Aesthetic',
+      'modern': 'Moderno',
+      'creative': 'Creativo', 
+      'elegant': 'Elegante'
+    };
+    return translations[style] || style;
+  };
 
   return (
     <div className="mt-8">
@@ -40,7 +54,7 @@ export function PinResults({ results, onDownloadImage }: PinResultsProps) {
               />
               <div className="absolute top-2 right-2">
                 <Badge variant="outline" className="bg-white/90">
-                  {pin.style}
+                  {translateStyle(pin.style)}
                 </Badge>
               </div>
             </div>
@@ -57,7 +71,7 @@ export function PinResults({ results, onDownloadImage }: PinResultsProps) {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onDownloadImage(pin.imageUrl, `pin-${index + 1}-${pin.style}.png`)}
+                  onClick={() => onDownloadImage(pin.imageUrl, `pin-${index + 1}-${translateStyle(pin.style)}.png`)}
                   className="flex-1"
                 >
                   <Download className="w-3 h-3 mr-1" />

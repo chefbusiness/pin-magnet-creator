@@ -30,7 +30,7 @@ serve(async (req) => {
       );
     }
 
-    // Enhanced prompt for Pinterest pin generation with better text overlay
+    // Enhanced prompt for Pinterest pin generation with mandatory text overlay
     let basePrompt = `Create a Pinterest pin image (736x1104 pixels, vertical format) with the following specifications:
 
 MAIN CONTENT: "${title}"
@@ -47,21 +47,26 @@ VISUAL REQUIREMENTS:
       basePrompt += `\nSTYLE SPECIFICATION: ${imageStylePrompt}`;
     }
 
-    // Enhanced text overlay instructions
-    basePrompt += `\n\nTEXT OVERLAY REQUIREMENTS:
-- Add elegant text overlay with the title: "${title}"
-- Text should be clearly readable but NOT dominate the entire image
-- Position text in corner or strategic location (not center)
-- Use professional typography with good contrast
-- Text overlay should occupy maximum 30% of the image
-- Background image must remain the main visual focus
-- Use subtle background blur or shadow behind text for readability
-- Modern, Pinterest-style text treatment
-- Color scheme should be cohesive and appealing`;
+    // MANDATORY text overlay instructions - more specific and forceful
+    basePrompt += `\n\nMANDATORY TEXT OVERLAY REQUIREMENTS (CRITICAL):
+- YOU MUST add visible text overlay with the title: "${title}"
+- The text MUST be clearly readable and professionally styled
+- Position text in upper third, lower third, or corner - NEVER in center blocking main subject
+- Use elegant, Pinterest-style typography with high contrast
+- Text should occupy 20-35% of image height maximum
+- Add subtle semi-transparent background behind text (blur, shadow, or colored overlay)
+- Text color must contrast sharply with background (white text on dark overlay, or dark text on light overlay)  
+- Use modern sans-serif or serif fonts typical of Pinterest pins
+- Text must be large enough to read on mobile devices
+- EXAMPLE STYLES: White bold text with dark semi-transparent background, or dark text with light semi-transparent background
+- The background image must remain the primary visual focus
+- Text overlay is MANDATORY - do not create pin without visible text
 
-    basePrompt += `\n\nFINAL OUTPUT: Pinterest pin ready for publishing, optimized for engagement and clicks`;
+IMPORTANT: This is a Pinterest pin, so text overlay is ESSENTIAL for engagement. Do not generate without clear, readable text overlay.`;
 
-    console.log('Generating Pinterest pin with prompt:', basePrompt);
+    basePrompt += `\n\nFINAL OUTPUT: Pinterest pin with mandatory text overlay, ready for publishing, optimized for engagement and clicks`;
+
+    console.log('Generating Pinterest pin with enhanced text overlay prompt:', basePrompt);
 
     const response = await fetch('https://api.replicate.com/v1/predictions', {
       method: 'POST',

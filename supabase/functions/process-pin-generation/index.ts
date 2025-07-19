@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
@@ -79,15 +80,24 @@ serve(async (req) => {
     const textVariations = textResponse.data.data.variations;
     console.log('Text variations generated:', textVariations.length);
 
-    // Step 3: Generate images for each text variation
+    // Step 3: Generate images for each text variation with descriptive styles
     console.log('Step 3: Generating pin images...');
     const imagePromises = textVariations.map(async (variation: any, index: number) => {
       try {
+        // Generate descriptive style names based on content and selection
+        const styleNames = [
+          'profesional-elegante',
+          'moderno-llamativo', 
+          'aesthetic-tendencia'
+        ];
+        
+        const currentStyle = styleNames[index] || 'personalizado';
+
         const imageResponse = await supabase.functions.invoke('generate-pin-image', {
           body: {
             title: variation.title,
             description: variation.description,
-            style: ['modern', 'creative', 'elegant'][index] || 'modern',
+            style: currentStyle,
             url: url || null,
             imageStylePrompt
           }
@@ -106,7 +116,7 @@ serve(async (req) => {
           description: variation.description,
           image_url: imageResponse.data.data.imageUrl,
           image_prompt: imageResponse.data.data.prompt,
-          template_style: ['modern', 'creative', 'elegant'][index] || 'modern',
+          template_style: currentStyle,
           status: 'completed'
         };
 
@@ -123,7 +133,7 @@ serve(async (req) => {
         return {
           ...variation,
           imageUrl: imageResponse.data.data.imageUrl,
-          style: ['modern', 'creative', 'elegant'][index] || 'modern',
+          style: currentStyle,
           pinId: pin?.id
         };
       } catch (error) {
