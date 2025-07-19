@@ -22,7 +22,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><a href="#" className="hover:text-foreground transition-colors">{t('nav.features')}</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">{t('nav.pricing')}</a></li>
-              <li><a href="/pinterest-guide" className="hover:text-foreground transition-colors">{t('nav.pinterestGuide')}</a></li>
+              <li><a href="/generate-pins" className="hover:text-foreground transition-colors">{t('nav.generatePins')}</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.api')}</a></li>
               <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.integrations')}</a></li>
             </ul>
