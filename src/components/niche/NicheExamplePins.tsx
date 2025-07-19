@@ -1,6 +1,10 @@
 
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Loader2, Sparkles, RefreshCw } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NicheExamplePinsProps {
   nicheName: string;
@@ -8,7 +12,15 @@ interface NicheExamplePinsProps {
   categoryEmoji: string;
 }
 
-const getExamplesForNiche = (categorySlug: string, nicheName: string) => {
+interface ExamplePin {
+  title: string;
+  description: string;
+  imageUrl?: string;
+  style: string;
+  error?: string;
+}
+
+const getPlaceholderExamples = (categorySlug: string, nicheName: string) => {
   // Ejemplos específicos para decoración de sala de estar
   if (categorySlug === 'home-decor' && nicheName.toLowerCase().includes('sala')) {
     return [
@@ -81,7 +93,35 @@ const getExamplesForNiche = (categorySlug: string, nicheName: string) => {
 };
 
 export const NicheExamplePins = ({ nicheName, categorySlug, categoryEmoji }: NicheExamplePinsProps) => {
-  const examples = getExamplesForNiche(categorySlug, nicheName);
+  const [examplePins, setExamplePins] = useState<ExamplePin[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
+  
+  const placeholderExamples = getPlaceholderExamples(categorySlug, nicheName);
+
+  const generateExamples = async () => {
+    setIsGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-niche-examples', {
+        body: {
+          categorySlug,
+          nicheName
+        }
+      });
+
+      if (error) {
+        console.error('Error generating examples:', error);
+        return;
+      }
+
+      setExamplePins(data.data.examples);
+      setHasGenerated(true);
+    } catch (error) {
+      console.error('Error generating examples:', error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -90,21 +130,85 @@ export const NicheExamplePins = ({ nicheName, categorySlug, categoryEmoji }: Nic
           <span>{categoryEmoji}</span>
           Ejemplos de Pines para {nicheName}
         </h2>
-        <p className="text-muted-foreground">
-          Inspiración basada en pines exitosos de Pinterest para tu nicho específico
+        <p className="text-muted-foreground mb-4">
+          {hasGenerated 
+            ? "Pines de ejemplo generados con IA usando las mismas especificaciones que tus pines reales"
+            : "Inspiración basada en pines exitosos de Pinterest para tu nicho específico"
+          }
         </p>
+        
+        {!hasGenerated && (
+          <Button
+            onClick={generateExamples}
+            disabled={isGenerating}
+            className="mb-6"
+            size="lg"
+          >
+            {isGenerating ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Generando Ejemplos Reales...
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4 mr-2" />
+                Generar Ejemplos Reales con IA
+              </>
+            )}
+          </Button>
+        )}
+
+        {hasGenerated && (
+          <Button
+            onClick={generateExamples}
+            disabled={isGenerating}
+            variant="outline"
+            className="mb-6"
+          >
+            {isGenerating ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Regenerando...
+              </>
+            ) : (
+              <>
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Regenerar Ejemplos
+              </>
+            )}
+          </Button>
+        )}
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        {examples.map((example, index) => (
+        {(hasGenerated ? examplePins : placeholderExamples).map((example, index) => (
           <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="aspect-[3/4] bg-gradient-to-br from-primary/10 to-secondary/10 relative">
-              <div className="absolute inset-0 bg-black/20 flex items-end p-4">
-                <div className="text-white">
-                  <div className="text-xs opacity-80 mb-1">Ejemplo de diseño:</div>
-                  <div className="text-sm font-medium leading-tight">{example.style}</div>
+              {hasGenerated && example.imageUrl ? (
+                <img 
+                  src={example.imageUrl} 
+                  alt={example.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-black/20 flex items-end p-4">
+                  <div className="text-white">
+                    <div className="text-xs opacity-80 mb-1">Ejemplo de diseño:</div>
+                    <div className="text-sm font-medium leading-tight">
+                      {hasGenerated ? example.style : (placeholderExamples[index]?.style || 'Diseño personalizado')}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+              
+              {hasGenerated && example.error && (
+                <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
+                  <div className="text-white text-center p-4">
+                    <div className="text-sm font-medium">Error generando imagen</div>
+                    <div className="text-xs opacity-80">{example.error}</div>
+                  </div>
+                </div>
+              )}
             </div>
             <CardContent className="p-4 space-y-3">
               <h3 className="font-semibold text-sm leading-tight line-clamp-2">
@@ -114,11 +218,17 @@ export const NicheExamplePins = ({ nicheName, categorySlug, categoryEmoji }: Nic
                 {example.description}
               </p>
               <div className="flex flex-wrap gap-1">
-                {example.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="text-xs">
-                    {tag}
+                {hasGenerated ? (
+                  <Badge variant="default" className="text-xs">
+                    IA Generado
                   </Badge>
-                ))}
+                ) : (
+                  (placeholderExamples[index]?.tags || []).map((tag) => (
+                    <Badge key={tag} variant="secondary" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
@@ -127,7 +237,10 @@ export const NicheExamplePins = ({ nicheName, categorySlug, categoryEmoji }: Nic
 
       <div className="text-center">
         <p className="text-sm text-muted-foreground">
-          💡 Estos ejemplos muestran cómo tus pines se adaptarán al estilo y tendencias que selecciones
+          {hasGenerated 
+            ? "✨ Estos son ejemplos reales generados con las mismas especificaciones que usarás para tus pines"
+            : "💡 Genera ejemplos reales para ver cómo se verán tus pines con las especificaciones actuales"
+          }
         </p>
       </div>
     </div>
