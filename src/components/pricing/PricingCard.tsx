@@ -45,6 +45,7 @@ export function PricingCard({ plan }: PricingCardProps) {
       });
 
       if (error) throw error;
+      if (data?.error) throw new Error(data.error);
       if (data?.url) {
         window.open(data.url, '_blank');
       } else {
