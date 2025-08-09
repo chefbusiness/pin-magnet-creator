@@ -153,12 +153,12 @@ const Auth = () => {
                   </Button>
                 </form>
                 <div className="mt-4 text-sm text-muted-foreground">
-                  <p><strong>Plan Gratuito incluye:</strong></p>
-                  <ul className="list-disc list-inside mt-2 space-y-1">
-                    <li>5 pines por mes</li>
-                    <li>Marca de agua PinCraft</li>
-                    <li>Plantillas básicas</li>
-                  </ul>
+                  <p>
+                    Para usar PinCraft necesitas una suscripción activa.
+                  </p>
+                  <Button variant="outline" className="mt-3 w-full" onClick={() => (window.location.href = '/#pricing')}>
+                    Ver planes y suscribirme
+                  </Button>
                 </div>
               </CardContent>
             </Card>
