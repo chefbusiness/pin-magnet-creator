@@ -64,7 +64,7 @@ serve(async (req) => {
     });
 
     const hasActive = subscriptions.data.length > 0;
-    let planType: 'free' | 'pro' | 'business' = 'free';
+    let planType: 'free' | 'starter' | 'pro' | 'business' = 'free';
     let monthlyLimit = 5;
     let subscriptionId: string | null = null;
     let periodEnd: string | null = null;
@@ -74,12 +74,25 @@ serve(async (req) => {
       subscriptionId = sub.id;
       periodEnd = new Date(sub.current_period_end * 1000).toISOString();
 
-      const amount = sub.items.data[0].price.unit_amount || 0;
-      // Map temporary amounts (EUR cents) to existing profile enum values
-      // 13€ => PRO (Starter tier limits), 34€ => PRO, >34€ => BUSINESS
-      if (amount <= 1300) { planType = 'pro'; monthlyLimit = 25; }
-      else if (amount <= 3400) { planType = 'pro'; monthlyLimit = 150; }
-      else { planType = 'business'; monthlyLimit = 500; }
+      const price: any = sub.items.data[0].price;
+      const lookupKey: string | undefined = price?.lookup_key ?? undefined;
+      if (lookupKey) {
+        const key = lookupKey.toLowerCase();
+        if (key.includes('starter')) { planType = 'starter'; monthlyLimit = 25; }
+        else if (key.includes('pro')) { planType = 'pro'; monthlyLimit = 150; }
+        else if (key.includes('agency') || key.includes('business')) { planType = 'business'; monthlyLimit = 500; }
+        else {
+          const amount = price?.unit_amount || 0;
+          if (amount <= 1300) { planType = 'starter'; monthlyLimit = 25; }
+          else if (amount <= 3400) { planType = 'pro'; monthlyLimit = 150; }
+          else { planType = 'business'; monthlyLimit = 500; }
+        }
+      } else {
+        const amount = price?.unit_amount || 0;
+        if (amount <= 1300) { planType = 'starter'; monthlyLimit = 25; }
+        else if (amount <= 3400) { planType = 'pro'; monthlyLimit = 150; }
+        else { planType = 'business'; monthlyLimit = 500; }
+      }
     }
 
     await supabase.from('profiles').update({

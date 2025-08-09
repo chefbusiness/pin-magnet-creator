@@ -38,43 +38,49 @@ serve(async (req) => {
     const stripe = new Stripe(stripeSecret, { apiVersion: "2023-10-16" });
 
     // Determine plan from request body
-    const { plan } = await req.json().catch(() => ({ plan: "starter" }));
-    const planKey = String(plan || "starter").toLowerCase();
+    const { plan } = await req.json().catch(() => ({ plan: 'starter' }));
+    const planKey = String(plan || 'starter').toLowerCase();
 
-    // Temporary test pricing (EUR, monthly). Replace with real price IDs later.
-    const priceMap: Record<string, { amount: number; name: string }> = {
-      starter: { amount: 1300, name: "PinCraft Starter" },
-      pro: { amount: 3400, name: "PinCraft Pro" },
-      agency: { amount: 11200, name: "PinCraft Agency" },
+    // Map plan to Stripe Price lookup_key (LIVE)
+    const lookupMap: Record<string, string> = {
+      starter: 'pincraft_starter_monthly_eur',
+      pro: 'pincraft_pro_monthly_eur',
+      agency: 'pincraft_agency_monthly_eur',
     };
 
-    const selected = priceMap[planKey] ?? priceMap.starter;
+    const selectedLookup = lookupMap[planKey] ?? lookupMap.starter;
 
     // Try to find existing Stripe customer by email
     const customers = await stripe.customers.list({ email: user.email!, limit: 1 });
     const existingCustomer = customers.data[0];
+
+    // Resolve Price by lookup_key (safer than hardcoding price IDs)
+    const prices = await stripe.prices.list({
+      lookup_keys: [selectedLookup],
+      active: true,
+      expand: ['data.product']
+    });
+    const price = prices.data[0];
+    if (!price) {
+      throw new Error(`Stripe Price not found for lookup_key=${selectedLookup}`);
+    }
 
     const session = await stripe.checkout.sessions.create({
       customer: existingCustomer?.id,
       customer_email: existingCustomer ? undefined : user.email!,
       line_items: [
         {
-          price_data: {
-            currency: "eur",
-            product_data: { name: selected.name },
-            unit_amount: selected.amount,
-            recurring: { interval: "month" },
-          },
+          price: price.id,
           quantity: 1,
         },
       ],
-      mode: "subscription",
+      mode: 'subscription',
       automatic_tax: { enabled: true },
       tax_id_collection: { enabled: true },
-      billing_address_collection: "required",
-      customer_update: { name: "auto", address: "auto", shipping: "auto" },
-      success_url: `${req.headers.get("origin")}/billing/success`,
-      cancel_url: `${req.headers.get("origin")}/billing/canceled`,
+      billing_address_collection: 'required',
+      customer_update: { name: 'auto', address: 'auto', shipping: 'auto' },
+      success_url: `${req.headers.get('origin')}/billing/success`,
+      cancel_url: `${req.headers.get('origin')}/billing/canceled`,
       allow_promotion_codes: true,
     });
 
