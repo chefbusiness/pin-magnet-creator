@@ -14,6 +14,11 @@ export const esTranslations = {
   'nav.language': 'Idioma',
   'nav.pins': 'pines',
   
+  // Común
+  'common.loading': 'Cargando...',
+  'common.error': 'Algo salió mal',
+  'common.success': 'Éxito',
+  
   // Hero
   'hero.title': 'Crea 1 Mes de Contenido para Pinterest',
   'hero.subtitle': 'En 15 Minutos',
