@@ -69,7 +69,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Error fetching profile:', error);
     }
   };
-
+ 
+  const checkAndSyncSubscription = async () => {
+    try {
+      const { error } = await supabase.functions.invoke('check-subscription');
+      if (error) {
+        console.warn('check-subscription error', error);
+      }
+      if (user) {
+        await fetchProfile(user.id);
+      }
+    } catch (e) {
+      console.warn('check-subscription failed', e);
+    }
+  };
+ 
   const refreshProfile = async () => {
     if (user) {
       await fetchProfile(user.id);
@@ -84,9 +98,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Defer profile fetch to avoid blocking
+          // Defer profile fetch and subscription sync to avoid blocking
           setTimeout(() => {
             fetchProfile(session.user.id);
+            checkAndSyncSubscription();
           }, 0);
         } else {
           setProfile(null);
@@ -103,6 +118,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (session?.user) {
         fetchProfile(session.user.id);
+        setTimeout(() => {
+          checkAndSyncSubscription();
+        }, 0);
       }
       
       setLoading(false);

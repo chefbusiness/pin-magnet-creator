@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PricingBadge } from "./PricingBadge";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export interface PricingPlan {
   name: string;
@@ -21,8 +24,43 @@ interface PricingCardProps {
 
 export function PricingCard({ plan }: PricingCardProps) {
   const { t } = useLanguage();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const isAgency = /^\s*(agency|agencia)\s*$/i.test(plan.name);
   const showStartNow = plan.popular || isAgency;
+
+  const handleCheckout = async () => {
+    try {
+      setLoading(true);
+      // Normalize plan key
+      const name = plan.name.toLowerCase();
+      const planKey = name.includes('agency') || name.includes('agencia')
+        ? 'agency'
+        : name.includes('pro')
+          ? 'pro'
+          : 'starter';
+
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { plan: planKey },
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      } else {
+        throw new Error('No se recibió URL de Stripe');
+      }
+    } catch (err: any) {
+      console.error('Checkout error', err);
+      toast({
+        title: t('common.error') || 'Error',
+        description: err?.message || 'No se pudo iniciar el checkout',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   
   return (
     <Card 
@@ -89,8 +127,10 @@ export function PricingCard({ plan }: PricingCardProps) {
           className={`w-full ${plan.popular ? 'bg-yellow-400 text-gray-900 hover:bg-yellow-300 font-semibold' : ''}`}
           variant={plan.popular ? "secondary" : "gradient"}
           size="lg"
+          onClick={handleCheckout}
+          disabled={loading}
         >
-          {showStartNow ? t('pricing.getStartedNow') : t('pricing.startFree')}
+          {loading ? t('common.loading') || 'Cargando…' : (showStartNow ? t('pricing.getStartedNow') : t('pricing.startFree'))}
         </Button>
         
         <p className={`text-xs text-center ${
