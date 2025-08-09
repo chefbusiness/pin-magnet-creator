@@ -21,37 +21,39 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">{t('footer.product')}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('nav.features')}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('nav.pricing')}</a></li>
+              <li><Link to="/features" className="hover:text-foreground transition-colors">{t('nav.features')}</Link></li>
+              <li><Link to="/pricing" className="hover:text-foreground transition-colors">{t('nav.pricing')}</Link></li>
               <li><Link to="/generate-pins" className="hover:text-foreground transition-colors">{t('nav.generatePins')}</Link></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.api')}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.integrations')}</a></li>
+              <li><span className="hover:text-foreground transition-colors opacity-60 cursor-not-allowed" aria-disabled title={t('common.comingSoon')}>{t('footer.api')}</span></li>
+              <li><span className="hover:text-foreground transition-colors opacity-60 cursor-not-allowed" aria-disabled title={t('common.comingSoon')}>{t('footer.integrations')}</span></li>
             </ul>
           </div>
 
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">{t('footer.company')}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.aboutUs')}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.blog')}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.careers')}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.contact')}</a></li>
+              <li><Link to="/about" className="hover:text-foreground transition-colors">{t('footer.aboutUs')}</Link></li>
+              <li><a href="https://blog.pincraft.pro" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">{t('footer.blog')}</a></li>
+              <li><span className="hover:text-foreground transition-colors opacity-60 cursor-not-allowed" aria-disabled title={t('common.comingSoon')}>{t('footer.careers')}</span></li>
+              <li><Link to="/contact" className="hover:text-foreground transition-colors">{t('footer.contact')}</Link></li>
             </ul>
           </div>
 
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">{t('footer.support')}</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.helpCenter')}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.tutorials')}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.serviceStatus')}</a></li>
-              <li><a href="#" className="hover:text-foreground transition-colors">{t('footer.terms')}</a></li>
+              <li><Link to="/help" className="hover:text-foreground transition-colors">{t('footer.helpCenter')}</Link></li>
+              <li><Link to="/tutorials" className="hover:text-foreground transition-colors">{t('footer.tutorials')}</Link></li>
+              <li><Link to="/status" className="hover:text-foreground transition-colors">{t('footer.serviceStatus')}</Link></li>
+              <li><Link to="/terms" className="hover:text-foreground transition-colors">{t('footer.terms')}</Link></li>
+              <li><Link to="/privacy" className="hover:text-foreground transition-colors">{t('pages.privacy.title')}</Link></li>
+              <li><Link to="/cookies" className="hover:text-foreground transition-colors">{t('pages.cookies.title')}</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; 2024 PinCraft. {t('footer.rights')}</p>
+          <p>&copy; 2024 PinCraft. {t('footer.rights')} • {t('footer.madeInMadrid')}</p>
         </div>
       </div>
     </footer>

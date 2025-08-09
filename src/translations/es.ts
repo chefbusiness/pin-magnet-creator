@@ -499,4 +499,66 @@ export const esTranslations = {
   'subcategory.personalGrowth': 'Crecimiento personal',
   'subcategory.therapyAndMentalWellness': 'Terapia y bienestar mental',
   'subcategory.lifeCoaching': 'Life coaching',
+  // Common + footer note
+  'common.comingSoon': 'Próximamente',
+  'footer.madeInMadrid': 'Hecho con ❤️ en Madrid',
+  // Pages - Pricing
+  'pages.pricing.title': 'Precios',
+  'pages.pricing.desc': 'Planes de PinCraft diseñados para crecer contigo.',
+  // Pages - Features
+  'pages.features.title': 'Características',
+  'pages.features.desc': 'Todo lo que necesitas para dominar Pinterest.',
+  // Pages - Contact
+  'pages.contact.title': 'Contacto',
+  'pages.contact.desc': 'Ponte en contacto con el equipo de PinCraft.',
+  'pages.contact.subject': 'Consulta desde la web',
+  'pages.contact.name': 'Nombre',
+  'pages.contact.email': 'Email',
+  'pages.contact.message': 'Mensaje',
+  'pages.contact.send': 'Enviar',
+  'pages.contact.namePlaceholder': 'Tu nombre',
+  'pages.contact.messagePlaceholder': 'Cuéntanos cómo podemos ayudarte',
+  // Pages - Help / FAQ
+  'pages.help.title': 'Centro de ayuda',
+  'pages.help.desc': 'Resolvemos tus dudas más frecuentes.',
+  'help.faq1.q': '¿Cómo funciona PinCraft?',
+  'help.faq1.a': 'Pega una URL, generamos variaciones de pines con IA y descárgalos.',
+  'help.faq2.q': '¿Qué incluye cada plan?',
+  'help.faq2.a': 'El límite de pines mensuales, estilos y soporte varía según el plan.',
+  'help.faq3.q': '¿Puedo cancelar en cualquier momento?',
+  'help.faq3.a': 'Sí, puedes gestionar tu suscripción desde tu perfil.',
+  'help.faq4.q': '¿Guardáis mis imágenes?',
+  'help.faq4.a': 'Almacenamos temporalmente para que puedas descargarlas y gestionarlas.',
+  // Pages - Tutorials
+  'pages.tutorials.title': 'Tutoriales',
+  'pages.tutorials.desc': 'Aprende a dominar PinCraft con vídeos cortos.',
+  // Pages - Status
+  'pages.status.title': 'Estado del servicio',
+  'pages.status.desc': 'Disponibilidad y estado de la plataforma.',
+  'status.operational': 'Todos los sistemas operativos',
+  'status.updated': 'Última actualización:',
+  // Pages - Terms
+  'pages.terms.title': 'Términos de uso',
+  'pages.terms.desc': 'Condiciones de uso de PinCraft.',
+  'pages.terms.intro': 'Estas son las condiciones de uso. Sustituye este texto por tu versión legal.',
+  // Pages - Privacy
+  'pages.privacy.title': 'Privacidad',
+  'pages.privacy.desc': 'Cómo tratamos tus datos personales.',
+  'pages.privacy.intro': 'Esta es una política de privacidad de ejemplo. Sustitúyela por la versión oficial.',
+  // Pages - Cookies
+  'pages.cookies.title': 'Política de cookies',
+  'pages.cookies.desc': 'Información sobre cookies y seguimiento.',
+  'pages.cookies.intro': 'Política de cookies de ejemplo. Sustitúyela por la versión oficial.',
+  // Pages - About
+  'pages.about.title': 'Sobre nosotros',
+  'pages.about.desc': 'Nuestra misión y visión.',
+  'pages.about.intro': 'PinCraft nace para acelerar tu crecimiento en Pinterest. Texto de ejemplo.',
+  // Cookie banner
+  'cookies.banner.title': 'Tu privacidad es importante',
+  'cookies.banner.desc': 'Usamos cookies para mejorar tu experiencia. Puedes aceptar o personalizar.',
+  'cookies.banner.customize': 'Personalizar',
+  'cookies.banner.acceptAll': 'Aceptar todo',
+  'cookies.banner.save': 'Guardar preferencias',
+  'cookies.banner.analytics': 'Cookies de analíticas',
+  'cookies.banner.marketing': 'Cookies de marketing'
 };
