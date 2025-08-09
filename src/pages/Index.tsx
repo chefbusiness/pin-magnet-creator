@@ -7,7 +7,7 @@ import { Testimonials } from "@/components/Testimonials";
 import { Pricing } from "@/components/Pricing";
 import { EarlyAccess } from "@/components/EarlyAccess";
 import { Footer } from "@/components/Footer";
-import { PinGenerator } from "@/components/PinGenerator";
+
 
 const Index = () => {
   return (
@@ -19,7 +19,7 @@ const Index = () => {
       </Helmet>
       <Header />
       <Hero />
-      <PinGenerator />
+      
       <Features />
       <Testimonials />
       <Pricing />

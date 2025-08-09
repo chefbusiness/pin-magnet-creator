@@ -55,7 +55,7 @@ export function Header() {
                   <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.home')}
                   </Link>
-                  <Link to="/#generate" className="text-sm font-medium hover:text-primary transition-colors">
+                  <Link to="/generate-pins" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.generatePins')}
                   </Link>
                   <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
@@ -70,7 +70,7 @@ export function Header() {
                   <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.home')}
                   </a>
-                  <Link to="/#generate" className="text-sm font-medium hover:text-primary transition-colors">
+                  <Link to="/generate-pins" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.generatePins')}
                   </Link>
                   <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
@@ -226,7 +226,7 @@ export function Header() {
                         <Link to="/" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.home')}</span>
                         </Link>
-                        <Link to="/#generate" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
+                         <Link to="/generate-pins" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.generatePins')}</span>
                         </Link>
                         <Link to="/dashboard" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
@@ -258,7 +258,7 @@ export function Header() {
                         <a href="#home" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.home')}</span>
                         </a>
-                        <Link to="/#generate" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
+                        <Link to="/generate-pins" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.generatePins')}</span>
                         </Link>
                         <a href="#features" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">

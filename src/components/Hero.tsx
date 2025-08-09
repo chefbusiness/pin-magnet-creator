@@ -34,7 +34,7 @@ export function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button asChild variant="hero" size="lg" className="text-lg px-8 py-6">
-                <a href="/#generate">{t('hero.cta')}</a>
+                <a href="/generate-pins">{t('hero.cta')}</a>
               </Button>
               <Button variant="outline" size="lg" className="text-lg px-8 py-6" disabled title="Próximamente">
                 {t('hero.tutorial')}
