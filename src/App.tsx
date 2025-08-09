@@ -29,6 +29,7 @@ import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import About from "./pages/About";
 import CookieBanner from "./components/CookieBanner";
+import ScrollToTop from "./components/ScrollToTop";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -41,6 +42,7 @@ const App = () => (
             <Sonner />
             <CookieBanner />
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
