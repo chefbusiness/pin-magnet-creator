@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Image } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function EmptyState() {
   const { t } = useLanguage();
@@ -15,7 +16,7 @@ export function EmptyState() {
           {t('dashboard.noPinsDesc')}
         </p>
         <Button asChild size="sm">
-          <a href="/">{t('dashboard.generateFirst')}</a>
+          <Link to="/">{t('dashboard.generateFirst')}</Link>
         </Button>
       </CardContent>
     </Card>

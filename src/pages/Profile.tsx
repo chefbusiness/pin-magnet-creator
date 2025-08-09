@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { User, CreditCard, Settings, Crown } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Profile = () => {
   const { user, profile, refreshProfile, isSuperAdmin } = useAuth();
@@ -120,6 +121,11 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
+      <Helmet>
+        <title>Perfil y Suscripción | PinCraft.pro</title>
+        <meta name="description" content="Administra tu perfil, plan y suscripción de PinCraft." />
+        <link rel="canonical" href="https://pincraft.pro/profile" />
+      </Helmet>
       <Header />
       
       <div className="container mx-auto max-w-4xl px-4 py-8">

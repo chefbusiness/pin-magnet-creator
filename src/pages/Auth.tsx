@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const Auth = () => {
   const { user, signIn, signUp, loading } = useAuth();
@@ -47,6 +48,11 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center p-4">
+      <Helmet>
+        <title>Acceso a PinCraft | Inicia sesión o crea cuenta</title>
+        <meta name="description" content="Inicia sesión o crea tu cuenta para generar pines de Pinterest con IA en PinCraft." />
+        <link rel="canonical" href="https://pincraft.pro/auth" />
+      </Helmet>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-2 mb-4">
