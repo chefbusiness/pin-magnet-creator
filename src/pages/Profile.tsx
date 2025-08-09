@@ -179,7 +179,7 @@ const Profile = () => {
                   <>
                     <div className="text-center">
                       <Badge className={`${getPlanColor(profile?.plan_type || '')} text-white font-semibold px-4 py-2 mb-2`}>
-                        Plan {getPlanName(profile?.plan_type || '')}
+                        Plan {profile?.subscription_status === 'active' ? getPlanName(profile?.plan_type || '') : 'Sin plan'}
                       </Badge>
                       <p className="text-sm text-muted-foreground">
                         {profile?.pins_generated_this_month || 0} / {profile?.monthly_limit || 0} pines usados

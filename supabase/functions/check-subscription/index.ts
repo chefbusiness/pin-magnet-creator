@@ -38,14 +38,55 @@ serve(async (req) => {
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
 
-    // Find Stripe customer by email
-    const customers = await stripe.customers.list({ email: user.email!, limit: 1 });
-    if (customers.data.length === 0) {
+    // Optional body with session_id from success URL
+    let body: any = {};
+    try { body = await req.json(); } catch (_) {}
+    const sessionId: string | undefined = body?.session_id || body?.sessionId;
+    log("Incoming body", { hasSessionId: Boolean(sessionId) });
+
+    // Try to retrieve data from Stripe Checkout Session if provided
+    let sessionCustomerId: string | undefined;
+    let sessionSubscriptionId: string | undefined;
+    if (sessionId) {
+      try {
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        sessionCustomerId = typeof session.customer === 'string' ? session.customer : session.customer?.id;
+        sessionSubscriptionId = typeof session.subscription === 'string' ? session.subscription : (session.subscription as any)?.id;
+        log("Retrieved checkout session", { sessionId, sessionCustomerId, sessionSubscriptionId });
+      } catch (e) {
+        log("Failed retrieving checkout session", { sessionId, error: (e as Error).message });
+      }
+    }
+
+    // Also try existing profile's customer id
+    const { data: prof } = await supabase
+      .from('profiles')
+      .select('stripe_customer_id')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    // Fallback: lookup by email
+    let emailCustomerId: string | undefined;
+    if (!sessionCustomerId) {
+      try {
+        const customers = await stripe.customers.list({ email: user.email!, limit: 1 });
+        emailCustomerId = customers.data[0]?.id;
+      } catch (e) {
+        log("Stripe customers.list failed", { error: (e as Error).message });
+      }
+    }
+
+    const customerId = sessionCustomerId || prof?.stripe_customer_id || emailCustomerId;
+
+    if (!customerId) {
       log("No Stripe customer found; marking profile inactive");
       await supabase.from('profiles').update({
         subscription_status: 'inactive',
         stripe_customer_id: null,
         stripe_subscription_id: null,
+        plan_type: 'free',
+        monthly_limit: 0,
+        current_period_end: null,
       }).eq('user_id', user.id);
 
       return new Response(JSON.stringify({ subscribed: false }), {
@@ -54,62 +95,78 @@ serve(async (req) => {
       });
     }
 
-    const customerId = customers.data[0].id;
+    // Determine active subscription
+    let activeSub: Stripe.Subscription | null = null;
 
-    const subscriptions = await stripe.subscriptions.list({
-      customer: customerId,
-      status: "active",
-      limit: 1,
-      expand: ["data.items.data.price"],
-    });
+    // If we have the subscription id from the session, use it first
+    if (sessionSubscriptionId) {
+      try {
+        const sub = await stripe.subscriptions.retrieve(sessionSubscriptionId);
+        if (['active', 'trialing', 'past_due'].includes(sub.status)) {
+          activeSub = sub as any;
+        }
+      } catch (e) {
+        log("Failed retrieving subscription from session", { error: (e as Error).message });
+      }
+    }
 
-    const hasActive = subscriptions.data.length > 0;
-    let planType: 'free' | 'starter' | 'pro' | 'business' = 'free';
-    let monthlyLimit = 5;
+    // Otherwise list subscriptions and pick an eligible one
+    if (!activeSub) {
+      const subs = await stripe.subscriptions.list({ customer: customerId, limit: 10 });
+      activeSub = subs.data.find((s) => ['active', 'trialing'].includes(s.status)) || null;
+    }
+
+    let hasActive = Boolean(activeSub);
+    let planType: 'starter' | 'pro' | 'business' | 'free' = 'free';
+    let monthlyLimit = 0; // No free usage
     let subscriptionId: string | null = null;
     let periodEnd: string | null = null;
 
-    if (hasActive) {
-      const sub = subscriptions.data[0];
-      subscriptionId = sub.id;
-      periodEnd = new Date(sub.current_period_end * 1000).toISOString();
+    if (activeSub) {
+      subscriptionId = activeSub.id;
+      periodEnd = new Date(activeSub.current_period_end * 1000).toISOString();
 
-      const price: any = sub.items.data[0].price;
+      const price: any = activeSub.items.data[0]?.price;
       const lookupKey: string | undefined = price?.lookup_key ?? undefined;
+      const amount = price?.unit_amount || 0;
+
       if (lookupKey) {
         const key = lookupKey.toLowerCase();
         if (key.includes('starter')) { planType = 'starter'; monthlyLimit = 25; }
         else if (key.includes('pro')) { planType = 'pro'; monthlyLimit = 150; }
         else if (key.includes('agency') || key.includes('business')) { planType = 'business'; monthlyLimit = 500; }
         else {
-          const amount = price?.unit_amount || 0;
           if (amount <= 1300) { planType = 'starter'; monthlyLimit = 25; }
           else if (amount <= 3400) { planType = 'pro'; monthlyLimit = 150; }
           else { planType = 'business'; monthlyLimit = 500; }
         }
       } else {
-        const amount = price?.unit_amount || 0;
         if (amount <= 1300) { planType = 'starter'; monthlyLimit = 25; }
         else if (amount <= 3400) { planType = 'pro'; monthlyLimit = 150; }
         else { planType = 'business'; monthlyLimit = 500; }
       }
     }
 
+    // Update profile
     await supabase.from('profiles').update({
       stripe_customer_id: customerId,
       stripe_subscription_id: subscriptionId,
       subscription_status: hasActive ? 'active' : 'inactive',
       plan_type: hasActive ? planType : 'free',
-      monthly_limit: hasActive ? monthlyLimit : 5,
+      monthly_limit: hasActive ? monthlyLimit : 0,
       current_period_end: periodEnd,
     }).eq('user_id', user.id);
 
-    log("Profile updated", { hasActive, planType });
+    log("Profile updated", { hasActive, planType, customerId, subscriptionId });
 
     return new Response(JSON.stringify({
       subscribed: hasActive,
+      // Backward + forward compatible keys
       plan_type: planType,
+      planType: planType,
+      subscription_tier: planType,
       current_period_end: periodEnd,
+      subscription_end: periodEnd,
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,

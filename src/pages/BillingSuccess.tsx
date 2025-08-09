@@ -21,10 +21,14 @@ const BillingSuccess = () => {
     (async () => {
       try {
         if (user) {
-          const { data, error } = await supabase.functions.invoke('check-subscription');
+          const sessionId = typeof window !== 'undefined'
+            ? new URLSearchParams(window.location.search).get('session_id')
+            : null;
+          const payload = sessionId ? { session_id: sessionId } : {};
+          const { data, error } = await supabase.functions.invoke('check-subscription', { body: payload });
           if (error) throw new Error(error.message);
           const subscribed = Boolean((data as any)?.subscribed ?? (data as any)?.hasActive);
-          const tier = (data as any)?.subscription_tier ?? (data as any)?.planType ?? null;
+          const tier = (data as any)?.subscription_tier ?? (data as any)?.planType ?? (data as any)?.plan_type ?? null;
           const periodEnd = (data as any)?.subscription_end ?? (data as any)?.current_period_end ?? null;
           if (!mounted) return;
           setStatus({ subscribed, tier, periodEnd });
