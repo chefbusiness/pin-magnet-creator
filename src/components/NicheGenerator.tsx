@@ -38,7 +38,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
   const [selectedStyleTags, setSelectedStyleTags] = useState<string[]>([]);
   const [selectedTrendTags, setSelectedTrendTags] = useState<string[]>([]);
   const [noTextOverlay, setNoTextOverlay] = useState(false);
-  const { user } = useAuth();
+  const { user, canGeneratePins } = useAuth();
   const { language } = useLanguage();
   const { generatePins, isGenerating, progress, generatedPins, reset } = usePinGeneration();
 
@@ -46,8 +46,9 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
   const nicheTagsData = getStyleTagsForNiche(categoryData.slug);
 
   const handleGenerate = async () => {
-    if (!user) {
-      toast.error("Necesitas iniciar sesión para generar pines");
+    if (!user || !canGeneratePins()) {
+      toast.error("Necesitas una suscripción activa para generar pines");
+      window.location.href = '/#pricing';
       return;
     }
 

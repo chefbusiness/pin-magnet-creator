@@ -203,15 +203,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const canGeneratePins = () => {
-    if (!profile) return true; // Allow guests to generate pins (they'll hit other limits)
-    if (profile.is_super_admin) return true; // Super admins have unlimited access
-    return profile.pins_generated_this_month < profile.monthly_limit;
+    if (!profile) return false; // Requiere cuenta y suscripción activa
+    if (profile.is_super_admin) return true; // Super admins ilimitado
+    // Debe tener suscripción activa
+    const isActive = profile.subscription_status === 'active';
+    const remaining = (profile.monthly_limit || 0) - (profile.pins_generated_this_month || 0);
+    return isActive && remaining > 0;
   };
 
   const getRemainingPins = () => {
-    if (!profile) return 5; // Default for guests
-    if (profile.is_super_admin) return 999999; // Super admins show unlimited
-    return Math.max(0, profile.monthly_limit - profile.pins_generated_this_month);
+    if (!profile) return 0; // Sin cuenta => 0
+    if (profile.is_super_admin) return 999999; // Super admins ilimitado
+    const remaining = Math.max(0, (profile.monthly_limit || 0) - (profile.pins_generated_this_month || 0));
+    return remaining;
   };
 
   const isSuperAdmin = () => {

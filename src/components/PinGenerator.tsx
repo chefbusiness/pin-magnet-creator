@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePinGeneration, type GenerationResult } from "@/hooks/usePinGeneration";
 import { AuthRequiredSection } from "./pin-generator/AuthRequiredSection";
+import { PaywallSection } from "./pin-generator/PaywallSection";
 import { FeatureShowcase } from "./pin-generator/FeatureShowcase";
 import { GenerationProgress } from "./pin-generator/GenerationProgress";
 import { PinResults } from "./pin-generator/PinResults";
@@ -13,14 +15,23 @@ import { ExamplePins } from "./pin-generator/ExamplePins";
 
 export function PinGenerator() {
   const { t } = useLanguage();
-  const { user } = useAuth();
+  const { user, canGeneratePins } = useAuth();
+  const { toast } = useToast();
   const [url, setUrl] = useState("");
   const [results, setResults] = useState<GenerationResult | null>(null);
   const { generatePins, isGenerating, progress } = usePinGeneration();
 
   const handleGenerate = async () => {
     if (!url) return;
-    
+    if (!user || !canGeneratePins()) {
+      toast({
+        title: 'Suscripción requerida',
+        description: 'Necesitas una suscripción activa para generar pines.',
+        variant: 'destructive'
+      });
+      window.location.href = '/#pricing';
+      return;
+    }
     const result = await generatePins({ url }, user);
     if (result) {
       setResults(result);
@@ -84,6 +95,8 @@ export function PinGenerator() {
 
             {!user ? (
               <AuthRequiredSection />
+            ) : !canGeneratePins() ? (
+              <PaywallSection />
             ) : (
               <FeatureShowcase />
             )}

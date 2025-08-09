@@ -175,7 +175,7 @@ export function PricingCard({ plan }: PricingCardProps) {
             ? t('common.loading') || 'Cargando…'
             : isCurrent
               ? 'Plan actual'
-              : (showStartNow ? t('pricing.getStartedNow') : t('pricing.startFree'))}
+              : t('pricing.getStartedNow')}
         </Button>
         
         <p className={`text-xs text-center ${
