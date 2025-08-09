@@ -226,7 +226,7 @@ export function Header() {
                         <Link to="/" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.home')}</span>
                         </Link>
-                        <Link to="/generate-pins" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
+                         <Link to="/generate-pins" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.generatePins')}</span>
                         </Link>
                         <Link to="/dashboard" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">

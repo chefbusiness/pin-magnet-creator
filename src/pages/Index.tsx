@@ -8,6 +8,7 @@ import { Pricing } from "@/components/Pricing";
 import { EarlyAccess } from "@/components/EarlyAccess";
 import { Footer } from "@/components/Footer";
 
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
@@ -18,6 +19,7 @@ const Index = () => {
       </Helmet>
       <Header />
       <Hero />
+      
       <Features />
       <Testimonials />
       <Pricing />

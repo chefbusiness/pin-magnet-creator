@@ -499,4 +499,5 @@ export const enTranslations = {
   'subcategory.personalGrowth': 'Personal growth',
   'subcategory.therapyAndMentalWellness': 'Therapy and mental wellness',
   'subcategory.lifeCoaching': 'Life coaching',
+  'cookies.banner.marketing': 'Marketing cookies'
 };
