@@ -26,7 +26,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 export function useLanguage() {
   const context = useContext(LanguageContext);
   if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
+    // Safe fallback to avoid app crash if provider isn’t mounted yet
+    const fallbackLang: Language = 'es';
+    return {
+      language: fallbackLang,
+      setLanguage: () => {},
+      t: (key: string) => translations[fallbackLang][key as TranslationKey] || key,
+    };
   }
   return context;
 }
