@@ -12,6 +12,7 @@ const BillingPortalReturn = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<{ subscribed: boolean; tier?: string | null; periodEnd?: string | null }>({ subscribed: false });
+  const [seconds, setSeconds] = useState(3);
   const canonical = useMemo(() => (typeof window !== 'undefined' ? `${window.location.origin}/billing/portal-return` : '/billing/portal-return'), []);
 
   useEffect(() => {
@@ -38,6 +39,14 @@ const BillingPortalReturn = () => {
     return () => { mounted = false; };
   }, [user, refreshProfile]);
 
+  useEffect(() => {
+    if (!loading && !error) {
+      const interval = setInterval(() => setSeconds((s) => (s > 0 ? s - 1 : 0)), 1000);
+      const timer = setTimeout(() => navigate('/profile'), 3000);
+      return () => { clearInterval(interval); clearTimeout(timer); };
+    }
+  }, [loading, error, navigate]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
       <Helmet>
@@ -48,7 +57,10 @@ const BillingPortalReturn = () => {
       <Header />
       <main className="container mx-auto max-w-3xl px-4 py-12">
         <h1 className="text-3xl font-bold mb-3">Estado de suscripción</h1>
-        <p className="text-muted-foreground mb-8">Hemos actualizado tu estado al regresar del portal.</p>
+        <p className="text-muted-foreground mb-2">Hemos actualizado tu estado al regresar del portal.</p>
+        {!loading && !error && (
+          <p className="text-xs text-muted-foreground mb-6">Volviendo al perfil en {seconds}s…</p>
+        )}
 
         {loading ? (
           <div className="rounded-lg border border-border p-6 bg-card text-card-foreground">Comprobando estado...</div>

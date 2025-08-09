@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PricingBadge } from "./PricingBadge";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface PricingPlan {
   name: string;
@@ -25,9 +27,31 @@ interface PricingCardProps {
 export function PricingCard({ plan }: PricingCardProps) {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { profile } = useAuth();
   const [loading, setLoading] = useState(false);
   const isAgency = /^\s*(agency|agencia)\s*$/i.test(plan.name);
   const showStartNow = plan.popular || isAgency;
+
+  const planKey = useMemo(() => {
+    const name = plan.name.toLowerCase();
+    return name.includes('agency') || name.includes('agencia')
+      ? 'agency'
+      : name.includes('pro')
+        ? 'pro'
+        : 'starter';
+  }, [plan.name]);
+
+  const currentPlanKey = useMemo(() => {
+    if (!profile) return null;
+    if (profile.plan_type === 'business') return 'agency';
+    if (profile.plan_type === 'pro') {
+      if ((profile.monthly_limit || 0) <= 25) return 'starter';
+      return 'pro';
+    }
+    return null; // free
+  }, [profile]);
+
+  const isCurrent = currentPlanKey === planKey;
 
   const handleCheckout = async () => {
     try {
@@ -74,6 +98,11 @@ export function PricingCard({ plan }: PricingCardProps) {
       {plan.popular && (
         <div className="absolute -top-4 left-0 right-0 flex justify-center">
           <PricingBadge type="popular" />
+        </div>
+      )}
+      {isCurrent && (
+        <div className="absolute top-3 right-3">
+          <Badge className="bg-primary/15 text-primary border border-primary/20">Tu plan actual</Badge>
         </div>
       )}
       
@@ -129,9 +158,13 @@ export function PricingCard({ plan }: PricingCardProps) {
           variant={plan.popular ? "secondary" : "gradient"}
           size="lg"
           onClick={handleCheckout}
-          disabled={loading}
+          disabled={loading || isCurrent}
         >
-          {loading ? t('common.loading') || 'Cargando…' : (showStartNow ? t('pricing.getStartedNow') : t('pricing.startFree'))}
+          {loading
+            ? t('common.loading') || 'Cargando…'
+            : isCurrent
+              ? 'Plan actual'
+              : (showStartNow ? t('pricing.getStartedNow') : t('pricing.startFree'))}
         </Button>
         
         <p className={`text-xs text-center ${

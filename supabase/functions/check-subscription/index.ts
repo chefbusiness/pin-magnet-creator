@@ -64,7 +64,7 @@ serve(async (req) => {
     });
 
     const hasActive = subscriptions.data.length > 0;
-    let planType: 'starter' | 'pro' | 'business' | 'free' = 'free';
+    let planType: 'free' | 'pro' | 'business' = 'free';
     let monthlyLimit = 5;
     let subscriptionId: string | null = null;
     let periodEnd: string | null = null;
@@ -75,8 +75,9 @@ serve(async (req) => {
       periodEnd = new Date(sub.current_period_end * 1000).toISOString();
 
       const amount = sub.items.data[0].price.unit_amount || 0;
-      // Map by amount (EUR cents) — align with create-checkout temporary pricing
-      if (amount <= 1300) { planType = 'starter'; monthlyLimit = 25; }
+      // Map temporary amounts (EUR cents) to existing profile enum values
+      // 13€ => PRO (Starter tier limits), 34€ => PRO, >34€ => BUSINESS
+      if (amount <= 1300) { planType = 'pro'; monthlyLimit = 25; }
       else if (amount <= 3400) { planType = 'pro'; monthlyLimit = 150; }
       else { planType = 'business'; monthlyLimit = 500; }
     }
