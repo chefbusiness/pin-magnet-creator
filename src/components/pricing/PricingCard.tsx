@@ -96,6 +96,29 @@ export function PricingCard({ plan }: PricingCardProps) {
     }
   };
   
+  const handleManage = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.functions.invoke('customer-portal');
+      if (error) throw error;
+      if ((data as any)?.error) throw new Error((data as any).error);
+      if ((data as any)?.url) {
+        window.open((data as any).url, '_blank');
+      } else {
+        throw new Error('No se recibió URL del portal de Stripe');
+      }
+    } catch (err: any) {
+      console.error('Customer portal error', err);
+      toast({
+        title: t('common.error') || 'Error',
+        description: err?.message || 'No se pudo abrir el portal de suscripción',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   return (
     <Card 
       className={`shadow-card border relative ${
@@ -166,13 +189,13 @@ export function PricingCard({ plan }: PricingCardProps) {
           className={`w-full ${plan.popular ? 'bg-yellow-400 text-gray-900 hover:bg-yellow-300 font-semibold' : ''}`}
           variant={plan.popular ? "secondary" : "gradient"}
           size="lg"
-          onClick={handleCheckout}
-          disabled={loading || isCurrent}
+          onClick={isCurrent ? handleManage : handleCheckout}
+          disabled={loading}
         >
           {loading
             ? t('common.loading') || 'Cargando…'
             : isCurrent
-              ? 'Plan actual'
+              ? (t('pricing.manageSubscription') || 'Gestionar suscripción')
               : t('pricing.getStartedNow')}
         </Button>
         
