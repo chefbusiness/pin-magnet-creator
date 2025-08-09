@@ -21,6 +21,8 @@ interface PricingCardProps {
 
 export function PricingCard({ plan }: PricingCardProps) {
   const { t } = useLanguage();
+  const isAgency = /^\s*(agency|agencia)\s*$/i.test(plan.name);
+  const showStartNow = plan.popular || isAgency;
   
   return (
     <Card 
@@ -88,7 +90,7 @@ export function PricingCard({ plan }: PricingCardProps) {
           variant={plan.popular ? "secondary" : "gradient"}
           size="lg"
         >
-          {plan.popular ? t('pricing.getStartedNow') : t('pricing.startFree')}
+          {showStartNow ? t('pricing.getStartedNow') : t('pricing.startFree')}
         </Button>
         
         <p className={`text-xs text-center ${
