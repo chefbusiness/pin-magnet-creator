@@ -14,6 +14,10 @@ import Profile from "./pages/Profile";
 import PinterestGuide from "./pages/PinterestGuide";
 import NichePage from "./pages/NichePage";
 import NotFound from "./pages/NotFound";
+import BillingSuccess from "./pages/BillingSuccess";
+import BillingCanceled from "./pages/BillingCanceled";
+import BillingPortalReturn from "./pages/BillingPortalReturn";
+import BillingStatus from "./pages/BillingStatus";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +37,10 @@ const App = () => (
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/generate-pins" element={<PinterestGuide />} />
                 <Route path="/niche/:category/:subcategory" element={<NichePage />} />
+                <Route path="/billing/success" element={<BillingSuccess />} />
+                <Route path="/billing/canceled" element={<BillingCanceled />} />
+                <Route path="/billing/portal-return" element={<BillingPortalReturn />} />
+                <Route path="/billing/status" element={<BillingStatus />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

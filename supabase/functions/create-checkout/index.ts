@@ -73,8 +73,8 @@ serve(async (req) => {
       tax_id_collection: { enabled: true },
       billing_address_collection: "required",
       customer_update: { name: "auto", address: "auto", shipping: "auto" },
-      success_url: `${req.headers.get("origin")}/dashboard?checkout=success`,
-      cancel_url: `${req.headers.get("origin")}/#pricing?checkout=cancel`,
+      success_url: `${req.headers.get("origin")}/billing/success`,
+      cancel_url: `${req.headers.get("origin")}/billing/canceled`,
       allow_promotion_codes: true,
     });
 
