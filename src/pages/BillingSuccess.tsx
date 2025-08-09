@@ -15,6 +15,13 @@ const BillingSuccess = () => {
   const [seconds, setSeconds] = useState(3);
 
   const canonical = useMemo(() => (typeof window !== 'undefined' ? `${window.location.origin}/billing/success` : '/billing/success'), []);
+  const formatTier = (tier?: string | null) => {
+    const key = (tier || '').toLowerCase();
+    if (key === 'business') return 'Agency';
+    if (key === 'starter') return 'Starter';
+    if (key === 'pro') return 'Pro';
+    return tier || '';
+  };
 
   useEffect(() => {
     let mounted = true;

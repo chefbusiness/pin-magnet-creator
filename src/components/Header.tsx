@@ -24,7 +24,7 @@ import {
 
 export function Header() {
   const { language, setLanguage, t } = useLanguage();
-  const { user, profile, signOut, getRemainingPins, isSuperAdmin } = useAuth();
+  const { user, profile, loading, signOut, getRemainingPins, isSuperAdmin } = useAuth();
   const isMobile = useIsMobile();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -141,7 +141,7 @@ export function Header() {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem disabled>
-                        {t('nav.plan')}: {profile?.subscription_status === 'active' ? getPlanName(profile?.plan_type || '') : 'Sin plan'}
+                        {t('nav.plan')}: {loading || !profile ? '...' : (profile.subscription_status === 'active' ? getPlanName(profile.plan_type || '') : 'Sin plan')}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={signOut}>
@@ -238,7 +238,7 @@ export function Header() {
                         
                         <div className="border-t pt-4">
                           <div className="text-xs text-muted-foreground mb-2 px-3">
-                            {t('nav.plan')}: {profile?.subscription_status === 'active' ? getPlanName(profile?.plan_type || '') : 'Sin plan'}
+                          {t('nav.plan')}: {loading || !profile ? '...' : (profile.subscription_status === 'active' ? getPlanName(profile.plan_type || '') : 'Sin plan')}
                           </div>
                           <Button
                             variant="ghost"

@@ -58,10 +58,10 @@ serve(async (req) => {
       }
     }
 
-    // Also try existing profile's customer id
+    // Also try existing profile's customer id and previous status
     const { data: prof } = await supabase
       .from('profiles')
-      .select('stripe_customer_id')
+      .select('stripe_customer_id, stripe_subscription_id, subscription_status, plan_type, monthly_limit, current_period_end')
       .eq('user_id', user.id)
       .maybeSingle();
 
@@ -79,16 +79,24 @@ serve(async (req) => {
     const customerId = sessionCustomerId || prof?.stripe_customer_id || emailCustomerId;
 
     if (!customerId) {
-      log("No Stripe customer found; marking profile inactive");
-      await supabase.from('profiles').update({
-        subscription_status: 'inactive',
-        stripe_customer_id: null,
-        stripe_subscription_id: null,
-        plan_type: 'free',
-        monthly_limit: 0,
-        current_period_end: null,
-      }).eq('user_id', user.id);
+      log("No Stripe customer found; preserving previous state if any");
 
+      if (prof) {
+        const wasActive = prof.subscription_status === 'active';
+        return new Response(JSON.stringify({
+          subscribed: wasActive,
+          plan_type: prof.plan_type ?? 'free',
+          planType: prof.plan_type ?? 'free',
+          subscription_tier: prof.plan_type ?? null,
+          current_period_end: prof.current_period_end ?? null,
+          subscription_end: prof.current_period_end ?? null,
+        }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 200,
+        });
+      }
+
+      // No previous profile state to rely on → treat as unsubscribed (but avoid DB writes)
       return new Response(JSON.stringify({ subscribed: false }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,

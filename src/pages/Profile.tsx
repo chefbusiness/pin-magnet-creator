@@ -83,7 +83,23 @@ const Profile = () => {
       setManageLoading(false);
     }
   };
+  
+  const [refreshLoading, setRefreshLoading] = useState(false);
 
+  const handleRefreshSubscription = async () => {
+    setRefreshLoading(true);
+    try {
+      const { error } = await supabase.functions.invoke('check-subscription');
+      if (error) throw error;
+      await refreshProfile();
+      toast({ title: 'Estado actualizado', description: 'Tu suscripción ha sido sincronizada.' });
+    } catch (error: any) {
+      console.error('Error refreshing subscription:', error);
+      toast({ title: 'Error', description: error?.message || 'No se pudo actualizar el estado.', variant: 'destructive' });
+    } finally {
+      setRefreshLoading(false);
+    }
+  };
   const getPlanColor = (planType: string) => {
     switch (planType) {
       case 'starter': return 'bg-blue-500';
@@ -208,14 +224,23 @@ const Profile = () => {
                   </>
                 )}
 
-                <Button 
-                  onClick={handleManageSubscription}
-                  disabled={manageLoading}
-                  variant="outline" 
-                  className="w-full"
-                >
-                  {manageLoading ? 'Cargando...' : 'Gestionar Suscripción'}
-                </Button>
+                <div className="space-y-3">
+                  <Button 
+                    onClick={handleManageSubscription}
+                    disabled={manageLoading}
+                    variant="outline" 
+                    className="w-full"
+                  >
+                    {manageLoading ? 'Cargando...' : 'Gestionar Suscripción'}
+                  </Button>
+                  <Button 
+                    onClick={handleRefreshSubscription}
+                    disabled={refreshLoading}
+                    className="w-full"
+                  >
+                    {refreshLoading ? 'Actualizando…' : 'Actualizar estado'}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 

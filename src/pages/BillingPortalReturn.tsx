@@ -14,6 +14,13 @@ const BillingPortalReturn = () => {
   const [status, setStatus] = useState<{ subscribed: boolean; tier?: string | null; periodEnd?: string | null }>({ subscribed: false });
   const [seconds, setSeconds] = useState(3);
   const canonical = useMemo(() => (typeof window !== 'undefined' ? `${window.location.origin}/billing/portal-return` : '/billing/portal-return'), []);
+  const formatTier = (tier?: string | null) => {
+    const key = (tier || '').toLowerCase();
+    if (key === 'business') return 'Agency';
+    if (key === 'starter') return 'Starter';
+    if (key === 'pro') return 'Pro';
+    return tier || '';
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -75,7 +82,7 @@ const BillingPortalReturn = () => {
             {status.tier && (
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Plan</span>
-                <span className="font-medium capitalize">{status.tier}</span>
+                <span className="font-medium">{formatTier(status.tier)}</span>
               </div>
             )}
             {status.periodEnd && (
