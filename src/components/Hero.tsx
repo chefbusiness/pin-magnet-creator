@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-pins.jpg";
 
+
 export function Hero() {
   const { t } = useLanguage();
   
@@ -32,10 +33,10 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="text-lg px-8 py-6">
-                {t('hero.cta')}
+              <Button asChild variant="hero" size="lg" className="text-lg px-8 py-6">
+                <a href="/#generate">{t('hero.cta')}</a>
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+              <Button variant="outline" size="lg" className="text-lg px-8 py-6" disabled title="Próximamente">
                 {t('hero.tutorial')}
               </Button>
             </div>
