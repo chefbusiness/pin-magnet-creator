@@ -205,17 +205,17 @@ const Profile = () => {
                         </div>
                       )}
                     </div>
-                    
-                    <Button 
-                      onClick={handleManageSubscription}
-                      disabled={manageLoading}
-                      variant="outline" 
-                      className="w-full"
-                    >
-                      {manageLoading ? 'Cargando...' : 'Gestionar Suscripción'}
-                    </Button>
                   </>
                 )}
+
+                <Button 
+                  onClick={handleManageSubscription}
+                  disabled={manageLoading}
+                  variant="outline" 
+                  className="w-full"
+                >
+                  {manageLoading ? 'Cargando...' : 'Gestionar Suscripción'}
+                </Button>
               </CardContent>
             </Card>
 
