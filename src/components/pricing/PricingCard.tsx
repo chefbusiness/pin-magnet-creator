@@ -27,7 +27,7 @@ interface PricingCardProps {
 export function PricingCard({ plan }: PricingCardProps) {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const [loading, setLoading] = useState(false);
   const isAgency = /^\s*(agency|agencia)\s*$/i.test(plan.name);
   const showStartNow = plan.popular || isAgency;
@@ -55,17 +55,28 @@ export function PricingCard({ plan }: PricingCardProps) {
 
   const handleCheckout = async () => {
     try {
-      setLoading(true);
-      // Normalize plan key
+      // If not authenticated, store desired plan and redirect to /auth
       const name = plan.name.toLowerCase();
-      const planKey = name.includes('agency') || name.includes('agencia')
+      const selectedPlan = name.includes('agency') || name.includes('agencia')
         ? 'agency'
         : name.includes('pro')
           ? 'pro'
           : 'starter';
 
+      if (!user) {
+        localStorage.setItem('pendingPlan', selectedPlan);
+        toast({
+          title: t('pricing.loginRequired') || 'Inicia sesión para continuar',
+          description: t('pricing.loginToContinue') || 'Por favor inicia sesión para completar la suscripción.',
+        });
+        window.location.href = '/auth';
+        return;
+      }
+
+      setLoading(true);
+
       const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: { plan: planKey },
+        body: { plan: selectedPlan },
       });
 
       if (error) throw error;

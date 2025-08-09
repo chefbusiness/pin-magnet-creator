@@ -19,7 +19,12 @@ serve(async (req) => {
 
   try {
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("No Authorization header provided");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized: missing Authorization header" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 401,
+      });
+    }
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
@@ -28,9 +33,13 @@ serve(async (req) => {
 
     const token = authHeader.replace("Bearer ", "");
     const { data: userData, error: userError } = await supabase.auth.getUser(token);
-    if (userError) throw new Error(`Auth error: ${userError.message}`);
+    if (userError || !userData?.user?.email) {
+      return new Response(JSON.stringify({ error: `Unauthorized: ${userError?.message ?? 'invalid user'}` }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 401,
+      });
+    }
     const user = userData.user;
-    if (!user?.email) throw new Error("User email is required");
 
     const stripeSecret = Deno.env.get("STRIPE_SECRET_KEY");
     if (!stripeSecret) throw new Error("STRIPE_SECRET_KEY is not set");
@@ -65,9 +74,9 @@ serve(async (req) => {
       throw new Error(`Stripe Price not found for lookup_key=${selectedLookup}`);
     }
 
-    const session = await stripe.checkout.sessions.create({
-      customer: existingCustomer?.id,
-      customer_email: existingCustomer ? undefined : user.email!,
+    const origin = req.headers.get('origin') || 'https://pincraft.pro';
+
+    const params: Stripe.Checkout.SessionCreateParams = {
       line_items: [
         {
           price: price.id,
@@ -78,11 +87,19 @@ serve(async (req) => {
       automatic_tax: { enabled: true },
       tax_id_collection: { enabled: true },
       billing_address_collection: 'required',
-      customer_update: { name: 'auto', address: 'auto', shipping: 'auto' },
-      success_url: `${req.headers.get('origin')}/billing/success`,
-      cancel_url: `${req.headers.get('origin')}/billing/canceled`,
+      success_url: `${origin}/billing/success`,
+      cancel_url: `${origin}/billing/canceled`,
       allow_promotion_codes: true,
-    });
+    };
+
+    if (existingCustomer?.id) {
+      params.customer = existingCustomer.id;
+      params.customer_update = { name: 'auto', address: 'auto', shipping: 'auto' };
+    } else {
+      params.customer_email = user.email!;
+    }
+
+    const session = await stripe.checkout.sessions.create(params);
 
     log("Checkout session created", { sessionId: session.id, url: session.url });
 

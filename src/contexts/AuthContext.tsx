@@ -90,7 +90,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  useEffect(() => {
+  const processPendingCheckout = async () => {
+    try {
+      const pendingPlan = localStorage.getItem('pendingPlan');
+      if (pendingPlan && user) {
+        const { data, error } = await supabase.functions.invoke('create-checkout', { body: { plan: pendingPlan } });
+        if (!error && data?.url) {
+          localStorage.removeItem('pendingPlan');
+          window.location.href = data.url;
+        }
+      }
+    } catch (e) {
+      console.warn('processPendingCheckout failed', e);
+    }
+  };
+ 
+   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -102,6 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setTimeout(() => {
             fetchProfile(session.user.id);
             checkAndSyncSubscription();
+            processPendingCheckout();
           }, 0);
         } else {
           setProfile(null);
@@ -120,6 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         fetchProfile(session.user.id);
         setTimeout(() => {
           checkAndSyncSubscription();
+          processPendingCheckout();
         }, 0);
       }
       
