@@ -104,7 +104,7 @@ const Profile = () => {
     switch (planType) {
       case 'starter': return 'bg-blue-500';
       case 'pro': return 'bg-purple-500';
-      case 'business': return 'bg-gradient-to-r from-amber-500 to-orange-500';
+      case 'agency': return 'bg-gradient-to-r from-amber-500 to-orange-500';
       default: return 'bg-gray-500';
     }
   };
@@ -113,7 +113,7 @@ const Profile = () => {
     switch (planType) {
       case 'starter': return 'Starter';
       case 'pro': return 'Pro';
-      case 'business': return 'Agency';
+      case 'agency': return 'Agency';
       default: return planType;
     }
   };

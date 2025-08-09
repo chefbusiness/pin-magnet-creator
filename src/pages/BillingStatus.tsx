@@ -13,7 +13,7 @@ const BillingStatus = () => {
   const canonical = useMemo(() => (typeof window !== 'undefined' ? `${window.location.origin}/billing/status` : '/billing/status'), []);
   const formatTier = (tier?: string | null) => {
     const key = (tier || '').toLowerCase();
-    if (key === 'business') return 'Agency';
+    if (key === 'agency') return 'Agency';
     if (key === 'starter') return 'Starter';
     if (key === 'pro') return 'Pro';
     return tier || '';

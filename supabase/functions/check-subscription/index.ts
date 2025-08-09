@@ -85,8 +85,8 @@ serve(async (req) => {
         const wasActive = prof.subscription_status === 'active';
         return new Response(JSON.stringify({
           subscribed: wasActive,
-          plan_type: prof.plan_type ?? 'free',
-          planType: prof.plan_type ?? 'free',
+          plan_type: prof.plan_type ?? 'none',
+          planType: prof.plan_type ?? 'none',
           subscription_tier: prof.plan_type ?? null,
           current_period_end: prof.current_period_end ?? null,
           subscription_end: prof.current_period_end ?? null,
@@ -125,8 +125,8 @@ serve(async (req) => {
     }
 
     let hasActive = Boolean(activeSub);
-    let planType: 'starter' | 'pro' | 'business' | 'free' = 'free';
-    let monthlyLimit = 0; // No free usage
+    let planType: 'starter' | 'pro' | 'agency' | 'none' = 'none';
+    let monthlyLimit = 0; // No usage without subscription
     let subscriptionId: string | null = null;
     let periodEnd: string | null = null;
 
@@ -142,16 +142,16 @@ serve(async (req) => {
         const key = lookupKey.toLowerCase();
         if (key.includes('starter')) { planType = 'starter'; monthlyLimit = 25; }
         else if (key.includes('pro')) { planType = 'pro'; monthlyLimit = 150; }
-        else if (key.includes('agency') || key.includes('business')) { planType = 'business'; monthlyLimit = 500; }
+        else if (key.includes('agency') || key.includes('business')) { planType = 'agency'; monthlyLimit = 500; }
         else {
           if (amount <= 1300) { planType = 'starter'; monthlyLimit = 25; }
           else if (amount <= 3400) { planType = 'pro'; monthlyLimit = 150; }
-          else { planType = 'business'; monthlyLimit = 500; }
+          else { planType = 'agency'; monthlyLimit = 500; }
         }
       } else {
         if (amount <= 1300) { planType = 'starter'; monthlyLimit = 25; }
         else if (amount <= 3400) { planType = 'pro'; monthlyLimit = 150; }
-        else { planType = 'business'; monthlyLimit = 500; }
+        else { planType = 'agency'; monthlyLimit = 500; }
       }
     }
 
@@ -160,7 +160,7 @@ serve(async (req) => {
       stripe_customer_id: customerId,
       stripe_subscription_id: subscriptionId,
       subscription_status: hasActive ? 'active' : 'inactive',
-      plan_type: hasActive ? planType : 'free',
+      plan_type: hasActive ? planType : 'none',
       monthly_limit: hasActive ? monthlyLimit : 0,
       current_period_end: periodEnd,
     }).eq('user_id', user.id);

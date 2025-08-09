@@ -47,7 +47,7 @@ export const enTranslations = {
   'pricing.originalPrice': 'Regular price',
   'pricing.limitedTime': 'Limited time special price',
   'pricing.getStarted': 'Get This Offer',
-  'pricing.tryFree': 'Start Free',
+  'pricing.tryFree': 'Subscribe Now',
   
   // Footer
   'footer.description': 'The most advanced platform for generating Pinterest content that converts.',
@@ -208,7 +208,7 @@ export const enTranslations = {
   'pricing.feature11': 'Custom branding',
   'pricing.feature12': 'Dedicated 24/7 support',
   'pricing.getStartedNow': 'Get Started Now',
-  'pricing.startFree': 'Start Free',
+  'pricing.startFree': 'Subscribe Now',
   'pricing.limitedTimeOffer': 'Limited time offer',
   'pricing.noCommitment': 'No commitment • Cancel anytime',
   'pricing.enterpriseQuestion': 'Need more than 500 pins per month?',

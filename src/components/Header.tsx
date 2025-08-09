@@ -32,7 +32,7 @@ export function Header() {
     switch (planType) {
       case 'starter': return 'Starter';
       case 'pro': return 'Pro';
-      case 'business': return 'Agency';
+      case 'agency': return 'Agency';
       default: return planType;
     }
   };

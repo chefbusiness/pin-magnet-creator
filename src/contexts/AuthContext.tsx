@@ -9,7 +9,7 @@ interface UserProfile {
   email: string | null;
   full_name: string | null;
   avatar_url: string | null;
-  plan_type: 'free' | 'starter' | 'pro' | 'business';
+  plan_type: 'starter' | 'pro' | 'agency' | 'none';
   pins_generated_this_month: number;
   monthly_limit: number;
   subscription_status: 'active' | 'inactive' | 'cancelled';

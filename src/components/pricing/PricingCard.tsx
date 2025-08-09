@@ -43,12 +43,10 @@ export function PricingCard({ plan }: PricingCardProps) {
 
   const currentPlanKey = useMemo(() => {
     if (!profile) return null;
-    if (profile.plan_type === 'business') return 'agency';
-    if (profile.plan_type === 'pro') {
-      if ((profile.monthly_limit || 0) <= 25) return 'starter';
-      return 'pro';
-    }
-    return null; // free
+    if (profile.plan_type === 'agency') return 'agency';
+    if (profile.plan_type === 'pro') return 'pro';
+    if (profile.plan_type === 'starter') return 'starter';
+    return null; // none/unsubscribed
   }, [profile]);
 
   const isCurrent = currentPlanKey === planKey;

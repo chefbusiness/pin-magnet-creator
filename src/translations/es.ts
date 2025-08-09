@@ -47,7 +47,7 @@ export const esTranslations = {
   'pricing.originalPrice': 'Precio oficial',
   'pricing.limitedTime': 'Precio especial por tiempo limitado',
   'pricing.getStarted': 'Aprovechar Oferta',
-  'pricing.tryFree': 'Comenzar Gratis',
+  'pricing.tryFree': 'Suscribirse',
   
   // Footer
   'footer.description': 'La plataforma más avanzada para generar contenido de Pinterest que convierte.',
@@ -208,7 +208,7 @@ export const esTranslations = {
   'pricing.feature11': 'Branding personalizado',
   'pricing.feature12': 'Soporte dedicado 24/7',
   'pricing.getStartedNow': 'Comenzar Ahora',
-  'pricing.startFree': 'Empezar Gratis',
+  'pricing.startFree': 'Suscribirse',
   'pricing.limitedTimeOffer': 'Oferta por tiempo limitado',
   'pricing.noCommitment': 'Sin compromiso • Cancela cuando quieras',
   'pricing.enterpriseQuestion': '¿Necesitas más de 500 pines por mes?',
