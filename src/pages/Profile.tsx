@@ -64,20 +64,20 @@ const Profile = () => {
     setManageLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('customer-portal');
-      
       if (error) throw error;
-      
+      if (data?.error) throw new Error(data.error);
       if (data?.url) {
         window.open(data.url, '_blank');
       } else {
         throw new Error('No se pudo generar el enlace de gestión');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error accessing customer portal:', error);
+      const description = error?.message || 'Error al acceder al portal de gestión. Asegúrate de tener una suscripción activa.';
       toast({
-        title: "Error",
-        description: "Error al acceder al portal de gestión. Asegúrate de tener una suscripción activa.",
-        variant: "destructive",
+        title: 'Error',
+        description,
+        variant: 'destructive',
       });
     } finally {
       setManageLoading(false);
