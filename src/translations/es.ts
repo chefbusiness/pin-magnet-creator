@@ -19,6 +19,10 @@ export const esTranslations = {
   'common.error': 'Algo salió mal',
   'common.success': 'Éxito',
   
+  // Breadcrumbs
+  'breadcrumbs.home': 'Inicio',
+  'breadcrumbs.guide': 'Guía de Pinterest',
+  
   // Hero
   'hero.title': 'Crea 1 Mes de Contenido para Pinterest',
   'hero.subtitle': 'En 15 Minutos',

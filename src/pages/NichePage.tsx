@@ -46,7 +46,7 @@ const NichePage = () => {
   if (isLoading) {
     return <div className="min-h-screen bg-background">
         <Header />
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto max-w-6xl px-4 py-8">
           <div className="space-y-8">
             <Skeleton className="h-6 w-1/2" />
             <Skeleton className="h-12 w-1/2" />
@@ -79,7 +79,7 @@ const NichePage = () => {
 
       <div className="min-h-screen bg-background">
         <Header />
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto max-w-6xl px-4 py-8">
           {/* Breadcrumbs */}
           <NicheBreadcrumbs categoryName={category_data.name} categorySlug={category_data.slug} categoryEmoji={category_data.emoji || ''} subcategoryName={nicheData.name} />
 
