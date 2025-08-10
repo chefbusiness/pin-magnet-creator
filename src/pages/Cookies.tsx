@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-
+import { Button } from "@/components/ui/button";
 const Cookies = () => {
   const { t, language } = useLanguage();
   return (
@@ -15,9 +15,9 @@ const Cookies = () => {
       <Header />
       <main>
         <article className="py-16 px-4">
-          <div className="container mx-auto max-w-3xl prose prose-neutral dark:prose-invert">
+          <div className="container mx-auto max-w-3xl prose prose-neutral dark:prose-invert prose-a:text-primary prose-headings:font-semibold prose-h1:mb-4 prose-li:my-1">
             <h1>{t('pages.cookies.title')}</h1>
-            <p><strong>{language === 'es' ? 'Última actualización' : 'Last updated'}:</strong> {language === 'es' ? 'Agosto 2025' : 'August 2025'}</p>
+            <p className="text-muted-foreground"><strong>{language === 'es' ? 'Última actualización' : 'Last updated'}:</strong> {language === 'es' ? 'Agosto 2025' : 'August 2025'}</p>
 
             {language === 'es' ? (
               <>
@@ -47,7 +47,9 @@ const Cookies = () => {
                 <section>
                   <h2>Gestión de cookies</h2>
                   <p>Puedes gestionar tus preferencias desde nuestro banner de cookies o a través de la configuración de tu navegador. También puedes restablecer tu elección aquí mismo:</p>
-                  <button
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => {
                       try {
                         localStorage.removeItem('cookie-consent');
@@ -56,10 +58,9 @@ const Cookies = () => {
                         console.error(e);
                       }
                     }}
-                    className="inline-flex items-center rounded-md border border-border px-3 py-1 text-sm hover:bg-accent/20 transition"
                   >
                     Reiniciar preferencias de cookies
-                  </button>
+                  </Button>
                 </section>
                 <section>
                   <h2>Cómo desactivar cookies en tu navegador</h2>
@@ -103,7 +104,9 @@ const Cookies = () => {
                 <section>
                   <h2>Managing cookies</h2>
                   <p>You can manage your preferences from our cookie banner or via your browser settings. You can also reset your choice right here:</p>
-                  <button
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => {
                       try {
                         localStorage.removeItem('cookie-consent');
@@ -112,10 +115,9 @@ const Cookies = () => {
                         console.error(e);
                       }
                     }}
-                    className="inline-flex items-center rounded-md border border-border px-3 py-1 text-sm hover:bg-accent/20 transition"
                   >
                     Reset cookie preferences
-                  </button>
+                  </Button>
                 </section>
                 <section>
                   <h2>How to disable cookies in your browser</h2>

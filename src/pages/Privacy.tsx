@@ -15,9 +15,9 @@ const Privacy = () => {
       <Header />
       <main>
         <article className="py-16 px-4">
-          <div className="container mx-auto max-w-3xl prose prose-neutral dark:prose-invert">
+          <div className="container mx-auto max-w-3xl prose prose-neutral dark:prose-invert prose-a:text-primary prose-headings:font-semibold prose-h1:mb-4 prose-li:my-1">
             <h1>{t('pages.privacy.title')}</h1>
-            <p><strong>{language === 'es' ? 'Última actualización' : 'Last updated'}:</strong> {language === 'es' ? 'Agosto 2025' : 'August 2025'}</p>
+            <p className="text-muted-foreground"><strong>{language === 'es' ? 'Última actualización' : 'Last updated'}:</strong> {language === 'es' ? 'Agosto 2025' : 'August 2025'}</p>
 
             {language === 'es' ? (
               <>
