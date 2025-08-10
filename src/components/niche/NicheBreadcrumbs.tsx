@@ -35,13 +35,13 @@ export function NicheBreadcrumbs({
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link to="/pinterest-guide">{t('breadcrumbs.guide')}</Link>
+            <Link to="/generate-pins">{t('nav.generatePins')}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild className="flex items-center gap-2">
-            <Link to="/pinterest-guide">
+            <Link to="/generate-pins">
               <span>{categoryEmoji}</span>
               {categoryName}
             </Link>
