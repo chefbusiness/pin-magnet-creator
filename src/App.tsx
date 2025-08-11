@@ -30,6 +30,7 @@ import Cookies from "./pages/Cookies";
 import About from "./pages/About";
 import CookieBanner from "./components/CookieBanner";
 import ScrollToTop from "./components/ScrollToTop";
+import PromptsAdmin from "./pages/admin/PromptsAdmin";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -64,6 +65,7 @@ const App = () => (
                 <Route path="/billing/canceled" element={<BillingCanceled />} />
                 <Route path="/billing/portal-return" element={<BillingPortalReturn />} />
                 <Route path="/billing/status" element={<BillingStatus />} />
+                <Route path="/admin/prompts" element={<PromptsAdmin />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

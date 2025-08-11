@@ -64,6 +64,11 @@ export function Header() {
                   <Link to="/profile" className="text-sm font-medium hover:text-primary transition-colors">
                     {t('nav.profile')}
                   </Link>
+                  {isSuperAdmin() && (
+                    <Link to="/admin/prompts" className="text-sm font-medium hover:text-primary transition-colors">
+                      Admin
+                    </Link>
+                  )}
                 </>
               ) : (
                 <>
@@ -235,6 +240,11 @@ export function Header() {
                         <Link to="/profile" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
                           <span>{t('nav.profile')}</span>
                         </Link>
+                        {isSuperAdmin() && (
+                          <Link to="/admin/prompts" onClick={closeSheet} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors">
+                            <span>Admin</span>
+                          </Link>
+                        )}
                         
                         <div className="border-t pt-4">
                           <div className="text-xs text-muted-foreground mb-2 px-3">
