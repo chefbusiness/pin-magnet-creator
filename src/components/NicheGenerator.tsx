@@ -72,8 +72,14 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
       ];
       
       if (allSelectedTags.length > 0) {
+        // Build strong, prioritized modifiers from user selection
         const styleModifiers = allSelectedTags.map(tag => tag.promptModifier).join(', ');
-        enhancedImageStylePrompt = `${nicheData.image_style_prompt}, ${styleModifiers}`;
+        // Remove default "Tendencias: ..." block to avoid leaking styles like "boho" por defecto
+        const cleanedBase = (nicheData.image_style_prompt || '')
+          .replace(/Tendencias:[^.\n]*[.\n]?/i, '')
+          .trim();
+        // Put user-selected modifiers first so the model las priorice
+        enhancedImageStylePrompt = `${styleModifiers}, ${cleanedBase}`.trim();
       }
 
       await generatePins({
