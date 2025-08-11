@@ -44,7 +44,8 @@ export const useHybridNicheData = () => {
   // Mapeo específico de subcategorías (keys de traducción → slugs de BD)
   const subcategoryMap: Record<string, Record<string, string>> = {
     'sector.homeDecor': {
-      'subcategory.livingRoomDecoration': 'living-room-decor'
+      'subcategory.livingRoomDecoration': 'living-room-decor',
+      'subcategory.bedroomDesign': 'bedroom-decor'
       // Agregar más subcategorías aquí según se vayan implementando
     },
     'sector.recipes': {
