@@ -87,6 +87,52 @@ serve(async (req) => {
       try {
         console.log(`Generating image ${index + 1}/3 for variation: ${variation.title}`);
         
+        // Detect theme from user inputs to enforce visual divergence
+        const detectionText = `${variation.title} ${variation.description} ${customContent || ''} ${specializedPrompt || ''}`.toLowerCase();
+        const isKids = /(niñ|hija|hijo|kid|kids|infantil|beb[eé]s?|nursery|cuna|juguet|princesa)/i.test(detectionText);
+        const isPregnancy = /(embarazada|maternidad|novia embarazada|pareja embarazada)/i.test(detectionText);
+
+        // Composition presets to guarantee different camera angles per variation
+        const compositionPresets = [
+          'wide-angle bedroom shot, bed centered, symmetrical composition, natural window light',
+          'corner perspective from doorway, strong depth, bedside table and lamp visible, plants near window',
+          'close-up on headboard and bedding textures, shallow depth of field, styled pillows in foreground',
+          'reading nook with armchair and floor lamp, partial view of bed, cozy corner composition',
+          'from foot of bed looking toward headboard and wall art, balanced framing'
+        ];
+
+        // Theme palettes depending on detection
+        const kidsPalettes = [
+          'children bedroom, pastel palette (mint, peach, soft pink), wall decals, canopy, star lights, rounded safe furniture, Montessori-inspired, toys neatly arranged, whimsical details, child-friendly proportions',
+          'kids room theme, soft colors, fun shapes, bunting garland, animal prints, storage cubes, plush rug'
+        ];
+        const adultPregnancyPalettes = [
+          'serene adult master bedroom for pregnancy, warm neutrals (beige, sand, terracotta), cozy textures (linen, wool), minimal clutter, eucalyptus branches, calm lighting',
+          'modern cozy master bedroom, earthy palette, natural wood, soft lighting, elegant and soothing'
+        ];
+
+        const themePrompt = isKids
+          ? kidsPalettes[index % kidsPalettes.length]
+          : isPregnancy
+            ? adultPregnancyPalettes[index % adultPregnancyPalettes.length]
+            : '';
+
+        const negativePrompt = isKids
+          ? 'avoid romantic adult styling, no candles on bedside, no bar carts, no alcohol, no provocative elements'
+          : isPregnancy
+            ? 'avoid childish toys, no cartoon decals, no kids motifs'
+            : '';
+
+        const compositionPrompt = compositionPresets[index % compositionPresets.length];
+
+        // Compose a per-variation image style prompt (base + theme + composition + negatives)
+        const perVariationStylePrompt = [
+          imageStylePrompt,
+          themePrompt,
+          compositionPrompt,
+          negativePrompt
+        ].filter(Boolean).join(', ');
+        
         // Generate style names based on imageStylePrompt content and user selection
         let styleName = 'personalizado';
         
@@ -109,7 +155,7 @@ serve(async (req) => {
           } else if (imageStylePrompt.includes('rustic') || imageStylePrompt.includes('farmhouse')) {
             styleName = 'rustico-campestre';
           } else {
-            // Generate different style variations for each pin
+            // Generate different style label per pin
             const styleVariations = [
               'estilo-especializado-1',
               'tendencia-pinterest-2', 
@@ -119,13 +165,15 @@ serve(async (req) => {
           }
         }
 
+        console.log('Per-variation style prompt:', perVariationStylePrompt);
+
         const imageResponse = await supabase.functions.invoke('generate-pin-image', {
           body: {
             title: variation.title,
             description: variation.description,
             style: styleName,
             url: url || null,
-            imageStylePrompt,
+            imageStylePrompt: perVariationStylePrompt,
             noTextOverlay
           }
         });
