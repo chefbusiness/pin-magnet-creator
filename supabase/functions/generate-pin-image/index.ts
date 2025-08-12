@@ -78,8 +78,8 @@ serve(async (req) => {
         input: {
           prompt: basePrompt,
           aspect_ratio: "9:16",
-          style_type: noTextOverlay ? "None" : "Typography",
-          resolution: "High",
+          style_type: noTextOverlay ? "Realistic" : "Design",
+          resolution: "None",
           magic_prompt_option: magicPromptEnabled ? "Auto" : "Disabled"
         }
       };
