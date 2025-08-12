@@ -74,16 +74,21 @@ serve(async (req) => {
 
     try {
       // Generate image with Ideogram v3-turbo with proper input wrapper
+      const styleType = noTextOverlay ? "Realistic" : "Design";
+      const magicOption = noTextOverlay
+        ? (magicPromptEnabled ? "Auto" : "Off")
+        : "Off";
+
       const requestBody = {
         input: {
           prompt: basePrompt,
           aspect_ratio: "9:16",
-          style_type: noTextOverlay ? "Realistic" : "Typography",
-          resolution: "None",
-          magic_prompt_option: noTextOverlay ? (magicPromptEnabled ? "Auto" : "Disabled") : "Disabled"
+          style_type: styleType,
+          magic_prompt_option: magicOption,
         }
       };
 
+      console.log('Ideogram params:', { styleType, magicOption });
       console.log('Ideogram request body:', JSON.stringify(requestBody, null, 2));
 
       const response = await fetch('https://api.replicate.com/v1/models/ideogram-ai/ideogram-v3-turbo/predictions', {
