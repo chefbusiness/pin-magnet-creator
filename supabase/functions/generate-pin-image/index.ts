@@ -64,8 +64,8 @@ serve(async (req) => {
         basePrompt += ` Subtly show \"${websiteDomain}\" at bottom corner.`;
       }
     } else {
-      // WITH TEXT OVERLAY GUIDANCE
-      basePrompt = `High-end Pinterest vertical composition (9:16). Background: interior design bedroom photo. ${imageStylePrompt || 'interior design photography'}. Provide a clear safe area for the title at the top${websiteDomain ? ` and place \"${websiteDomain}\" subtly at the bottom` : ''}. Ultra-detailed, realistic textures, professional lighting, soft natural light, clean layout. Avoid illegible text, watermarks, logos.`;
+      // WITH TEXT OVERLAY - Ask the model to render the exact title text visibly
+      basePrompt = `High-end Pinterest vertical composition (9:16). Background: interior design bedroom photo. ${imageStylePrompt || 'interior design photography'}. Include the exact headline text at the top: \"${displayTitle}\". Use large, bold, clean sans-serif typography, high contrast over the background, center-aligned, safe margins, crisp and legible on mobile. Do not paraphrase, do not misspell, do not add extra quotes. ${websiteDomain ? `Add \"${websiteDomain}\" very small and subtle at the bottom.` : ''} Ultra-detailed, realistic textures, professional lighting, soft natural light, clean layout. Avoid illegible text, watermarks, logos.`; 
     }
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
