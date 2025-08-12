@@ -3,16 +3,20 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Download, Trash2, Image } from 'lucide-react';
+import { Download, Trash2, Image, Copy } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface Pin {
   id: string;
   title: string;
-  description?: string;
-  image_url?: string;
+  description?: string | null;
+  image_url?: string | null;
   status: string;
   created_at: string;
-  template_style?: string;
+  template_style?: string | null;
+  raw_prompt?: string | null;
+  enhanced_prompt?: string | null;
+  magic_prompt_enabled?: boolean | null;
 }
 
 interface PinCardProps {
@@ -25,6 +29,13 @@ interface PinCardProps {
 
 export function PinCard({ pin, onDownload, onDelete, isDeleting, formatDate }: PinCardProps) {
   const { t } = useLanguage();
+  const { toast } = useToast();
+
+  const handleCopy = (text: string, label: string) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    toast({ title: 'Copiado', description: `${label} copiado al portapapeles` });
+  };
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
@@ -56,6 +67,29 @@ export function PinCard({ pin, onDownload, onDelete, isDeleting, formatDate }: P
           </p>
         )}
         
+        {(pin.raw_prompt || pin.enhanced_prompt) && (
+          <div className="space-y-1 mb-3">
+            {pin.raw_prompt && (
+              <div className="flex items-start gap-2">
+                <Badge variant="secondary">Raw</Badge>
+                <div className="flex-1 text-xs break-words truncate" title={pin.raw_prompt || ''}>{pin.raw_prompt}</div>
+                <Button size="icon" variant="ghost" onClick={() => handleCopy(pin.raw_prompt || '', 'Raw prompt')} aria-label="Copiar raw prompt">
+                  <Copy className="h-3 w-3" />
+                </Button>
+              </div>
+            )}
+            {pin.enhanced_prompt && (
+              <div className="flex items-start gap-2">
+                <Badge variant="outline">Enh</Badge>
+                <div className="flex-1 text-xs break-words truncate" title={pin.enhanced_prompt || ''}>{pin.enhanced_prompt}</div>
+                <Button size="icon" variant="ghost" onClick={() => handleCopy(pin.enhanced_prompt || '', 'Enhanced prompt')} aria-label="Copiar enhanced prompt">
+                  <Copy className="h-3 w-3" />
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-3 md:mb-4">
           <span className="truncate">{formatDate(pin.created_at)}</span>
           {pin.template_style && (
@@ -79,6 +113,18 @@ export function PinCard({ pin, onDownload, onDelete, isDeleting, formatDate }: P
             </Button>
           )}
           
+          {(pin.enhanced_prompt || pin.raw_prompt) && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => handleCopy(pin.enhanced_prompt || pin.raw_prompt || '', 'Prompt')}
+              className="text-xs md:text-sm px-2 md:px-3"
+            >
+              <Copy className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+              Reusar
+            </Button>
+          )}
+
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button

@@ -9,6 +9,8 @@ export interface PinResult {
   imageUrl: string;
   style: string;
   pinId?: string;
+  rawPrompt?: string;
+  enhancedPrompt?: string;
 }
 
 export interface GenerationResult {
@@ -30,6 +32,7 @@ export const usePinGeneration = () => {
     specializedPrompt?: string; 
     imageStylePrompt?: string; 
     noTextOverlay?: boolean;
+    magicPromptEnabled?: boolean;
   }, user?: any): Promise<GenerationResult | null> => {
     if (!params.url && !params.customContent) {
       toast({
@@ -73,6 +76,7 @@ export const usePinGeneration = () => {
           specializedPrompt: params.specializedPrompt,
           imageStylePrompt: params.imageStylePrompt,
           noTextOverlay: params.noTextOverlay || false,
+          magicPromptEnabled: params.magicPromptEnabled ?? true,
           userId: user.id 
         }
       });

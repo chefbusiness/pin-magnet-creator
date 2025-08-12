@@ -13,6 +13,9 @@ export interface Pin {
   status: string;
   created_at: string;
   updated_at: string;
+  raw_prompt?: string | null;
+  enhanced_prompt?: string | null;
+  magic_prompt_enabled?: boolean | null;
 }
 
 export const usePins = () => {

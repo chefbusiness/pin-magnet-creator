@@ -38,6 +38,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
   const [selectedStyleTags, setSelectedStyleTags] = useState<string[]>([]);
   const [selectedTrendTags, setSelectedTrendTags] = useState<string[]>([]);
   const [noTextOverlay, setNoTextOverlay] = useState(false);
+  const [magicPromptEnabled, setMagicPromptEnabled] = useState(true);
   const { user, canGeneratePins } = useAuth();
   const { language } = useLanguage();
   const { generatePins, isGenerating, progress, generatedPins, reset } = usePinGeneration();
@@ -100,7 +101,8 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
         nicheId: nicheData.id,
         specializedPrompt: nicheData.specialized_prompt,
         imageStylePrompt: enhancedImageStylePrompt,
-        noTextOverlay
+        noTextOverlay,
+        magicPromptEnabled
       }, user);
     } catch (error) {
       console.error("Error generating pins:", error);
@@ -115,6 +117,7 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
     setSelectedStyleTags([]);
     setSelectedTrendTags([]);
     setNoTextOverlay(false);
+    setMagicPromptEnabled(true);
   };
 
   if (generatedPins.length > 0) {
@@ -265,6 +268,30 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
             nicheName={nicheData.name}
             hideIllustration={inputMode === "url"}
           />
+
+          {/* Magic Prompt Toggle */}
+          <Card className="border-dashed">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between space-x-4">
+                <div className="flex items-center space-x-3">
+                  <Sparkles className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <label htmlFor="magic-prompt" className="text-sm font-medium cursor-pointer">
+                      Magic Prompt (mejorar automáticamente)
+                    </label>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Optimiza el prompt para obtener mejores resultados visuales
+                    </p>
+                  </div>
+                </div>
+                <Switch
+                  id="magic-prompt"
+                  checked={magicPromptEnabled}
+                  onCheckedChange={setMagicPromptEnabled}
+                />
+              </div>
+            </CardContent>
+          </Card>
 
           {/* No Text Overlay Toggle */}
           <Card className="border-dashed">

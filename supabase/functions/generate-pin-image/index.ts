@@ -14,7 +14,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, style, url, imageStylePrompt, noTextOverlay = false } = await req.json();
+    const { title, description, style, url, imageStylePrompt, noTextOverlay = false, magicPromptEnabled = true } = await req.json();
     
     if (!title || !description) {
       return new Response(
@@ -80,7 +80,7 @@ serve(async (req) => {
           aspect_ratio: "9:16",
           style_type: noTextOverlay ? "None" : "Typography",
           resolution: "High",
-          magic_prompt_option: noTextOverlay ? "Auto" : "Disabled"
+          magic_prompt_option: magicPromptEnabled ? "Auto" : "Disabled"
         }
       };
 
@@ -184,7 +184,9 @@ serve(async (req) => {
             images: [{
               imageUrl: publicUrl,
               fileName: fileName,
-              model: 'ideogram-v3-turbo'
+              model: 'ideogram-v3-turbo',
+              usedPrompt: basePrompt,
+              magicPromptEnabled
             }],
             totalGenerated: 1
           }

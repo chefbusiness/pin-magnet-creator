@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Download, ExternalLink } from "lucide-react";
+import { Download, ExternalLink, Copy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { GenerationResult } from "@/hooks/usePinGeneration";
 
@@ -40,6 +40,38 @@ export function PinResults({ results, onDownloadImage }: PinResultsProps) {
         </Badge>
       </div>
       
+      {/* Prompts section */}
+      <Card className="mb-6">
+        <CardContent className="p-4 space-y-3">
+          <h4 className="font-semibold">Prompts usados</h4>
+          {results.pins.map((pin, i) => (
+            <div key={i} className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Variación {i + 1}</span>
+              </div>
+              {pin.rawPrompt && (
+                <div className="flex items-start gap-2">
+                  <Badge variant="secondary">Raw</Badge>
+                  <div className="flex-1 text-xs break-words">{pin.rawPrompt}</div>
+                  <Button size="icon" variant="ghost" onClick={() => navigator.clipboard.writeText(pin.rawPrompt!)} aria-label="Copiar raw prompt">
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
+              {pin.enhancedPrompt && (
+                <div className="flex items-start gap-2">
+                  <Badge variant="outline">Enh</Badge>
+                  <div className="flex-1 text-xs break-words">{pin.enhancedPrompt}</div>
+                  <Button size="icon" variant="ghost" onClick={() => navigator.clipboard.writeText(pin.enhancedPrompt!)} aria-label="Copiar enhanced prompt">
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {results.pins.map((pin, index) => (
           <Card key={index} className="overflow-hidden">

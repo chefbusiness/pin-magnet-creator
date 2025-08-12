@@ -21,7 +21,8 @@ serve(async (req) => {
       nicheId,
       specializedPrompt,
       imageStylePrompt,
-      noTextOverlay = false
+      noTextOverlay = false,
+      magicPromptEnabled = true
     } = await req.json();
     
     if (!url && !customContent) {
@@ -164,7 +165,8 @@ serve(async (req) => {
             style: styleName,
             url: url || null,
             imageStylePrompt: perVariationStylePrompt,
-            noTextOverlay
+            noTextOverlay,
+            magicPromptEnabled
           }
         });
 
@@ -190,7 +192,10 @@ serve(async (req) => {
           image_url: imageData.imageUrl,
           image_prompt: `Generated with ${imageData.model || 'AI'}${noTextOverlay ? ' (no text overlay)' : ''}`,
           template_style: styleName,
-          status: 'completed'
+          status: 'completed',
+          raw_prompt: perVariationStylePrompt,
+          enhanced_prompt: imageData.usedPrompt,
+          magic_prompt_enabled: magicPromptEnabled
         };
 
         const { data: pin, error: pinError } = await supabase
@@ -212,7 +217,9 @@ serve(async (req) => {
           imageUrl: imageData.imageUrl,
           style: styleName,
           pinId: pin?.id,
-          model: imageData.model || 'unknown'
+          model: imageData.model || 'unknown',
+          rawPrompt: perVariationStylePrompt,
+          enhancedPrompt: imageData.usedPrompt
         };
 
       } catch (error) {
