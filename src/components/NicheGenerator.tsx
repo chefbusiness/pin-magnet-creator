@@ -75,11 +75,23 @@ const NicheGenerator = ({ nicheData, categoryData }: NicheGeneratorProps) => {
         // Build strong, prioritized modifiers from user selection
         const styleModifiers = allSelectedTags.map(tag => tag.promptModifier).join(', ');
         // Remove default "Tendencias: ..." block to avoid leaking styles like "boho" por defecto
-        const cleanedBase = (nicheData.image_style_prompt || '')
-          .replace(/Tendencias:[^.\n]*[.\n]?/i, '')
+        let cleanedBase = (nicheData.image_style_prompt || '')
+          .replace(/Tendencias:[^\.\n]*[\.\n]?/i, '')
           .trim();
-        // Put user-selected modifiers first so the model las priorice
-        enhancedImageStylePrompt = `${styleModifiers}, ${cleanedBase}`.trim();
+        
+        // If user selected any tags, strip style biases from base to keep selections pure
+        const biasTokens = [
+          'scandinavian nordic style','scandinavian','nordic','hygge aesthetic','hygge',
+          'bohemian','boho','botanical','plant-filled','industrial','modern','contemporary',
+          'vintage','retro','minimalist','minimal','rustic','farmhouse','aesthetic'
+        ];
+        if (biasTokens.length) {
+          const biasRegex = new RegExp(`\\b(${biasTokens.map(t=>t.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')).join('|')})\\b`,`gi`);
+          cleanedBase = cleanedBase.replace(biasRegex, '').replace(/\s+,/g, ',').replace(/\s{2,}/g, ' ').trim();
+        }
+        
+        // Put user-selected modifiers first so the model las priorice, then keep neutral quality/composition bits from base
+        enhancedImageStylePrompt = `${styleModifiers}, ${cleanedBase}`.replace(/,\s*,/g, ', ').trim();
       }
 
       await generatePins({

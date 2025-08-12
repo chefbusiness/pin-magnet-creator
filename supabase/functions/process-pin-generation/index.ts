@@ -137,31 +137,21 @@ serve(async (req) => {
         let styleName = 'personalizado';
         
         if (imageStylePrompt) {
-          // Extract meaningful style indicators from the prompt
-          if (imageStylePrompt.includes('plant-filled') || imageStylePrompt.includes('botanical')) {
-            styleName = 'botanico-plantas';
-          } else if (imageStylePrompt.includes('scandinavian') || imageStylePrompt.includes('nordic')) {
-            styleName = 'escandinavo-nordico';
-          } else if (imageStylePrompt.includes('bohemian') || imageStylePrompt.includes('boho')) {
-            styleName = 'bohemio-ethnic';
-          } else if (imageStylePrompt.includes('industrial')) {
-            styleName = 'industrial-moderno';
-          } else if (imageStylePrompt.includes('vintage') || imageStylePrompt.includes('retro')) {
-            styleName = 'vintage-retro';
-          } else if (imageStylePrompt.includes('aesthetic') || imageStylePrompt.includes('cozy')) {
-            styleName = 'aesthetic-acogedor';
-          } else if (imageStylePrompt.includes('minimalist') || imageStylePrompt.includes('minimal')) {
-            styleName = 'minimalista-limpio';
-          } else if (imageStylePrompt.includes('rustic') || imageStylePrompt.includes('farmhouse')) {
-            styleName = 'rustico-campestre';
-          } else {
-            // Generate different style label per pin
-            const styleVariations = [
-              'estilo-especializado-1',
-              'tendencia-pinterest-2', 
-              'personalizado-optimizado-3'
-            ];
-            styleName = styleVariations[index] || 'personalizado-unico';
+          const tokens: string[] = [];
+          const text = imageStylePrompt.toLowerCase();
+          if (/(modern|contemporary)/i.test(text)) tokens.push('moderno');
+          if (/(industrial)/i.test(text)) tokens.push('industrial');
+          if (/(scandinavian|nordic|escandinav)/i.test(text)) tokens.push('escandinavo');
+          if (/(bohemian|boho)/i.test(text)) tokens.push('bohemio');
+          if (/(botanical|plant-filled|plantas)/i.test(text)) tokens.push('plantas');
+          if (/(vintage|retro)/i.test(text)) tokens.push('vintage');
+          if (/(minimalist|minimal)/i.test(text)) tokens.push('minimalista');
+          if (/(rustic|farmhouse)/i.test(text)) tokens.push('rústico');
+          if (/(aesthetic|cozy)/i.test(text)) tokens.push('aesthetic');
+          
+          const unique = Array.from(new Set(tokens));
+          if (unique.length > 0) {
+            styleName = unique.slice(0, 3).join('-');
           }
         }
 

@@ -38,14 +38,16 @@ serve(async (req) => {
 
 Título original: "${sourceTitle}"
 Descripción: "${sourceDescription}"
+${content_summary ? `\nContexto adicional del usuario (incorpóralo si aporta detalles únicos como ubicación/escena/estilo, sin inventar): """${content_summary}"""` : ''}
 
 Requisitos para cada variación:
 - Título llamativo de máximo 100 caracteres
 - Descripción persuasiva de máximo 400 caracteres
 - Usar palabras clave relevantes para SEO
 - Incluir call-to-action atractivo
-- Tone emocional que genere engagement
-- Adaptar para audiencia hispana`;
+- Tono emocional que genere engagement
+- Si el contenido incluye detalles específicos (p. ej., ubicación, audiencia, materiales), incorpóralos de forma natural
+- No inventes datos que no estén en el contenido`;
 
     // Add specialized prompt if provided
     if (specializedPrompt) {

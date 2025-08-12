@@ -58,19 +58,14 @@ serve(async (req) => {
     let basePrompt;
     
     if (noTextOverlay) {
-      // NO TEXT OVERLAY VERSION - Clean image with domain only at bottom
-      basePrompt = `Pinterest pin vertical image. Clean modern design, no text overlay on image. ${imageStylePrompt || 'Modern interior design photo background'}.`;
+      // NO TEXT OVERLAY VERSION - Clean image with optional domain at bottom
+      basePrompt = `High-end Pinterest vertical photo (9:16). Background: interior design bedroom photography. ${imageStylePrompt || 'interior design photography'}. Ultra-detailed, realistic materials and textures, professional lighting, soft natural light, global illumination, cinematic color grading, clean composition. Avoid watermarks, logos, distorted or blurry text, deformed hands/faces, artifacts.`;
       if (websiteDomain) {
-        basePrompt += ` Show "${websiteDomain}" subtly at bottom corner.`;
+        basePrompt += ` Subtly show \"${websiteDomain}\" at bottom corner.`;
       }
     } else {
-      // ORIGINAL VERSION WITH TEXT OVERLAY
-      basePrompt = `Pinterest pin vertical image. ${displayTitle}. Clean design with title "${displayTitle}" at top and "${websiteDomain}" at bottom. Modern interior design photo background.`;
-      
-      // Add style specifications if provided
-      if (imageStylePrompt) {
-        basePrompt += ` ${imageStylePrompt}.`;
-      }
+      // WITH TEXT OVERLAY GUIDANCE
+      basePrompt = `High-end Pinterest vertical composition (9:16). Background: interior design bedroom photo. ${imageStylePrompt || 'interior design photography'}. Provide a clear safe area for the title at the top${websiteDomain ? ` and place \"${websiteDomain}\" subtly at the bottom` : ''}. Ultra-detailed, realistic textures, professional lighting, soft natural light, clean layout. Avoid illegible text, watermarks, logos.`;
     }
 
     console.log('=== GENERATING IMAGE WITH IDEOGRAM V3-TURBO ===');
