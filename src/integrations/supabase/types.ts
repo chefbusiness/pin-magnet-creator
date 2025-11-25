@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -116,9 +116,12 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          enhanced_prompt: string | null
           id: string
           image_prompt: string | null
           image_url: string | null
+          magic_prompt_enabled: boolean
+          raw_prompt: string | null
           status: string
           template_style: string | null
           title: string
@@ -129,9 +132,12 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
+          enhanced_prompt?: string | null
           id?: string
           image_prompt?: string | null
           image_url?: string | null
+          magic_prompt_enabled?: boolean
+          raw_prompt?: string | null
           status?: string
           template_style?: string | null
           title: string
@@ -142,9 +148,12 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          enhanced_prompt?: string | null
           id?: string
           image_prompt?: string | null
           image_url?: string | null
+          magic_prompt_enabled?: boolean
+          raw_prompt?: string | null
           status?: string
           template_style?: string | null
           title?: string
@@ -258,22 +267,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_super_admin: {
-        Args: { user_id: string }
-        Returns: boolean
-      }
+      is_super_admin: { Args: { user_id: string }; Returns: boolean }
       promote_to_super_admin: {
         Args: { target_email: string }
         Returns: undefined
       }
-      reset_monthly_pins: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      sync_existing_monthly_pins: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      reset_monthly_pins: { Args: never; Returns: undefined }
+      sync_existing_monthly_pins: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
